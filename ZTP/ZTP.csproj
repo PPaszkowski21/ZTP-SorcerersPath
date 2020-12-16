@@ -71,8 +71,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EnemyAttacks\Arrow.cs" />
+    <Compile Include="Game\Game.cs" />
+    <Compile Include="Monsters\Monster.cs" />
+    <Compile Include="Monsters\MonsterFactory.cs" />
     <Compile Include="Monsters\SkeletonArcher.cs" />
+    <Compile Include="Player\Player.cs" />
+    <Compile Include="Player\PlayerFactory.cs" />
     <Compile Include="Spells\Fireball.cs" />
+    <Compile Include="Spells\Projectile.cs" />
+    <Compile Include="Spells\ProjectileFactory.cs" />
     <Compile Include="TaskTimer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

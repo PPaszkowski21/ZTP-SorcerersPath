@@ -23,7 +23,6 @@ namespace ZTP
         bool goLeft, goRight;
 
         List<Rectangle> itemsToRemove = new List<Rectangle>();
-
         int bulletTimer = 0;
         int bulletTimerLimit = 90;
 
@@ -43,6 +42,7 @@ namespace ZTP
         public MainWindow()
         {
             InitializeComponent();
+            Game g = Game.GetInstance();
             enemiesLeft.Content = "Enemies Left: " + enemiesKilled + " / " + maxEnemies;
 
             gameTimer.Interval = TimeSpan.FromMilliseconds(20);
