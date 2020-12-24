@@ -71,10 +71,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EnemyAttacks\Arrow.cs" />
-    <Compile Include="Game\Game.cs" />
+    <Compile Include="GameSingleton\Game.cs" />
     <Compile Include="Monsters\Monster.cs" />
     <Compile Include="Monsters\MonsterFactory.cs" />
     <Compile Include="Monsters\SkeletonArcher.cs" />
+    <Compile Include="Monsters\Vampire.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Player\PlayerFactory.cs" />
     <Compile Include="Spells\Fireball.cs" />
@@ -139,6 +140,8 @@
   <ItemGroup>
     <Resource Include="Images\wizard_pixel.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\vampire_pixel.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

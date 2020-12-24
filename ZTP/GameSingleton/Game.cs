@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZTP.Game
+namespace ZTP.GameSingleton
 {
-    class Game
+    public class Game
     {
         private Game() { }
 

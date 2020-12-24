@@ -10,7 +10,9 @@ using System.Windows.Shapes;
 
 using System.Windows.Threading;
 using ZTP.EnemyAttacks;
+using ZTP.GameSingleton;
 using ZTP.monsters;
+using ZTP.Monsters;
 using ZTP.Spells;
 
 namespace ZTP
@@ -42,7 +44,7 @@ namespace ZTP
         public MainWindow()
         {
             InitializeComponent();
-            Game g = Game.GetInstance();
+            //Game g = Game.GetInstance();
             enemiesLeft.Content = "Enemies Left: " + enemiesKilled + " / " + maxEnemies;
 
             gameTimer.Interval = TimeSpan.FromMilliseconds(20);
@@ -224,10 +226,11 @@ namespace ZTP
                 }    
                 for(int i=0;i< enemiesToSpawn; i++)
                 {
-                    SkeletonArcher skeletonArcher = new SkeletonArcher();
-                    Canvas.SetTop(skeletonArcher.Instance, 30);
-                    Canvas.SetLeft(skeletonArcher.Instance, left);
-                    myCanvas.Children.Add(skeletonArcher.Instance);
+                    //SkeletonArcher skeletonArcher = new SkeletonArcher();
+                    Monster monster = MonsterFactory.GetVampire();
+                    Canvas.SetTop(monster.Instance, 30);
+                    Canvas.SetLeft(monster.Instance, left);
+                    myCanvas.Children.Add(monster.Instance);
                     left -= 60;
                     enemiesSpawned++;
                 }

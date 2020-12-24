@@ -10,7 +10,6 @@ namespace ZTP.monsters
     {
         public SkeletonArcher()
         {
-            ImageBrush monsterSkin = new ImageBrush();
             Random rnd = new Random();
             int enemyImages = rnd.Next(1, 4);
             switch (enemyImages)

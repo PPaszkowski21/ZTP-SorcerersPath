@@ -9,10 +9,24 @@ namespace ZTP.Monsters
             switch(_Id) 
             {
                 case 1:
-                    return null;
+                    return new Vampire();
+                case 2:
+                    return new SkeletonArcher();
+                case 3:
+                    return new SkeletonArcher();
                 default:
                     return new SkeletonArcher();
             }
+        }
+
+        public static Monster GetVampire()
+        {
+            return new Vampire();
+        }
+
+        public static SkeletonArcher GetSkeletonArcher()
+        {
+            return new SkeletonArcher();
         }
     }
 }
