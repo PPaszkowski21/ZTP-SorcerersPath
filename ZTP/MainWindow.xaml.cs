@@ -9,10 +9,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using System.Windows.Threading;
+using ZTP.Actions;
 using ZTP.EnemyAttacks;
-using ZTP.GameSingleton;
-using ZTP.monsters;
 using ZTP.Monsters;
+using ZTP.PlayerClassess;
 using ZTP.Spells;
 
 namespace ZTP
@@ -22,7 +22,7 @@ namespace ZTP
     /// </summary>
     public partial class MainWindow : Window
     {
-        bool goLeft, goRight;
+        bool goLeft, goRight, goUp, goDown;
 
         List<Rectangle> itemsToRemove = new List<Rectangle>();
         int bulletTimer = 0;
@@ -34,13 +34,14 @@ namespace ZTP
         int enemiesKilled = 11;
         int enemiesSpawned = 0;
         int enemySpeed = 6;
+        int playerSpeed = 7;
+
+        Player player = PlayerFactory.LoadPlayer();
 
         bool gameOver = false;
 
         DispatcherTimer gameTimer = new DispatcherTimer(DispatcherPriority.Normal);
-        ImageBrush playerSkin = new ImageBrush();
 
-        [Obsolete]
         public MainWindow()
         {
             InitializeComponent();
@@ -51,22 +52,18 @@ namespace ZTP
             gameTimer.Tick += GameLoop;
             gameTimer.Start();
 
-            playerSkin.ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/wizard_pixel.png"));
-            player.Fill = playerSkin;
+            Canvas.SetTop(player.Instance, 344);
+            Canvas.SetLeft(player.Instance, 373);
+            myCanvas.Children.Add(player.Instance);
+
             myCanvas.Focus();
         }
 
         private void GameLoop(object sender, EventArgs e)
         {
-            Rect playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
-            if(goLeft == true && Canvas.GetLeft(player)>0)
-            {
-                Canvas.SetLeft(player, Canvas.GetLeft(player) - 10);
-            }
-            if(goRight == true && Canvas.GetLeft(player) + 80 < Application.Current.MainWindow.Width)
-            {
-                Canvas.SetLeft(player, Canvas.GetLeft(player) + 10);
-            }
+            Rect playerHitBox = new Rect(Canvas.GetLeft(player.Instance), Canvas.GetTop(player.Instance), player.Instance.Width, player.Instance.Height);
+
+            Movement.MovePlayer(goLeft, goRight, goUp, goDown, player, playerSpeed);
 
             bulletTimer -= 3;
             enemySpawnTimer -= 3;
@@ -74,23 +71,21 @@ namespace ZTP
             if(enemySpawnTimer <0)
             {
                 int enemiesToSpawn = 1;
-                makeEnemies(enemiesToSpawn);
+                MakeEnemies(enemiesToSpawn);
                 enemySpawnTimer = enemySpawnTimerLimit;
             }
             if(bulletTimer < 0)
             {
-               // var monster = myCanvas.Children.OfType<Rectangle>().FirstOrDefault(x => x is Rectangle && (string)x.Tag == "enemy");
-
-                enemyArrowMaker(Canvas.GetLeft(player) + 20, 10 );
+               //EnemyArrowMaker(Canvas.GetLeft(player.Instance) + 20, 10 );
 
                 bulletTimer = bulletTimerLimit;
             }
             
             foreach (var x in myCanvas.Children.OfType<Rectangle>())
             {
-                if(x is Rectangle && (string)x.Tag == "spell")
+                if(x is Rectangle && (string)x.Name == "fireball")
                 {
-                    Canvas.SetTop(x, Canvas.GetTop(x) - 20);
+                    Movement.FireballFlying(x);
 
                     if(Canvas.GetTop(x)<10)
                     {
@@ -101,7 +96,7 @@ namespace ZTP
 
                     foreach (var y in myCanvas.Children.OfType<Rectangle>())
                     {
-                        if(y is Rectangle && (string)y.Tag == "enemy")
+                        if(y is Rectangle && (string)y.Name == "enemy")
                         {
                             Rect enemyHit = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
                             if (spell.IntersectsWith(enemyHit))
@@ -116,7 +111,7 @@ namespace ZTP
 
                 }
 
-                if (x is Rectangle && (string)x.Tag == "enemy")
+                if (x is Rectangle && (string)x.Name == "enemy")
                 {
                     Canvas.SetLeft(x, Canvas.GetLeft(x) + enemySpeed);
 
@@ -130,10 +125,10 @@ namespace ZTP
 
                     if(playerHitBox.IntersectsWith(enemyHitBox))
                     {
-                        showGameOver("You were killed by the skeletons!");
+                        ShowGameOver("You were killed by the skeletons!");
                     }
                 }
-                if (x is Rectangle && (string)x.Tag == "enemyArrow")
+                if (x is Rectangle && (string)x.Name == "enemyArrow")
                 {
                     Canvas.SetTop(x, Canvas.GetTop(x) + 10);
 
@@ -146,7 +141,7 @@ namespace ZTP
 
                     if (playerHitBox.IntersectsWith(enemyArrowHitBox))
                     {
-                        showGameOver("You were killed by the skeleton arrow!");
+                        ShowGameOver("You were killed by the skeleton arrow!");
                     }
                 }
             }
@@ -165,7 +160,7 @@ namespace ZTP
             }
             if(enemiesKilled == 0)
             {
-                showGameOver("You win, you saved the world!");
+                ShowGameOver("You win, you saved the world!");
             }
         }
 
@@ -179,6 +174,14 @@ namespace ZTP
             {
                 goRight = true;
             }
+            if(e.Key == Key.Up)
+            {
+                goUp = true;
+            }
+            if(e.Key == Key.Down)
+            {
+                goDown = true;
+            }
         }
 
         private void KeyIsUp(object sender, KeyEventArgs e)
@@ -191,13 +194,19 @@ namespace ZTP
             {
                 goRight = false;
             }
+            if(e.Key == Key.Up)
+            {
+                goUp = false;
+            }
+            if(e.Key == Key.Down)
+            {
+                goDown = false;
+            }
+
 
             if(e.Key == Key.Space)
             {
-                Fireball fireball = new Fireball();
-                Canvas.SetTop(fireball.Instance, Canvas.GetTop(player) - fireball.Instance.ActualHeight);
-                Canvas.SetLeft(fireball.Instance, Canvas.GetLeft(player) + player.Width / 2);
-                myCanvas.Children.Add(fireball.Instance);
+                Movement.FireballThrow(myCanvas,player);
             }
 
             if(e.Key == Key.Enter && gameOver == true)
@@ -207,7 +216,7 @@ namespace ZTP
             }
         }
 
-        private void enemyArrowMaker(double x, double y)
+        private void EnemyArrowMaker(double x, double y)
         {
             Arrow arrow = new Arrow();
             Canvas.SetTop(arrow.Instance, y);
@@ -215,7 +224,7 @@ namespace ZTP
             myCanvas.Children.Add(arrow.Instance);
         }
 
-        private void makeEnemies(int enemiesToSpawn)
+        private void MakeEnemies(int enemiesToSpawn)
         {
             int left = 800;
             if(enemiesSpawned<maxEnemies)
@@ -226,8 +235,7 @@ namespace ZTP
                 }    
                 for(int i=0;i< enemiesToSpawn; i++)
                 {
-                    //SkeletonArcher skeletonArcher = new SkeletonArcher();
-                    Monster monster = MonsterFactory.GetVampire();
+                    Monster monster = MonsterFactory.GetSkeletonArcher();
                     Canvas.SetTop(monster.Instance, 30);
                     Canvas.SetLeft(monster.Instance, left);
                     myCanvas.Children.Add(monster.Instance);
@@ -237,7 +245,7 @@ namespace ZTP
             }
         }
 
-        private void showGameOver(string message)
+        private void ShowGameOver(string message)
         {
             gameOver = true;
             gameTimer.Stop();

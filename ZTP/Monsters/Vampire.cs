@@ -17,7 +17,7 @@ namespace ZTP.Monsters
             monsterSkin.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Images/vampire_pixel.PNG"));
             Instance = new Rectangle
             {
-                Tag = "enemy",
+                Name = "enemy",
                 Height = 90,
                 Width = 90,
                 Fill = monsterSkin

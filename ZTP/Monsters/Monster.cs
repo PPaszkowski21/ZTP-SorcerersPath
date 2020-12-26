@@ -8,7 +8,6 @@ namespace ZTP.Monsters
     abstract public class Monster
     {
         public int HitPoints { get; set; }
-
         public Rectangle Instance { get; set; }
 
         public ImageBrush monsterSkin = new ImageBrush();

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace ZTP.Player
+namespace ZTP.PlayerClassess
 {
     public static class PlayerFactory
     {

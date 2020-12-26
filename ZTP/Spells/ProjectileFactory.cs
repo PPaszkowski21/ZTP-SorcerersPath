@@ -9,7 +9,8 @@
                 case 1:
                     return null;
                 default:
-                    return new Fireball();
+                    //return new Fireball();
+                    return new Projectile();
             }
         } 
     }

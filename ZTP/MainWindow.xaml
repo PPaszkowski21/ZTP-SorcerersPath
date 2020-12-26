@@ -10,7 +10,6 @@
 
         <Label Name="enemiesLeft" Foreground="White" FontSize="16" FontWeight="ExtraBold">Enemies Left: 0</Label>
 
-        <Rectangle Name="player" Fill="White" Height="65" Width="55" Canvas.Left="373" Canvas.Top="344"/>
 
     </Canvas>
 </Window>

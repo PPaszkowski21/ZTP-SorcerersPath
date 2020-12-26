@@ -26,7 +26,7 @@ namespace ZTP.monsters
             }
             Instance = new Rectangle
             {
-                Tag = "enemy",
+                Name = "enemy",
                 Height = 45,
                 Width = 45,
                 Fill = monsterSkin

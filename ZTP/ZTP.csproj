@@ -70,14 +70,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Actions\Movement.cs" />
     <Compile Include="EnemyAttacks\Arrow.cs" />
     <Compile Include="GameSingleton\Game.cs" />
+    <Compile Include="Images\ImageManager.cs" />
     <Compile Include="Monsters\Monster.cs" />
     <Compile Include="Monsters\MonsterFactory.cs" />
     <Compile Include="Monsters\SkeletonArcher.cs" />
     <Compile Include="Monsters\Vampire.cs" />
-    <Compile Include="Player\Player.cs" />
-    <Compile Include="Player\PlayerFactory.cs" />
+    <Compile Include="PlayerClassess\Player.cs" />
+    <Compile Include="PlayerClassess\PlayerFactory.cs" />
     <Compile Include="Spells\Fireball.cs" />
     <Compile Include="Spells\Projectile.cs" />
     <Compile Include="Spells\ProjectileFactory.cs" />
@@ -123,25 +125,22 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\fireball_pixel.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Images\fireball_pixel_up.png" />
     <Resource Include="Images\monster_arrow_pixel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\skeletal_archer_pixel.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\skeletal_archer2_pixel.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\skeletal_archer3_pixel.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Images\skeletal_archer_pixel.png" />
+    <Resource Include="Images\vampire_pixel.png" />
+    <Resource Include="Images\white_mage_pixel_back.png" />
+    <Resource Include="Images\white_mage_pixel_front.png" />
+    <Resource Include="Images\white_mage_pixel_left.png" />
+    <Resource Include="Images\white_mage_pixel_right.png" />
     <Resource Include="Images\wizard_pixel.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\vampire_pixel.png" />
+    <Resource Include="Images\fireball_pixel_down.png" />
+    <Resource Include="Images\fireball_pixel_left.png" />
+    <Resource Include="Images\fireball_pixel_right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,5 +5,6 @@ namespace ZTP.Spells
     public class Projectile
     {
         public Rectangle Instance { get; set; }
+        public int Direction { get; set; }
     }
 }
