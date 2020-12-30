@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using ZTP.Actions;
 using ZTP.EnemyAttacks;
+using ZTP.Images;
 using ZTP.Monsters;
 using ZTP.PlayerClassess;
 using ZTP.Spells;
@@ -30,11 +31,12 @@ namespace ZTP
 
         int enemySpawnTimer = 0;
         int enemySpawnTimerLimit = 90;
-        int maxEnemies = 11;
-        int enemiesKilled = 11;
+        int maxEnemies = 15;
+        int enemiesKilled = 15;
         int enemiesSpawned = 0;
-        int enemySpeed = 6;
-        int playerSpeed = 7;
+        int enemySpeed = 2;
+        int playerSpeed = 10;
+        int playerStartHP = 100;
 
         Player player = PlayerFactory.LoadPlayer();
 
@@ -52,48 +54,71 @@ namespace ZTP
             gameTimer.Tick += GameLoop;
             gameTimer.Start();
 
+            //player init
             Canvas.SetTop(player.Instance, 344);
             Canvas.SetLeft(player.Instance, 373);
             myCanvas.Children.Add(player.Instance);
+
+            ImageBrush background = new ImageBrush()
+            {
+                ImageSource = new BitmapImage(new Uri(ImageManager.dungeonBackground))
+            };
+            myCanvas.Background = background;
 
             myCanvas.Focus();
         }
 
         private void GameLoop(object sender, EventArgs e)
         {
+            enemiesLeft.Content = "Enemies Left: " + enemiesKilled + " / " + maxEnemies;
+            playerHP.Content = "HP: " + player.HitPoints + " / " + playerStartHP;
+            playerGold.Content = "Gold: " + player.Gold;
+            //win
+            if (enemiesKilled == 0)
+            {
+                ShowGameOver("You win, you saved the world!");
+            }
+            if (player.HitPoints <= 0)
+            {
+                ShowGameOver("You died!");
+            }
+
             Rect playerHitBox = new Rect(Canvas.GetLeft(player.Instance), Canvas.GetTop(player.Instance), player.Instance.Width, player.Instance.Height);
 
+            //player movement
             Movement.MovePlayer(goLeft, goRight, goUp, goDown, player, playerSpeed);
 
+            //timers
             bulletTimer -= 3;
-            enemySpawnTimer -= 3;
+            enemySpawnTimer -= 10;
 
+            //create enemies
             if(enemySpawnTimer <0)
             {
                 int enemiesToSpawn = 1;
                 MakeEnemies(enemiesToSpawn);
                 enemySpawnTimer = enemySpawnTimerLimit;
             }
+            //create arrows
             if(bulletTimer < 0)
             {
                //EnemyArrowMaker(Canvas.GetLeft(player.Instance) + 20, 10 );
 
                 bulletTimer = bulletTimerLimit;
             }
-            
+
+            var DropCoinCoordinates = new List<Tuple<double, double>>();
+
+            //hitboxes, occurences
             foreach (var x in myCanvas.Children.OfType<Rectangle>())
             {
-                if(x is Rectangle && (string)x.Name == "fireball")
+                //fireball fly
+                if (x is Rectangle && (string)x.Name == "fireball")
                 {
-                    Movement.FireballFlying(x);
-
-                    if(Canvas.GetTop(x)<10)
-                    {
-                        itemsToRemove.Add(x);
-                    }
+                    Movement.FireballFlying(x, itemsToRemove);
 
                    Rect spell = new Rect(Canvas.GetLeft(x),Canvas.GetTop(x), x.Width, x.Height);
-
+                   
                     foreach (var y in myCanvas.Children.OfType<Rectangle>())
                     {
                         if(y is Rectangle && (string)y.Name == "enemy")
@@ -104,30 +129,29 @@ namespace ZTP
                                 itemsToRemove.Add(x);
                                 itemsToRemove.Add(y);
                                 --enemiesKilled;
-                                enemiesLeft.Content = "Enemies Left: " + enemiesKilled + " / " + maxEnemies;
+                                DropCoinCoordinates.Add(new Tuple<double, double>(Canvas.GetLeft(y),Canvas.GetTop(y)));
                             }
                         }
                     }
-
                 }
 
+                //enemy movement
                 if (x is Rectangle && (string)x.Name == "enemy")
                 {
-                    Canvas.SetLeft(x, Canvas.GetLeft(x) + enemySpeed);
-
-                    if(Canvas.GetLeft(x) > 820)
-                    {
-                        Canvas.SetLeft(x, -80);
-                        Canvas.SetTop(x, Canvas.GetTop(x) + (x.Height + 10));
-                    }
+                    Movement.EnemyMovement(x, player, enemySpeed);
 
                     Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
 
                     if(playerHitBox.IntersectsWith(enemyHitBox))
                     {
-                        ShowGameOver("You were killed by the skeletons!");
+                       // itemsToRemove.Add(x);
+                        player.HitPoints --;
+
+                        //ShowGameOver("You were killed by the skeletons!");
                     }
                 }
+
+                //arrow hit
                 if (x is Rectangle && (string)x.Name == "enemyArrow")
                 {
                     Canvas.SetTop(x, Canvas.GetTop(x) + 10);
@@ -144,24 +168,38 @@ namespace ZTP
                         ShowGameOver("You were killed by the skeleton arrow!");
                     }
                 }
+
+                if(x is Rectangle &&(string)x.Name == "coin")
+                {
+                    Rect coinHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                    if (playerHitBox.IntersectsWith(coinHitBox))
+                    {
+                        itemsToRemove.Add(x);
+                        player.Gold++;
+                    }
+                }
             }
 
+            foreach (var item in DropCoinCoordinates)
+            {
+                MonsterDrop.DropCoin(myCanvas, item.Item1, item.Item2);
+            }
+
+            //clearing items
             foreach (Rectangle i in itemsToRemove)
             {
                 myCanvas.Children.Remove(i);
             }
-            if(enemiesKilled < 10)
-            {
-                enemySpeed = 10;
-            }
-            else
-            {
-                enemySpeed = 5;
-            }
-            if(enemiesKilled == 0)
-            {
-                ShowGameOver("You win, you saved the world!");
-            }
+
+            //optional speed
+            //if(enemiesKilled < 10)
+            //{
+            //    enemySpeed = 10;
+            //}
+            //else
+            //{
+            //    enemySpeed = 5;
+            //}
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)

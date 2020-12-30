@@ -26,6 +26,7 @@ namespace ZTP.monsters
             }
             Instance = new Rectangle
             {
+                //Stroke = new SolidColorBrush(Colors.Red),
                 Name = "enemy",
                 Height = 45,
                 Width = 45,

@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ZTP.Images;
 
 namespace ZTP.PlayerClassess
 {
     public class Player
     {
-        public int HitPoints { get; private set; }
+        public int HitPoints { get; set; }
         public int ExperiencePoints { get; private set; }
-        public int Gold { get; private set; }
+        public int Gold { get; set; }
         public Rectangle Instance { get; set; }
 
         public ImageBrush PlayerSkin;
@@ -27,7 +28,7 @@ namespace ZTP.PlayerClassess
             Gold = _Gold;
             PlayerSkin = new ImageBrush
             {
-                ImageSource = new BitmapImage(new Uri("pack://application:,,,/images/white_mage_pixel_front.png"))
+                ImageSource = new BitmapImage(new Uri(ImageManager.mageFront))
             };
             Instance = new Rectangle
             {

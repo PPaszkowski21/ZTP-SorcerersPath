@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZTP"
         mc:Ignorable="d"
-        Title="Sorcerer's Path" Height="450" Width="800">
+        Title="Sorcerer's Path" Height="900" Width="1440">
     <Canvas Name="myCanvas" Focusable="True" Background="Black" KeyDown="KeyIsDown" KeyUp="KeyIsUp">
 
-        <Label Name="enemiesLeft" Foreground="White" FontSize="16" FontWeight="ExtraBold">Enemies Left: 0</Label>
+        <StackPanel>
+            <Label Name="enemiesLeft" Foreground="White" FontSize="16" FontWeight="ExtraBold">Enemies Left: 0</Label>
+            <Label Name="playerHP" Foreground="White" FontSize="16" FontWeight="ExtraBold">HP:</Label>
+            <Label Name="playerGold" Foreground="White" FontSize="16" FontWeight="ExtraBold">Gold:</Label>
+        </StackPanel>
 
 
     </Canvas>

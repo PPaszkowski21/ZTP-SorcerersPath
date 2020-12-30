@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ZTP.Images;
+using ZTP.Monsters;
 using ZTP.PlayerClassess;
 using ZTP.Spells;
 
@@ -40,6 +42,32 @@ namespace ZTP.Actions
             }
         }
 
+        public static void EnemyMovement(Rectangle monster, Player player, int enemySpeed)
+        {
+            double distance;
+            for (int i = 0; i < enemySpeed; i++)
+            {
+                distance = Canvas.GetLeft(player.Instance) - Canvas.GetLeft(monster);
+                if (distance < 0)
+                {
+                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) - 1);
+                }
+                else if(distance > 0)
+                {
+                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) + 1);
+                }
+                distance = Canvas.GetTop(player.Instance) - Canvas.GetTop(monster);
+                if (distance < 0)
+                {
+                    Canvas.SetTop(monster, Canvas.GetTop(monster) - 1);
+                }
+                else if(distance > 0)
+                {
+                    Canvas.SetTop(monster, Canvas.GetTop(monster) + 1);
+                }
+            }
+        }
+
         public static void FireballThrow(Canvas canvas, Player player)
         {
             Fireball fireball = new Fireball(player);
@@ -67,22 +95,27 @@ namespace ZTP.Actions
             canvas.Children.Add(fireball.Instance);
         }
 
-        public static void FireballFlying(Rectangle x)
+        public static void FireballFlying(Rectangle x, List<Rectangle> itemsToRemove)
         {
+            int speed = 20;
             switch (x.Tag)
             {
                 case 0:
-                    Canvas.SetTop(x, Canvas.GetTop(x) + 20);
+                    Canvas.SetTop(x, Canvas.GetTop(x) + speed);
                     break;
                 case 1:
-                    Canvas.SetLeft(x, Canvas.GetLeft(x) - 20);
+                    Canvas.SetLeft(x, Canvas.GetLeft(x) - speed);
                     break;
                 case 2:
-                    Canvas.SetTop(x, Canvas.GetTop(x) - 20);
+                    Canvas.SetTop(x, Canvas.GetTop(x) - speed);
                     break;
                 case 3:
-                    Canvas.SetLeft(x, Canvas.GetLeft(x) + 20);
+                    Canvas.SetLeft(x, Canvas.GetLeft(x) + speed);
                     break;
+            }
+            if (Canvas.GetTop(x) < 10)
+            {
+                itemsToRemove.Add(x);
             }
         }
     }

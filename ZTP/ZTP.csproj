@@ -64,15 +64,20 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9e7cd3b544a090dc, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.2.0.0\lib\net40\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Actions\MonsterDrop.cs" />
     <Compile Include="Actions\Movement.cs" />
     <Compile Include="EnemyAttacks\Arrow.cs" />
     <Compile Include="GameSingleton\Game.cs" />
+    <Compile Include="Images\AnimatedImage.cs" />
     <Compile Include="Images\ImageManager.cs" />
     <Compile Include="Monsters\Monster.cs" />
     <Compile Include="Monsters\MonsterFactory.cs" />
@@ -141,6 +146,24 @@
     <Resource Include="Images\fireball_pixel_down.png" />
     <Resource Include="Images\fireball_pixel_left.png" />
     <Resource Include="Images\fireball_pixel_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dungeonfloor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\coin_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\fireball.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\coinAnimated.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\thunders.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\fireball2.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

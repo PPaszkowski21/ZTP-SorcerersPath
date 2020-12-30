@@ -17,7 +17,7 @@ namespace ZTP.PlayerClassess
             }
             else
             {
-                return new Player(1, 0, 1);
+                return new Player(100, 0, 0);
             }
         }
     }

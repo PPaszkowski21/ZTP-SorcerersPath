@@ -16,6 +16,9 @@ namespace ZTP.Images
         public static string fireballLeft = "pack://application:,,,/Images/fireball_pixel_left.png";
         public static string fireballUp = "pack://application:,,,/Images/fireball_pixel_up.png";
         public static string fireballDown = "pack://application:,,,/Images/fireball_pixel_down.png";
-
+        public static string fireballGif = "pack://application:,,,/Images/fireball2.gif";
+        public static string dungeonBackground = "pack://application:,,,/Images/dungeonfloor.png";
+        public static string coin = "pack://application:,,,/Images/coin_1.png";
+        public static string coinAnimated = "pack://application:,,,/Images/coinAnimated.gif";
     }
 }
