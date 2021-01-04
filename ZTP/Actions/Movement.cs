@@ -42,6 +42,43 @@ namespace ZTP.Actions
             }
         }
 
+        private static void MovePlayer(Player player, int speed)
+        {
+            if (player.Direction == 1 && Canvas.GetLeft(player.Instance) > 0)
+            {
+                player.PlayerSkin.ImageSource = new BitmapImage(new Uri(ImageManager.mageLeft));
+                player.Direction = 1;
+                Canvas.SetLeft(player.Instance, Canvas.GetLeft(player.Instance) - speed);
+
+            }
+            if (player.Direction == 3 && Canvas.GetLeft(player.Instance) + 73 < Application.Current.MainWindow.Width)
+            {
+                player.PlayerSkin.ImageSource = new BitmapImage(new Uri(ImageManager.mageRight));
+                player.Direction = 3;
+                Canvas.SetLeft(player.Instance, Canvas.GetLeft(player.Instance) + speed);
+            }
+            if (player.Direction == 2 && Canvas.GetTop(player.Instance) > 0)
+            {
+                player.PlayerSkin.ImageSource = new BitmapImage(new Uri(ImageManager.mageBack));
+                player.Direction = 2;
+                Canvas.SetTop(player.Instance, Canvas.GetTop(player.Instance) - speed);
+            }
+            if (player.Direction == 0 && Canvas.GetTop(player.Instance) + 105 < Application.Current.MainWindow.Height)
+            {
+                player.PlayerSkin.ImageSource = new BitmapImage(new Uri(ImageManager.mageFront));
+                player.Direction = 0;
+                Canvas.SetTop(player.Instance, Canvas.GetTop(player.Instance) + speed);
+            }
+        }
+
+        public static void PlayerDash(Player player, int speed, int dashRange)
+        {
+            for (int i = 0; i < dashRange; i++)
+            {
+                MovePlayer(player, speed);
+            }
+        }
+
         public static void EnemyMovement(Rectangle monster, Player player, int enemySpeed)
         {
             double distance;
@@ -66,6 +103,70 @@ namespace ZTP.Actions
                     Canvas.SetTop(monster, Canvas.GetTop(monster) + 1);
                 }
             }
+        }
+
+        public static void EnemyAvoidingOtherEnemy(Rectangle monster, Rect monsterHitBox, Rect otherMonsterHitBox, int enemySpeed)
+        {
+            Rect rectHelper = new Rect(otherMonsterHitBox.BottomLeft, otherMonsterHitBox.TopRight);
+            otherMonsterHitBox.Intersect(monsterHitBox);
+
+            //monster coming from top
+            if(otherMonsterHitBox.TopLeft.Y == monsterHitBox.TopLeft.Y)
+            {
+                //moving left
+                if(rectHelper.BottomLeft.X < otherMonsterHitBox.BottomLeft.X)
+                {
+                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) - enemySpeed);
+                }
+                //moving right
+                else
+                {
+                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) + enemySpeed);
+                }
+            }
+            //monster coming from bot
+            else if (otherMonsterHitBox.BottomLeft.Y == monsterHitBox.BottomLeft.Y)
+            {
+                //moving left
+                if (rectHelper.TopLeft.X < otherMonsterHitBox.TopLeft.X)
+                {
+                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) - enemySpeed);
+                }
+                //moving right
+                else
+                {
+                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) + enemySpeed);
+                }
+            }
+            //monster coming from left
+            else if (otherMonsterHitBox.TopLeft.X == monsterHitBox.TopLeft.X)
+            {
+                //moving down
+                if (rectHelper.TopLeft.Y > otherMonsterHitBox.TopLeft.Y)
+                {
+                    Canvas.SetTop(monster, Canvas.GetTop(monster) + enemySpeed);
+                }
+                //moving top
+                else
+                {
+                    Canvas.SetTop(monster, Canvas.GetTop(monster) - enemySpeed);
+                }
+            }
+            //monster coming from right
+            else if (otherMonsterHitBox.TopRight.X == monsterHitBox.TopRight.X)
+            {
+                //moving down
+                if (rectHelper.TopRight.Y > otherMonsterHitBox.TopRight.Y)
+                {
+                    Canvas.SetTop(monster, Canvas.GetTop(monster) + enemySpeed);
+                }
+                //moving top
+                else
+                {
+                    Canvas.SetTop(monster, Canvas.GetTop(monster) - enemySpeed);
+                }
+            }
+
         }
 
         public static void FireballThrow(Canvas canvas, Player player)

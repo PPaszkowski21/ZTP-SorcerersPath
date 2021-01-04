@@ -8,10 +8,14 @@
         Title="Sorcerer's Path" Height="900" Width="1440">
     <Canvas Name="myCanvas" Focusable="True" Background="Black" KeyDown="KeyIsDown" KeyUp="KeyIsUp">
 
-        <StackPanel>
+        <StackPanel Orientation="Horizontal">
             <Label Name="enemiesLeft" Foreground="White" FontSize="16" FontWeight="ExtraBold">Enemies Left: 0</Label>
             <Label Name="playerHP" Foreground="White" FontSize="16" FontWeight="ExtraBold">HP:</Label>
             <Label Name="playerGold" Foreground="White" FontSize="16" FontWeight="ExtraBold">Gold:</Label>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Canvas.Top="11">
+            <Image Name="avatar" Width="200" Height="200"></Image>
+            <Image Name="barHP"></Image>
         </StackPanel>
 
 

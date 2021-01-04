@@ -28,10 +28,12 @@ namespace ZTP.monsters
             {
                 //Stroke = new SolidColorBrush(Colors.Red),
                 Name = "enemy",
+                Tag = "skeletonArcher",
                 Height = 45,
                 Width = 45,
                 Fill = monsterSkin
             };
+            HitPoints = 2;
         }
     }
 }

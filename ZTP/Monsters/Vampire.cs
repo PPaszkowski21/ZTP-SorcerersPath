@@ -18,10 +18,12 @@ namespace ZTP.Monsters
             Instance = new Rectangle
             {
                 Name = "enemy",
+                Tag = "vampire",
                 Height = 90,
                 Width = 90,
                 Fill = monsterSkin
             };
+            HitPoints = 4;
         }
     }
 }

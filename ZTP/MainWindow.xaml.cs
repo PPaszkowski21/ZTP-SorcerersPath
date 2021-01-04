@@ -31,15 +31,19 @@ namespace ZTP
 
         int enemySpawnTimer = 0;
         int enemySpawnTimerLimit = 90;
-        int maxEnemies = 15;
-        int enemiesKilled = 15;
+        int maxEnemies = 20;
+        int enemiesKilled = 20;
         int enemiesSpawned = 0;
-        int enemySpeed = 2;
-        int playerSpeed = 10;
+        int enemySpeed = 4  ;
+        int playerSpeed = 5;
         int playerStartHP = 100;
 
-        Player player = PlayerFactory.LoadPlayer();
 
+        Player player = PlayerFactory.LoadPlayer();
+        List<Monster> monsters = new List<Monster>();
+
+
+        List<Rectangle> monstersAllowedToMove = new List<Rectangle>();
         bool gameOver = false;
 
         DispatcherTimer gameTimer = new DispatcherTimer(DispatcherPriority.Normal);
@@ -59,9 +63,12 @@ namespace ZTP
             Canvas.SetLeft(player.Instance, 373);
             myCanvas.Children.Add(player.Instance);
 
+            barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar100));
+            avatar.Source = new BitmapImage(new Uri(ImageManager.avatar));
+
             ImageBrush background = new ImageBrush()
             {
-                ImageSource = new BitmapImage(new Uri(ImageManager.dungeonBackground))
+                ImageSource = new BitmapImage(new Uri(ImageManager.background1))
             };
             myCanvas.Background = background;
 
@@ -73,15 +80,17 @@ namespace ZTP
             enemiesLeft.Content = "Enemies Left: " + enemiesKilled + " / " + maxEnemies;
             playerHP.Content = "HP: " + player.HitPoints + " / " + playerStartHP;
             playerGold.Content = "Gold: " + player.Gold;
-            //win
+            //win,lose
+
+            if(ImageManager.ChangeHpBarImage(player, barHP))
+            {
+                ShowGameOver("You died!");
+            }
             if (enemiesKilled == 0)
             {
                 ShowGameOver("You win, you saved the world!");
             }
-            if (player.HitPoints <= 0)
-            {
-                ShowGameOver("You died!");
-            }
+            
 
             Rect playerHitBox = new Rect(Canvas.GetLeft(player.Instance), Canvas.GetTop(player.Instance), player.Instance.Width, player.Instance.Height);
 
@@ -90,13 +99,15 @@ namespace ZTP
 
             //timers
             bulletTimer -= 3;
-            enemySpawnTimer -= 10;
+            enemySpawnTimer -= 1;
+
+            
 
             //create enemies
             if(enemySpawnTimer <0)
             {
-                int enemiesToSpawn = 1;
-                MakeEnemies(enemiesToSpawn);
+                int enemiesToSpawn = 4;
+                MakeEnemies(enemiesToSpawn, monstersAllowedToMove);
                 enemySpawnTimer = enemySpawnTimerLimit;
             }
             //create arrows
@@ -109,16 +120,18 @@ namespace ZTP
 
             var DropCoinCoordinates = new List<Tuple<double, double>>();
 
+            var monstersBannedFromMoving = new List<Rectangle>();
+
             //hitboxes, occurences
             foreach (var x in myCanvas.Children.OfType<Rectangle>())
             {
                 //fireball fly
                 if (x is Rectangle && (string)x.Name == "fireball")
                 {
-                    Movement.FireballFlying(x, itemsToRemove);
+                   Movement.FireballFlying(x, itemsToRemove);
 
                    Rect spell = new Rect(Canvas.GetLeft(x),Canvas.GetTop(x), x.Width, x.Height);
-                   
+
                     foreach (var y in myCanvas.Children.OfType<Rectangle>())
                     {
                         if(y is Rectangle && (string)y.Name == "enemy")
@@ -127,9 +140,18 @@ namespace ZTP
                             if (spell.IntersectsWith(enemyHit))
                             {
                                 itemsToRemove.Add(x);
-                                itemsToRemove.Add(y);
-                                --enemiesKilled;
-                                DropCoinCoordinates.Add(new Tuple<double, double>(Canvas.GetLeft(y),Canvas.GetTop(y)));
+                                var monster = monsters.FirstOrDefault(z => z.Instance == y);
+                                if(monster != null)
+                                {
+                                    monster.HitPoints--;
+                                }
+                                if(monster.HitPoints<=0)
+                                {
+                                    itemsToRemove.Add(y);
+                                    --enemiesKilled;
+                                    DropCoinCoordinates.Add(new Tuple<double, double>(Canvas.GetLeft(y),Canvas.GetTop(y)));
+                                }
+                                break;
                             }
                         }
                     }
@@ -138,35 +160,68 @@ namespace ZTP
                 //enemy movement
                 if (x is Rectangle && (string)x.Name == "enemy")
                 {
-                    Movement.EnemyMovement(x, player, enemySpeed);
-
                     Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
-
-                    if(playerHitBox.IntersectsWith(enemyHitBox))
+                    if (monstersAllowedToMove.Contains(x) && !monstersBannedFromMoving.Contains(x))
                     {
-                       // itemsToRemove.Add(x);
-                        player.HitPoints --;
+                        Movement.EnemyMovement(x, player, enemySpeed);
+                    }
+                    bool isFirst = true;
+                    foreach (var y in myCanvas.Children.OfType<Rectangle>())
+                    {
+                        if (isFirst == true)
+                        {
+                            isFirst = false;
+                            continue;
+                        }
+
+                        if (y is Rectangle && (string)y.Name == "enemy")
+                        {
+                            Rect enemy2HitBox = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
+                            if (enemy2HitBox.IntersectsWith(enemyHitBox))
+                            {
+                                monstersBannedFromMoving.Add(y);
+                                if (!enemy2HitBox.IntersectsWith(playerHitBox))
+                                {
+                                    Movement.EnemyAvoidingOtherEnemy(y, enemyHitBox, enemy2HitBox, 1);
+                                }
+                            }
+                        }
+                    }
+
+
+
+                    if (playerHitBox.IntersectsWith(enemyHitBox))
+                    {
+                        // itemsToRemove.Add(x);
+                        if ((string)x.Tag == "vampire")
+                        {
+                            player.HitPoints-=2;
+                        }
+                        else if((string)x.Tag == "skeletonArcher")
+                        {
+                            player.HitPoints--;
+                        }
 
                         //ShowGameOver("You were killed by the skeletons!");
                     }
                 }
 
-                //arrow hit
+                    //arrow hit
                 if (x is Rectangle && (string)x.Name == "enemyArrow")
                 {
-                    Canvas.SetTop(x, Canvas.GetTop(x) + 10);
+                Canvas.SetTop(x, Canvas.GetTop(x) + 10);
 
-                    if (Canvas.GetTop(x) > 480)
-                    {
-                        itemsToRemove.Add(x);
-                    }
+                if (Canvas.GetTop(x) > 480)
+                {
+                    itemsToRemove.Add(x);
+                }
 
-                    Rect enemyArrowHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                Rect enemyArrowHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
 
-                    if (playerHitBox.IntersectsWith(enemyArrowHitBox))
-                    {
-                        ShowGameOver("You were killed by the skeleton arrow!");
-                    }
+                if (playerHitBox.IntersectsWith(enemyArrowHitBox))
+                {
+                    ShowGameOver("You were killed by the skeleton arrow!");
+                }
                 }
 
                 if(x is Rectangle &&(string)x.Name == "coin")
@@ -201,6 +256,8 @@ namespace ZTP
             //    enemySpeed = 5;
             //}
         }
+
+
 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
@@ -241,6 +298,10 @@ namespace ZTP
                 goDown = false;
             }
 
+            if(e.Key == Key.LeftCtrl)
+            {
+                Movement.PlayerDash(player, playerSpeed, 40);
+            }
 
             if(e.Key == Key.Space)
             {
@@ -262,9 +323,8 @@ namespace ZTP
             myCanvas.Children.Add(arrow.Instance);
         }
 
-        private void MakeEnemies(int enemiesToSpawn)
+        private void MakeEnemies(int enemiesToSpawn, List<Rectangle> monstersAllowedToMove)
         {
-            int left = 800;
             if(enemiesSpawned<maxEnemies)
             {
                 if(enemiesToSpawn>(maxEnemies-enemiesSpawned))
@@ -273,11 +333,41 @@ namespace ZTP
                 }    
                 for(int i=0;i< enemiesToSpawn; i++)
                 {
-                    Monster monster = MonsterFactory.GetSkeletonArcher();
-                    Canvas.SetTop(monster.Instance, 30);
+                    Monster monster;
+                    if(i == 1)
+                    {
+                        monster = MonsterFactory.GetVampire();
+                    }
+                    else
+                    {
+                        monster = MonsterFactory.GetSkeletonArcher();
+                    }
+                    int top = 0, left = 0;
+                    if(i == 0)
+                    {
+                        top = 890;
+                        left = 710;
+                    }
+                    else if(i == 1)
+                    {
+                        top = 10;
+                        left = 710;
+                    }
+                    else if (i == 2)
+                    {
+                        top = 440;
+                        left = 1430;
+                    }
+                    else if (i == 3)
+                    {
+                        top = 440;
+                        left = 10;
+                    }
+                    Canvas.SetTop(monster.Instance, top);
                     Canvas.SetLeft(monster.Instance, left);
                     myCanvas.Children.Add(monster.Instance);
-                    left -= 60;
+                    monsters.Add(monster);
+                    monstersAllowedToMove.Add(monster.Instance);
                     enemiesSpawned++;
                 }
             }

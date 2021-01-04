@@ -77,7 +77,6 @@
     <Compile Include="Actions\Movement.cs" />
     <Compile Include="EnemyAttacks\Arrow.cs" />
     <Compile Include="GameSingleton\Game.cs" />
-    <Compile Include="Images\AnimatedImage.cs" />
     <Compile Include="Images\ImageManager.cs" />
     <Compile Include="Monsters\Monster.cs" />
     <Compile Include="Monsters\MonsterFactory.cs" />
@@ -160,10 +159,22 @@
     <Resource Include="Images\coinAnimated.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\thunders.gif" />
+    <Resource Include="Images\fireball2.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\fireball2.gif" />
+    <Resource Include="Images\background1.jpg" />
+    <Resource Include="Images\hpBar0.jpg" />
+    <Resource Include="Images\hpBar10.jpg" />
+    <Resource Include="Images\hpBar100.jpg" />
+    <Resource Include="Images\hpBar20.jpg" />
+    <Resource Include="Images\hpBar30.jpg" />
+    <Resource Include="Images\hpBar40.jpg" />
+    <Resource Include="Images\hpBar50.jpg" />
+    <Resource Include="Images\hpBar60.jpg" />
+    <Resource Include="Images\hpBar70.jpg" />
+    <Resource Include="Images\hpBar80.jpg" />
+    <Resource Include="Images\hpBar90.jpg" />
+    <Resource Include="Images\PlayerFrame.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
