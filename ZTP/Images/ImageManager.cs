@@ -21,6 +21,8 @@ namespace ZTP.Images
         public static string fireballUp = "pack://application:,,,/Images/fireball_pixel_up.png";
         public static string fireballDown = "pack://application:,,,/Images/fireball_pixel_down.png";
         public static string fireballGif = "pack://application:,,,/Images/fireball2.gif";
+        public static string blink = "pack://application:,,,/Images/blink.gif";
+        public static string blinkShow = "pack://application:,,,/Images/blinkShow.gif";
 
         public static string dungeonBackground = "pack://application:,,,/Images/dungeonfloor.png";
         public static string background1 = "pack://application:,,,/Images/background1.jpg";
@@ -29,11 +31,11 @@ namespace ZTP.Images
 
         public static string avatar = "pack://application:,,,/Images/PlayerFrame.png";
         public static string hpBar0 = "pack://application:,,,/Images/hpBar0.jpg";
-        public static string hpBar10 = "pack://application:,,,/Images/hpBar10.jpg";
-        public static string hpBar20 = "pack://application:,,,/Images/hpBar20.jpg";
-        public static string hpBar30 = "pack://application:,,,/Images/hpBar30.jpg";
-        public static string hpBar40 = "pack://application:,,,/Images/hpBar40.jpg";
-        public static string hpBar50 = "pack://application:,,,/Images/hpBar50.jpg";
+        public static string hpBar10 = "pack://application:,,,/Images/hpBar10Red.jpg";
+        public static string hpBar20 = "pack://application:,,,/Images/hpBar20Red.jpg";
+        public static string hpBar30 = "pack://application:,,,/Images/hpBar30Orange.jpg";
+        public static string hpBar40 = "pack://application:,,,/Images/hpBar40Orange.jpg";
+        public static string hpBar50 = "pack://application:,,,/Images/hpBar50Orange.jpg";
         public static string hpBar60 = "pack://application:,,,/Images/hpBar60.jpg";
         public static string hpBar70 = "pack://application:,,,/Images/hpBar70.jpg";
         public static string hpBar80 = "pack://application:,,,/Images/hpBar80.jpg";

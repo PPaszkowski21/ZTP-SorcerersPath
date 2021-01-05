@@ -34,13 +34,17 @@ namespace ZTP
         int maxEnemies = 20;
         int enemiesKilled = 20;
         int enemiesSpawned = 0;
-        int enemySpeed = 4  ;
+        int enemySpeed = 2;
         int playerSpeed = 5;
         int playerStartHP = 100;
+
+        int blinkGifTimer = 0;
+        bool startGifTimer = false;
 
 
         Player player = PlayerFactory.LoadPlayer();
         List<Monster> monsters = new List<Monster>();
+        List<Rectangle> blinkInstances = new List<Rectangle>();
 
 
         List<Rectangle> monstersAllowedToMove = new List<Rectangle>();
@@ -101,7 +105,19 @@ namespace ZTP
             bulletTimer -= 3;
             enemySpawnTimer -= 1;
 
-            
+            if(startGifTimer)
+            {
+                blinkGifTimer += 7;
+                if (blinkGifTimer >= 100)
+                {
+                    myCanvas.Children.Remove(blinkInstances.FirstOrDefault());
+                    blinkInstances.Remove(blinkInstances.FirstOrDefault());
+                    myCanvas.Children.Remove(blinkInstances.FirstOrDefault());
+                    blinkInstances.Remove(blinkInstances.FirstOrDefault());
+                    startGifTimer = false;
+                    blinkGifTimer = 0;
+                }
+            }
 
             //create enemies
             if(enemySpawnTimer <0)
@@ -119,7 +135,6 @@ namespace ZTP
             }
 
             var DropCoinCoordinates = new List<Tuple<double, double>>();
-
             var monstersBannedFromMoving = new List<Rectangle>();
 
             //hitboxes, occurences
@@ -206,23 +221,23 @@ namespace ZTP
                     }
                 }
 
-                    //arrow hit
-                if (x is Rectangle && (string)x.Name == "enemyArrow")
-                {
-                Canvas.SetTop(x, Canvas.GetTop(x) + 10);
+                ////arrow hit
+                //if (x is Rectangle && (string)x.Name == "enemyArrow")
+                //{
+                //Canvas.SetTop(x, Canvas.GetTop(x) + 10);
 
-                if (Canvas.GetTop(x) > 480)
-                {
-                    itemsToRemove.Add(x);
-                }
+                //if (Canvas.GetTop(x) > 480)
+                //{
+                //    itemsToRemove.Add(x);
+                //}
 
-                Rect enemyArrowHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                //Rect enemyArrowHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
 
-                if (playerHitBox.IntersectsWith(enemyArrowHitBox))
-                {
-                    ShowGameOver("You were killed by the skeleton arrow!");
-                }
-                }
+                //if (playerHitBox.IntersectsWith(enemyArrowHitBox))
+                //{
+                //    ShowGameOver("You were killed by the skeleton arrow!");
+                //}
+                //}
 
                 if(x is Rectangle &&(string)x.Name == "coin")
                 {
@@ -298,9 +313,9 @@ namespace ZTP
                 goDown = false;
             }
 
-            if(e.Key == Key.LeftCtrl)
+            if(e.Key == Key.LeftCtrl && startGifTimer == false)
             {
-                Movement.PlayerDash(player, playerSpeed, 40);
+                Movement.PlayerDash(player, playerSpeed, 40, myCanvas, ref startGifTimer, blinkInstances);
             }
 
             if(e.Key == Key.Space)

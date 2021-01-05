@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfAnimatedGif;
 using ZTP.Images;
 using ZTP.Monsters;
 using ZTP.PlayerClassess;
@@ -46,37 +48,42 @@ namespace ZTP.Actions
         {
             if (player.Direction == 1 && Canvas.GetLeft(player.Instance) > 0)
             {
-                player.PlayerSkin.ImageSource = new BitmapImage(new Uri(ImageManager.mageLeft));
-                player.Direction = 1;
                 Canvas.SetLeft(player.Instance, Canvas.GetLeft(player.Instance) - speed);
-
             }
             if (player.Direction == 3 && Canvas.GetLeft(player.Instance) + 73 < Application.Current.MainWindow.Width)
             {
-                player.PlayerSkin.ImageSource = new BitmapImage(new Uri(ImageManager.mageRight));
-                player.Direction = 3;
                 Canvas.SetLeft(player.Instance, Canvas.GetLeft(player.Instance) + speed);
             }
             if (player.Direction == 2 && Canvas.GetTop(player.Instance) > 0)
             {
-                player.PlayerSkin.ImageSource = new BitmapImage(new Uri(ImageManager.mageBack));
-                player.Direction = 2;
                 Canvas.SetTop(player.Instance, Canvas.GetTop(player.Instance) - speed);
             }
             if (player.Direction == 0 && Canvas.GetTop(player.Instance) + 105 < Application.Current.MainWindow.Height)
             {
-                player.PlayerSkin.ImageSource = new BitmapImage(new Uri(ImageManager.mageFront));
-                player.Direction = 0;
                 Canvas.SetTop(player.Instance, Canvas.GetTop(player.Instance) + speed);
             }
         }
 
-        public static void PlayerDash(Player player, int speed, int dashRange)
+        public static void PlayerDash(Player player, int speed, int dashRange, Canvas canvas, ref bool startGifTimer, List<Rectangle> blinkInstances)
         {
+            Blink blink = new Blink(ImageManager.blink);
+            Canvas.SetLeft(blink.Instance, Canvas.GetLeft(player.Instance) - player.Instance.Width/2);
+            Canvas.SetTop(blink.Instance, Canvas.GetTop(player.Instance) - player.Instance.Height/2);
+            canvas.Children.Add(blink.Instance);
+
             for (int i = 0; i < dashRange; i++)
             {
                 MovePlayer(player, speed);
             }
+            Blink blink2 = new Blink(ImageManager.blinkShow);
+            Canvas.SetLeft(blink2.Instance, Canvas.GetLeft(player.Instance) - player.Instance.Width / 2);
+            Canvas.SetTop(blink2.Instance, Canvas.GetTop(player.Instance) - player.Instance.Width / 2);
+            canvas.Children.Add(blink2.Instance);
+
+
+            blinkInstances.Add(blink.Instance);
+            blinkInstances.Add(blink2.Instance);
+            startGifTimer = true;
         }
 
         public static void EnemyMovement(Rectangle monster, Player player, int enemySpeed)

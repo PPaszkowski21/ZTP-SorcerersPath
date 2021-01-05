@@ -84,6 +84,7 @@
     <Compile Include="Monsters\Vampire.cs" />
     <Compile Include="PlayerClassess\Player.cs" />
     <Compile Include="PlayerClassess\PlayerFactory.cs" />
+    <Compile Include="Spells\Blink.cs" />
     <Compile Include="Spells\Fireball.cs" />
     <Compile Include="Spells\Projectile.cs" />
     <Compile Include="Spells\ProjectileFactory.cs" />
@@ -164,17 +165,25 @@
   <ItemGroup>
     <Resource Include="Images\background1.jpg" />
     <Resource Include="Images\hpBar0.jpg" />
-    <Resource Include="Images\hpBar10.jpg" />
     <Resource Include="Images\hpBar100.jpg" />
-    <Resource Include="Images\hpBar20.jpg" />
-    <Resource Include="Images\hpBar30.jpg" />
-    <Resource Include="Images\hpBar40.jpg" />
-    <Resource Include="Images\hpBar50.jpg" />
     <Resource Include="Images\hpBar60.jpg" />
     <Resource Include="Images\hpBar70.jpg" />
     <Resource Include="Images\hpBar80.jpg" />
     <Resource Include="Images\hpBar90.jpg" />
     <Resource Include="Images\PlayerFrame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\hpBar10Red.jpg" />
+    <Resource Include="Images\hpBar20Red.jpg" />
+    <Resource Include="Images\hpBar30Orange.jpg" />
+    <Resource Include="Images\hpBar40Orange.jpg" />
+    <Resource Include="Images\hpBar50Orange.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\blink.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\blinkShow.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
