@@ -34,7 +34,6 @@ namespace ZTP
         int maxEnemies = 20;
         int enemiesKilled = 20;
         int enemiesSpawned = 0;
-        int enemySpeed = 2;
         int playerSpeed = 5;
         int playerStartHP = 100;
 
@@ -42,7 +41,8 @@ namespace ZTP
         bool startGifTimer = false;
 
 
-        Player player = PlayerFactory.LoadPlayer();
+        //Player player = PlayerFactory.LoadPlayer();
+        Player player = new Player(100, 0, 0);
         List<Monster> monsters = new List<Monster>();
         List<Rectangle> blinkInstances = new List<Rectangle>();
 
@@ -176,9 +176,16 @@ namespace ZTP
                 if (x is Rectangle && (string)x.Name == "enemy")
                 {
                     Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                    Monster monster = monsters.FirstOrDefault(c => c.Instance == x);
+                    if (monster.HitPoints == 0)
+                    {
+                        itemsToRemove.Add(x);
+                        break;
+                    }
+
                     if (monstersAllowedToMove.Contains(x) && !monstersBannedFromMoving.Contains(x))
                     {
-                        Movement.EnemyMovement(x, player, enemySpeed);
+                        Movement.EnemyMovement(x, player, monster.Speed);
                     }
                     bool isFirst = true;
                     foreach (var y in myCanvas.Children.OfType<Rectangle>())
@@ -203,21 +210,9 @@ namespace ZTP
                         }
                     }
 
-
-
                     if (playerHitBox.IntersectsWith(enemyHitBox))
                     {
-                        // itemsToRemove.Add(x);
-                        if ((string)x.Tag == "vampire")
-                        {
-                            player.HitPoints-=2;
-                        }
-                        else if((string)x.Tag == "skeletonArcher")
-                        {
-                            player.HitPoints--;
-                        }
-
-                        //ShowGameOver("You were killed by the skeletons!");
+                        player.HitPoints -= monster.Damage;
                     }
                 }
 
@@ -323,6 +318,11 @@ namespace ZTP
                 Movement.FireballThrow(myCanvas,player);
             }
 
+            if(e.Key == Key.LeftShift)
+            {
+                player.notifyObservers();
+            }
+
             if(e.Key == Key.Enter && gameOver == true)
             {
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
@@ -351,32 +351,35 @@ namespace ZTP
                     Monster monster;
                     if(i == 1)
                     {
-                        monster = MonsterFactory.GetVampire();
+                        BeholderBuilder builder = new BeholderBuilder();
+                        monster = builder.CreateMonster(monsters);
+                        player.addObserver(monster);
                     }
                     else
                     {
-                        monster = MonsterFactory.GetSkeletonArcher();
+                        DreadIntruderBuilder builder = new DreadIntruderBuilder();
+                        monster = builder.CreateMonster(monsters);
+                        player.addObserver(monster);
                     }
                     int top = 0, left = 0;
-                    if(i == 0)
+                    switch (i)
                     {
-                        top = 890;
-                        left = 710;
-                    }
-                    else if(i == 1)
-                    {
-                        top = 10;
-                        left = 710;
-                    }
-                    else if (i == 2)
-                    {
-                        top = 440;
-                        left = 1430;
-                    }
-                    else if (i == 3)
-                    {
-                        top = 440;
-                        left = 10;
+                        case 0:
+                            top = 890;
+                            left = 710;
+                            break;
+                        case 1:
+                            top = 10;
+                            left = 710;
+                            break;
+                        case 2:
+                            top = 440;
+                            left = 1430;
+                            break;
+                        case 3:
+                            top = 440;
+                            left = 10;
+                            break;
                     }
                     Canvas.SetTop(monster.Instance, top);
                     Canvas.SetLeft(monster.Instance, left);

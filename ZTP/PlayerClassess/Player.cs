@@ -6,21 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ZTP.Actions;
 using ZTP.Images;
+using ZTP.Monsters;
 
 namespace ZTP.PlayerClassess
 {
-    public class Player
+    public class Player : ICustomObservable
     {
-        public int HitPoints { get; set; }
-        public int ExperiencePoints { get; private set; }
-        public int Gold { get; set; }
-        public Rectangle Instance { get; set; }
-
-        public ImageBrush PlayerSkin;
-
-        public int Direction;
-
         internal Player(int _HitPoints, int _ExperiencePoints, int _Gold)
         {
             HitPoints = _HitPoints;
@@ -37,6 +30,39 @@ namespace ZTP.PlayerClassess
                 Width = 55,
                 Fill = PlayerSkin
             };
-        }            
+            monsters = new List<ICustomObserver>();
+        }
+        public int HitPoints { get; set; }
+        public int ExperiencePoints { get; private set; }
+        public int Gold { get; set; }
+        public Rectangle Instance { get; set; }
+
+        public ImageBrush PlayerSkin;
+
+        public int Direction;
+
+        public List<ICustomObserver> monsters;
+        public void addObserver(ICustomObserver observer)
+        {
+            monsters.Add(observer);
+        }
+
+        public void deleteObserver(ICustomObserver observer)
+        {
+            monsters.Remove(observer);
+        }
+
+        public int countObservers()
+        {
+            return monsters.Count;
+        }
+
+        public void notifyObservers()
+        {
+            foreach (var monster in monsters)
+            {
+                monster.Update();
+            }
+        }
     }
 }

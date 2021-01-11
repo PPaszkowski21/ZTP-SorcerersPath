@@ -35,24 +35,24 @@ namespace ZTP.Spells
                     fireballSkin = ImageManager.fireballUp;
                     break;
                 case 3:
-                    //height = 28;
-                    //width = 47;
-                    //fireballSkin = ImageManager.fireballRight;
-                    height = 100;
-                    width = 160;
-                    fireballSkin = ImageManager.fireballGif;
+                    height = 28;
+                    width = 47;
+                    fireballSkin = ImageManager.fireballRight;
+                    //height = 100;
+                    //width = 160;
+                    //fireballSkin = ImageManager.fireballGif;
                     break;
             }
 
 
-            //ImageBrush spellSkin = new ImageBrush
-            //{
-            //    ImageSource = new BitmapImage(new Uri(fireballSkin))
-            //};
+            ImageBrush spellSkin = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri(fireballSkin))
+            };
 
-            BitmapImage Source = new BitmapImage(new Uri(fireballSkin));
-            Image image = new Image();
-            ImageBehavior.SetAnimatedSource(image, Source);
+            //BitmapImage Source = new BitmapImage(new Uri(fireballSkin));
+            //Image image = new Image();
+            //ImageBehavior.SetAnimatedSource(image, Source);
 
             Instance = new Rectangle
             {
@@ -60,7 +60,8 @@ namespace ZTP.Spells
                 Tag = Direction,
                 Height = height,
                 Width = width,
-                Fill = new VisualBrush(image)
+                //Fill = new VisualBrush(image)
+                Fill = spellSkin
             };
         }
     }

@@ -73,15 +73,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Actions\ICustomObservable.cs" />
+    <Compile Include="Actions\ICustomObserver.cs" />
     <Compile Include="Actions\MonsterDrop.cs" />
     <Compile Include="Actions\Movement.cs" />
     <Compile Include="EnemyAttacks\Arrow.cs" />
     <Compile Include="GameSingleton\Game.cs" />
     <Compile Include="Images\ImageManager.cs" />
+    <Compile Include="Monsters\DreadIntruderBuilder.cs" />
+    <Compile Include="Monsters\IMonsterBuilder.cs" />
     <Compile Include="Monsters\Monster.cs" />
-    <Compile Include="Monsters\MonsterFactory.cs" />
-    <Compile Include="Monsters\SkeletonArcher.cs" />
-    <Compile Include="Monsters\Vampire.cs" />
+    <Compile Include="Monsters\BeholderBuilder.cs" />
     <Compile Include="PlayerClassess\Player.cs" />
     <Compile Include="PlayerClassess\PlayerFactory.cs" />
     <Compile Include="Spells\Blink.cs" />
@@ -184,6 +186,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\blinkShow.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\beholder.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dreadintruder.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

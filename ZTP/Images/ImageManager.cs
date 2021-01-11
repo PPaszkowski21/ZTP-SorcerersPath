@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using WpfAnimatedGif;
 using ZTP.PlayerClassess;
 
 namespace ZTP.Images
@@ -24,6 +25,11 @@ namespace ZTP.Images
         public static string blink = "pack://application:,,,/Images/blink.gif";
         public static string blinkShow = "pack://application:,,,/Images/blinkShow.gif";
 
+        public static string vampire = "pack://application:,,,/Images/vampire_pixel.PNG";
+        public static string beholder = "pack://application:,,,/Images/beholder.gif";
+        public static string dreadintruder = "pack://application:,,,/Images/dreadintruder.gif";
+
+
         public static string dungeonBackground = "pack://application:,,,/Images/dungeonfloor.png";
         public static string background1 = "pack://application:,,,/Images/background1.jpg";
         public static string coin = "pack://application:,,,/Images/coin_1.png";
@@ -41,6 +47,14 @@ namespace ZTP.Images
         public static string hpBar80 = "pack://application:,,,/Images/hpBar80.jpg";
         public static string hpBar90 = "pack://application:,,,/Images/hpBar90.jpg";
         public static string hpBar100 = "pack://application:,,,/Images/hpBar100.jpg";
+
+        public static Image CreateGif(string img)
+        {
+            BitmapImage Source = new BitmapImage(new Uri(img));
+            Image image = new Image();
+            ImageBehavior.SetAnimatedSource(image, Source);
+            return image;
+        }
 
         public static bool ChangeHpBarImage(Player player, Image barHP)
         {
