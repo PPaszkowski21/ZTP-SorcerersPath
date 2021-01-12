@@ -10,5 +10,6 @@ namespace ZTP.Monsters
     public interface IMonsterBuilder
     {
         Monster CreateMonster(List<Monster> monsters);
+        List<string> GetImagesPaths();
     }
 }

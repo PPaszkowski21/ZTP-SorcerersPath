@@ -80,6 +80,7 @@
     <Compile Include="EnemyAttacks\Arrow.cs" />
     <Compile Include="GameSingleton\Game.cs" />
     <Compile Include="Images\ImageManager.cs" />
+    <Compile Include="Monsters\DragonBuilder.cs" />
     <Compile Include="Monsters\DreadIntruderBuilder.cs" />
     <Compile Include="Monsters\IMonsterBuilder.cs" />
     <Compile Include="Monsters\Monster.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Spells\Blink.cs" />
     <Compile Include="Spells\Fireball.cs" />
     <Compile Include="Spells\Projectile.cs" />
-    <Compile Include="Spells\ProjectileFactory.cs" />
     <Compile Include="TaskTimer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -192,6 +192,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\dreadintruder.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\demon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TestDown.png" />
+    <Resource Include="Images\TestLeft.png" />
+    <Resource Include="Images\TestRight.png" />
+    <Resource Include="Images\TestUp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

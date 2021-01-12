@@ -39,10 +39,10 @@ namespace ZTP
 
         int blinkGifTimer = 0;
         bool startGifTimer = false;
-
+        bool isGamePaused = false;
 
         //Player player = PlayerFactory.LoadPlayer();
-        Player player = new Player(100, 0, 0);
+        Player player = new Player(1000, 0, 0);
         List<Monster> monsters = new List<Monster>();
         List<Rectangle> blinkInstances = new List<Rectangle>();
 
@@ -163,6 +163,8 @@ namespace ZTP
                                 if(monster.HitPoints<=0)
                                 {
                                     itemsToRemove.Add(y);
+                                    player.deleteObserver(monster);
+                                    monsters.Remove(monster);
                                     --enemiesKilled;
                                     DropCoinCoordinates.Add(new Tuple<double, double>(Canvas.GetLeft(y),Canvas.GetTop(y)));
                                 }
@@ -177,15 +179,10 @@ namespace ZTP
                 {
                     Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
                     Monster monster = monsters.FirstOrDefault(c => c.Instance == x);
-                    if (monster.HitPoints == 0)
-                    {
-                        itemsToRemove.Add(x);
-                        break;
-                    }
 
                     if (monstersAllowedToMove.Contains(x) && !monstersBannedFromMoving.Contains(x))
                     {
-                        Movement.EnemyMovement(x, player, monster.Speed);
+                        Movement.EnemyMovement(monster, player);
                     }
                     bool isFirst = true;
                     foreach (var y in myCanvas.Children.OfType<Rectangle>())
@@ -201,10 +198,11 @@ namespace ZTP
                             Rect enemy2HitBox = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
                             if (enemy2HitBox.IntersectsWith(enemyHitBox))
                             {
+                                Monster monster2 = monsters.FirstOrDefault(c => c.Instance == y);
                                 monstersBannedFromMoving.Add(y);
                                 if (!enemy2HitBox.IntersectsWith(playerHitBox))
                                 {
-                                    Movement.EnemyAvoidingOtherEnemy(y, enemyHitBox, enemy2HitBox, 1);
+                                    Movement.EnemyAvoidingOtherEnemy(monster2, enemyHitBox, enemy2HitBox);
                                 }
                             }
                         }
@@ -323,6 +321,19 @@ namespace ZTP
                 player.notifyObservers();
             }
 
+            if(e.Key == Key.Escape)
+            {
+                isGamePaused = !isGamePaused;
+                if(isGamePaused)
+                {
+                    gameTimer.Stop();
+                }
+                else
+                {
+                    gameTimer.Start();
+                }
+            }
+
             if(e.Key == Key.Enter && gameOver == true)
             {
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
@@ -348,19 +359,23 @@ namespace ZTP
                 }    
                 for(int i=0;i< enemiesToSpawn; i++)
                 {
+                    IMonsterBuilder builder;
                     Monster monster;
                     if(i == 1)
                     {
-                        BeholderBuilder builder = new BeholderBuilder();
-                        monster = builder.CreateMonster(monsters);
-                        player.addObserver(monster);
+                        builder = new BeholderBuilder();
+
+                    }
+                    else if (i == 2)
+                    {
+                        builder = new DreadIntruderBuilder();
                     }
                     else
                     {
-                        DreadIntruderBuilder builder = new DreadIntruderBuilder();
-                        monster = builder.CreateMonster(monsters);
-                        player.addObserver(monster);
+                        builder = new DragonBuilder();
                     }
+                    monster = builder.CreateMonster(monsters);
+                    player.addObserver(monster);
                     int top = 0, left = 0;
                     switch (i)
                     {

@@ -28,6 +28,14 @@ namespace ZTP.Images
         public static string vampire = "pack://application:,,,/Images/vampire_pixel.PNG";
         public static string beholder = "pack://application:,,,/Images/beholder.gif";
         public static string dreadintruder = "pack://application:,,,/Images/dreadintruder.gif";
+        public static string demon = "pack://application:,,,/Images/demon.gif";
+        public static string dragon = "pack://application:,,,/Images/beholder.gif";
+
+        public static string testDown = "pack://application:,,,/Images/TestDown.png";
+        public static string testUp = "pack://application:,,,/Images/TestUp.png";
+        public static string testRight = "pack://application:,,,/Images/TestRight.png";
+        public static string testLeft = "pack://application:,,,/Images/TestLeft.png";
+
 
 
         public static string dungeonBackground = "pack://application:,,,/Images/dungeonfloor.png";

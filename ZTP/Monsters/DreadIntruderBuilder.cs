@@ -11,9 +11,19 @@ namespace ZTP.Monsters
     {
         public Monster CreateMonster(List<Monster> monsters)
         {
-            Monster dreadIntruder = new Monster(2, ImageManager.CreateGif(ImageManager.dreadintruder),"dreadintruder",90,90,3,1);
+            Monster dreadIntruder = new Monster(2, ImageManager.CreateGif(ImageManager.dreadintruder), "dreadintruder", 90, 90, 3, 1, GetImagesPaths());
             monsters.Add(dreadIntruder);
             return dreadIntruder;
+        }
+
+        public List<string> GetImagesPaths()
+        {
+            List<string> strings = new List<string>();
+            strings.Add(ImageManager.testDown);
+            strings.Add(ImageManager.testLeft);
+            strings.Add(ImageManager.testUp);
+            strings.Add(ImageManager.testRight);
+            return strings;
         }
     }
 }

@@ -33,6 +33,7 @@ namespace ZTP.Actions
             if (goUp == true && Canvas.GetTop(player.Instance) > 0)
             {
                 player.PlayerSkin.ImageSource = new BitmapImage(new Uri(ImageManager.mageBack));
+                //player.Instance.Fill = new VisualBrush(ImageManager.CreateGif(ImageManager.demon));
                 player.Direction = 2;
                 Canvas.SetTop(player.Instance, Canvas.GetTop(player.Instance) - speed);
             }
@@ -86,33 +87,52 @@ namespace ZTP.Actions
             startGifTimer = true;
         }
 
-        public static void EnemyMovement(Rectangle monster, Player player, int enemySpeed)
+        public static void EnemyMovement(Monster monster, Player player)
         {
             double distance;
-            for (int i = 0; i < enemySpeed; i++)
+            for (int i = 0; i < monster.Speed; i++)
             {
-                distance = Canvas.GetLeft(player.Instance) - Canvas.GetLeft(monster);
+                distance = Canvas.GetTop(player.Instance) - Canvas.GetTop(monster.Instance);
                 if (distance < 0)
                 {
-                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) - 1);
+                    Canvas.SetTop(monster.Instance, Canvas.GetTop(monster.Instance) - 1);
+                    monster.Direction = 2;
                 }
                 else if(distance > 0)
                 {
-                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) + 1);
+                    Canvas.SetTop(monster.Instance, Canvas.GetTop(monster.Instance) + 1);
+                    monster.Direction = 0;
                 }
-                distance = Canvas.GetTop(player.Instance) - Canvas.GetTop(monster);
+                distance = Canvas.GetLeft(player.Instance) - Canvas.GetLeft(monster.Instance);
                 if (distance < 0)
                 {
-                    Canvas.SetTop(monster, Canvas.GetTop(monster) - 1);
+                    Canvas.SetLeft(monster.Instance, Canvas.GetLeft(monster.Instance) - 1);
+                    monster.Direction = 1;
                 }
                 else if(distance > 0)
                 {
-                    Canvas.SetTop(monster, Canvas.GetTop(monster) + 1);
+                    Canvas.SetLeft(monster.Instance, Canvas.GetLeft(monster.Instance) + 1);
+                    monster.Direction = 3;
+                }
+                switch (monster.Direction)
+                {
+                    case 0:
+                        monster.Instance.Fill = new VisualBrush(ImageManager.CreateGif(monster.Images[0]));
+                        break;
+                    case 1:
+                        monster.Instance.Fill = new VisualBrush(ImageManager.CreateGif(monster.Images[1]));
+                        break;
+                    case 2:
+                        monster.Instance.Fill = new VisualBrush(ImageManager.CreateGif(monster.Images[2]));
+                        break;
+                    case 3:
+                        monster.Instance.Fill = new VisualBrush(ImageManager.CreateGif(monster.Images[3]));
+                        break;
                 }
             }
         }
 
-        public static void EnemyAvoidingOtherEnemy(Rectangle monster, Rect monsterHitBox, Rect otherMonsterHitBox, int enemySpeed)
+        public static void EnemyAvoidingOtherEnemy(Monster monster, Rect monsterHitBox, Rect otherMonsterHitBox)
         {
             Rect rectHelper = new Rect(otherMonsterHitBox.BottomLeft, otherMonsterHitBox.TopRight);
             otherMonsterHitBox.Intersect(monsterHitBox);
@@ -123,12 +143,12 @@ namespace ZTP.Actions
                 //moving left
                 if(rectHelper.BottomLeft.X < otherMonsterHitBox.BottomLeft.X)
                 {
-                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) - enemySpeed);
+                    Canvas.SetLeft(monster.Instance, Canvas.GetLeft(monster.Instance) - monster.Speed);
                 }
                 //moving right
                 else
                 {
-                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) + enemySpeed);
+                    Canvas.SetLeft(monster.Instance, Canvas.GetLeft(monster.Instance) + monster.Speed);
                 }
             }
             //monster coming from bot
@@ -137,12 +157,12 @@ namespace ZTP.Actions
                 //moving left
                 if (rectHelper.TopLeft.X < otherMonsterHitBox.TopLeft.X)
                 {
-                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) - enemySpeed);
+                    Canvas.SetLeft(monster.Instance, Canvas.GetLeft(monster.Instance) - monster.Speed);
                 }
                 //moving right
                 else
                 {
-                    Canvas.SetLeft(monster, Canvas.GetLeft(monster) + enemySpeed);
+                    Canvas.SetLeft(monster.Instance, Canvas.GetLeft(monster.Instance) + monster.Speed);
                 }
             }
             //monster coming from left
@@ -151,12 +171,12 @@ namespace ZTP.Actions
                 //moving down
                 if (rectHelper.TopLeft.Y > otherMonsterHitBox.TopLeft.Y)
                 {
-                    Canvas.SetTop(monster, Canvas.GetTop(monster) + enemySpeed);
+                    Canvas.SetTop(monster.Instance, Canvas.GetTop(monster.Instance) + monster.Speed);
                 }
                 //moving top
                 else
                 {
-                    Canvas.SetTop(monster, Canvas.GetTop(monster) - enemySpeed);
+                    Canvas.SetTop(monster.Instance, Canvas.GetTop(monster.Instance) - monster.Speed);
                 }
             }
             //monster coming from right
@@ -165,12 +185,12 @@ namespace ZTP.Actions
                 //moving down
                 if (rectHelper.TopRight.Y > otherMonsterHitBox.TopRight.Y)
                 {
-                    Canvas.SetTop(monster, Canvas.GetTop(monster) + enemySpeed);
+                    Canvas.SetTop(monster.Instance, Canvas.GetTop(monster.Instance) + monster.Speed);
                 }
                 //moving top
                 else
                 {
-                    Canvas.SetTop(monster, Canvas.GetTop(monster) - enemySpeed);
+                    Canvas.SetTop(monster.Instance, Canvas.GetTop(monster.Instance) - monster.Speed);
                 }
             }
 
