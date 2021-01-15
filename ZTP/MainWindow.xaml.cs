@@ -25,7 +25,7 @@ namespace ZTP
         public MainWindow()
         {
             InitializeComponent();
-            g = Game.GetInstance(myCanvas);
+            g = Game.GetInstance(myCanvas,mainGrid);
         }
 
         private void KeyIsDown(object sender, KeyEventArgs e)

@@ -16,7 +16,7 @@ namespace ZTP.Monsters
     {
         public Monster CreateMonster(List<Monster> monsters)
         {
-            Monster beholder = new Monster(3, ImageManager.CreateGif(ImageManager.beholder), "beholder", 150, 150, 1, 3, GetImagesPaths());
+            Monster beholder = new Monster(1, ImageManager.CreateGif(ImageManager.beholder), "beholder", 150, 150, 1, 3, GetImagesPaths());
             monsters.Add(beholder);
             return beholder;
         }

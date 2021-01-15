@@ -6,18 +6,24 @@
         xmlns:local="clr-namespace:ZTP"
         mc:Ignorable="d"
         Title="Sorcerer's Path" Height="900" Width="1440">
-    <Canvas Name="myCanvas" Focusable="True" Background="Black" KeyDown="KeyIsDown" KeyUp="KeyIsUp">
+    <Grid Name="mainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300">
 
-        <StackPanel Orientation="Horizontal">
-            <Label Name="enemiesLeft" Foreground="White" FontSize="16" FontWeight="ExtraBold">Enemies Left: 0</Label>
-            <Label Name="playerHP" Foreground="White" FontSize="16" FontWeight="ExtraBold">HP:</Label>
-            <Label Name="playerGold" Foreground="White" FontSize="16" FontWeight="ExtraBold">Gold:</Label>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Canvas.Top="11">
-            <Image Name="avatar" Width="200" Height="200"></Image>
-            <Image Name="barHP"></Image>
-        </StackPanel>
+            </ColumnDefinition>
+            <ColumnDefinition>
 
+            </ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image Name="interface" Source="/Images/interface.png" Stretch="Fill"/>
+        <Image Name ="hpBar" Source="/Images/hpBar100.jpg" Margin="10,-169,25,168" />
 
-    </Canvas>
+        <Canvas Grid.Column="1" Name="myCanvas" Focusable="True" Background="Black" KeyDown="KeyIsDown" KeyUp="KeyIsUp">
+            <StackPanel Name="info"  Orientation="Vertical">
+                <Label Name="enemiesLeft" Foreground="White" FontSize="16" FontWeight="ExtraBold">Enemies Left: 0</Label>
+                <Label Name="playerHP" Foreground="White" FontSize="16" FontWeight="ExtraBold">HP:</Label>
+                <Label Name="playerGold" Foreground="White" FontSize="16" FontWeight="ExtraBold">Gold:</Label>
+            </StackPanel>
+        </Canvas>
+    </Grid>
 </Window>

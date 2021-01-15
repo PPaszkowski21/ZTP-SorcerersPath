@@ -13,9 +13,9 @@ using ZTP.Monsters;
 
 namespace ZTP.Actions
 {
-    public static class MonsterDrop
+    public class MonsterDrop
     {
-        public static void DropCoin(Canvas myCanvas, double x, double y)
+        public static void DropCoin(Canvas myCanvas, double x, double y, List<Rectangle> drop)
         {
             BitmapImage Source = new BitmapImage(new Uri(ImageManager.coinAnimated));
             Image image = new Image();
@@ -30,6 +30,7 @@ namespace ZTP.Actions
             Canvas.SetLeft(coin, x);
             Canvas.SetTop(coin, y);
             myCanvas.Children.Add(coin);
+            drop.Add(coin);
 
         }
     }

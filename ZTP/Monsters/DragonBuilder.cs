@@ -11,7 +11,7 @@ namespace ZTP.Monsters
     {
         public Monster CreateMonster(List<Monster> monsters)
         {
-            Monster dragon = new Monster(10, ImageManager.CreateGif(ImageManager.dragon), "dragon", 50, 50, 3, 4, GetImagesPaths());
+            Monster dragon = new Monster(1, ImageManager.CreateGif(ImageManager.dragon), "dragon", 50, 50, 3, 4, GetImagesPaths());
             monsters.Add(dragon);
             return dragon;
         }

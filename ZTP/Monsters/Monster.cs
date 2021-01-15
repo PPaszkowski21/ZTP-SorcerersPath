@@ -32,6 +32,7 @@ namespace ZTP.Monsters
 
         public void Update()
         {
+
             this.Speed = 0;
         }
     }

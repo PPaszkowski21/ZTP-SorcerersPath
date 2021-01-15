@@ -14,11 +14,12 @@ namespace ZTP.PlayerClassess
 {
     public class Player : ICustomObservable
     {
-        internal Player(int _HitPoints, int _ExperiencePoints, int _Gold)
+        internal Player(int _HitPoints, int _ExperiencePoints, int _Gold, int _Speed)
         {
             HitPoints = _HitPoints;
             ExperiencePoints = _ExperiencePoints;
             Gold = _Gold;
+            Speed = _Speed;
             PlayerSkin = new ImageBrush
             {
                 ImageSource = new BitmapImage(new Uri(ImageManager.mageFront))
@@ -40,6 +41,7 @@ namespace ZTP.PlayerClassess
         public ImageBrush PlayerSkin;
 
         public int Direction;
+        public int Speed { get; set; }
 
         public List<ICustomObserver> monsters;
         public void addObserver(ICustomObserver observer)

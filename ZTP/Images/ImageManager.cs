@@ -64,49 +64,50 @@ namespace ZTP.Images
             return image;
         }
 
-        public static bool ChangeHpBarImage(Player player, Image barHP)
+        public static bool ChangeHpBarImage(Player player, int startHp, Image barHP)
         {
-            if (player.HitPoints == 100)
+            
+            if (player.HitPoints*100/startHp == 100)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar100));
             }
-            else if (player.HitPoints >= 90)
+            else if (player.HitPoints * 100 / startHp >= 90)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar90));
             }
-            else if (player.HitPoints >= 80)
+            else if (player.HitPoints * 100 / startHp >= 80)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar80));
             }
-            else if (player.HitPoints >= 70)
+            else if (player.HitPoints * 100 / startHp >= 70)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar70));
             }
-            else if (player.HitPoints >= 60)
+            else if (player.HitPoints * 100 / startHp >= 60)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar60));
             }
-            else if (player.HitPoints >= 50)
+            else if (player.HitPoints * 100 / startHp >= 50)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar50));
             }
-            else if (player.HitPoints >= 40)
+            else if (player.HitPoints * 100 / startHp >= 40)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar40));
             }
-            else if (player.HitPoints >= 30)
+            else if (player.HitPoints * 100 / startHp >= 30)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar30));
             }
-            else if (player.HitPoints >= 20)
+            else if (player.HitPoints * 100 / startHp >= 20)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar20));
             }
-            else if (player.HitPoints >= 10)
+            else if (player.HitPoints * 100 / startHp >= 10)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar10));
             }
-            else if (player.HitPoints <= 0)
+            else if (player.HitPoints * 100 / startHp <= 0)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar0));
                 return true;

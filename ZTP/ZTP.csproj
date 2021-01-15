@@ -78,6 +78,7 @@
     <Compile Include="Actions\MonsterDrop.cs" />
     <Compile Include="Actions\Movement.cs" />
     <Compile Include="EnemyAttacks\Arrow.cs" />
+    <Compile Include="GameSingleton\Overview.cs" />
     <Compile Include="GameSingleton\Game.cs" />
     <Compile Include="Images\ImageManager.cs" />
     <Compile Include="Monsters\DragonBuilder.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="Monsters\Monster.cs" />
     <Compile Include="Monsters\BeholderBuilder.cs" />
     <Compile Include="PlayerClassess\Player.cs" />
-    <Compile Include="PlayerClassess\PlayerFactory.cs" />
     <Compile Include="Spells\Blink.cs" />
     <Compile Include="Spells\Fireball.cs" />
     <Compile Include="Spells\Projectile.cs" />
@@ -201,6 +201,9 @@
     <Resource Include="Images\TestLeft.png" />
     <Resource Include="Images\TestRight.png" />
     <Resource Include="Images\TestUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\interface.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

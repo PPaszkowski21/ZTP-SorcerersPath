@@ -11,7 +11,7 @@ namespace ZTP.Monsters
     {
         public Monster CreateMonster(List<Monster> monsters)
         {
-            Monster dreadIntruder = new Monster(2, ImageManager.CreateGif(ImageManager.dreadintruder), "dreadintruder", 90, 90, 3, 1, GetImagesPaths());
+            Monster dreadIntruder = new Monster(1, ImageManager.CreateGif(ImageManager.dreadintruder), "dreadintruder", 90, 90, 3, 1, GetImagesPaths());
             monsters.Add(dreadIntruder);
             return dreadIntruder;
         }

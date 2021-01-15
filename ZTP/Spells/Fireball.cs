@@ -11,7 +11,7 @@ namespace ZTP.Spells
 {
     public class Fireball: Projectile
     {
-        internal Fireball(Player player)
+        public Fireball(Player player)
         {
             Direction = player.Direction;
             int height = 0;
