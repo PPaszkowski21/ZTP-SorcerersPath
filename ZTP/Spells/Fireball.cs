@@ -9,11 +9,13 @@ using ZTP.PlayerClassess;
 
 namespace ZTP.Spells
 {
-    public class Fireball: Projectile
+    public class Fireball: IProjectile
     {
-        public Fireball(Player player)
+        public Rectangle Instance { get; set; }
+        public int Direction { get; set; }
+        public Fireball(int direction)
         {
-            Direction = player.Direction;
+            Direction = direction;
             int height = 0;
             int width = 0;
             string fireballSkin = "";
@@ -38,21 +40,13 @@ namespace ZTP.Spells
                     height = 28;
                     width = 47;
                     fireballSkin = ImageManager.fireballRight;
-                    //height = 100;
-                    //width = 160;
-                    //fireballSkin = ImageManager.fireballGif;
                     break;
             }
-
 
             ImageBrush spellSkin = new ImageBrush
             {
                 ImageSource = new BitmapImage(new Uri(fireballSkin))
             };
-
-            //BitmapImage Source = new BitmapImage(new Uri(fireballSkin));
-            //Image image = new Image();
-            //ImageBehavior.SetAnimatedSource(image, Source);
 
             Instance = new Rectangle
             {
@@ -60,7 +54,6 @@ namespace ZTP.Spells
                 Tag = Direction,
                 Height = height,
                 Width = width,
-                //Fill = new VisualBrush(image)
                 Fill = spellSkin
             };
         }

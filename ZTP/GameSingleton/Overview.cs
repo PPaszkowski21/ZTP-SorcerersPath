@@ -14,19 +14,19 @@ namespace ZTP.GameSingleton
 {
     public class Overview
     {
-        public static void EnemyOverview(Player player, List<Rectangle> monstersAllowedToMove, List<Rectangle> monstersBannedFromMoving, List<Monster> monsters, Canvas myCanvas, Rectangle x, Rect playerHitBox)
+        public static void EnemyOverview(Player player, List<Rectangle> monstersAllowedToMove, List<Rectangle> monstersBannedFromMoving, List<IMonster> monsters, Canvas myCanvas, Rectangle x, Rect playerHitBox)
         {
             Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
-            Monster monster = monsters.FirstOrDefault(c => c.Instance == x);
+            IMonster monster = monsters.FirstOrDefault(c => c.Instance == x);
 
             if (monstersAllowedToMove.Contains(x) && !monstersBannedFromMoving.Contains(x))
             {
-                Movement.EnemyMovement(monster, player);
+                monster.Move(player,monster,myCanvas);
             }
             bool isFirst = true;
             foreach (var y in myCanvas.Children.OfType<Rectangle>())
             {
-                if (isFirst == true)
+                if (isFirst)
                 {
                     isFirst = false;
                     continue;
@@ -37,11 +37,11 @@ namespace ZTP.GameSingleton
                     Rect enemy2HitBox = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
                     if (enemy2HitBox.IntersectsWith(enemyHitBox))
                     {
-                        Monster monster2 = monsters.FirstOrDefault(c => c.Instance == y);
+                        IMonster monster2 = monsters.FirstOrDefault(c => c.Instance == y);
                         monstersBannedFromMoving.Add(y);
                         if (!enemy2HitBox.IntersectsWith(playerHitBox))
                         {
-                            Movement.EnemyAvoidingOtherEnemy(monster2, enemyHitBox, enemy2HitBox, myCanvas);
+                            monster2.CollisionAvoiding(monster2,enemyHitBox,enemy2HitBox,myCanvas);
                         }
                     }
                 }
@@ -52,9 +52,9 @@ namespace ZTP.GameSingleton
                 player.HitPoints -= monster.Damage;
             }
         }
-        public static void SpellOverview(Player player, Canvas myCanvas, List<Monster> monsters, ref int enemiesKilled, Rectangle x, List<Rectangle> drop)
+        public static void SpellOverview(Player player, Canvas myCanvas, List<IMonster> monsters, ref int enemiesKilled, Rectangle x, List<Rectangle> drop)
         {
-            Movement.FireballFlying(x, myCanvas);
+            SpellFly.FireballFlying(x, myCanvas);
             Rect spell = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
             foreach (var y in myCanvas.Children.OfType<Rectangle>())
             {

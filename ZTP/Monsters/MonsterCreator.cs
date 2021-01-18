@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZTP.Images;
 
-namespace ZTP.Actions
+namespace ZTP.Monsters
 {
-    public interface ICustomObserver
+    public abstract class MonsterCreator
     {
-        void UpdateMovement(IMovementStrategy strategy);
+        public abstract IMonster CreateMonster();
     }
 }

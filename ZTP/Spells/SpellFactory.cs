@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZTP.Actions
+namespace ZTP.Spells
 {
-    public interface ICustomObserver
+    public interface SpellFactory
     {
-        void UpdateMovement(IMovementStrategy strategy);
+
     }
 }

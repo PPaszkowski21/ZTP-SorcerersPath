@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WpfAnimatedGif;
 using ZTP.PlayerClassess;
@@ -15,7 +16,8 @@ namespace ZTP.Images
         public static string mageRight = "pack://application:,,,/images/white_mage_pixel_right.png";
         public static string mageLeft = "pack://application:,,,/images/white_mage_pixel_Left.png";
         public static string mageFront = "pack://application:,,,/images/white_mage_pixel_front.png";
-        public static string mageBack = "pack://application:,,,/images/white_mage_pixel_back.png";
+        public static string mageBack = "pack://application:,,,/images/BodyPlayerUp.gif";
+        public static string mageDead = "pack://application:,,,/images/DeadBodyPlayer.png";
 
         public static string fireballRight = "pack://application:,,,/Images/fireball_pixel_right.png";
         public static string fireballLeft = "pack://application:,,,/Images/fireball_pixel_left.png";
@@ -35,8 +37,6 @@ namespace ZTP.Images
         public static string testUp = "pack://application:,,,/Images/TestUp.png";
         public static string testRight = "pack://application:,,,/Images/TestRight.png";
         public static string testLeft = "pack://application:,,,/Images/TestLeft.png";
-
-
 
         public static string dungeonBackground = "pack://application:,,,/Images/dungeonfloor.png";
         public static string background1 = "pack://application:,,,/Images/background1.jpg";
@@ -110,6 +110,9 @@ namespace ZTP.Images
             else if (player.HitPoints * 100 / startHp <= 0)
             {
                 barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar0));
+                player.Instance.Width = 100;
+                player.Instance.Height = 100;
+                player.Instance.Fill = new VisualBrush(CreateGif(mageDead));
                 return true;
             }
             return false;

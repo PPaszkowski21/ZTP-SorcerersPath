@@ -1,21 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
-using System.Windows.Threading;
-using ZTP.Actions;
-using ZTP.EnemyAttacks;
 using ZTP.GameSingleton;
-using ZTP.Images;
-using ZTP.Monsters;
-using ZTP.PlayerClassess;
-using ZTP.Spells;
 
 namespace ZTP
 {
@@ -25,9 +11,14 @@ namespace ZTP
         public MainWindow()
         {
             InitializeComponent();
-            g = Game.GetInstance(myCanvas,mainGrid);
+            g = Game.GetInstance(myCanvas, mainGrid);
+            Game g2;
+            g2 = Game.GetInstance(myCanvas, mainGrid);
+            if (g != g2)
+            {
+                throw new Exception();
+            }
         }
-
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
             g.KeyIsDown(sender, e);

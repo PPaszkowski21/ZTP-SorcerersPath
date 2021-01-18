@@ -11,6 +11,6 @@ namespace ZTP.Actions
         void addObserver(ICustomObserver observer);
         void deleteObserver(ICustomObserver o);
         int countObservers();
-        void notifyObservers();
+        void notifyObservers(IMovementStrategy strategy);
     }
 }

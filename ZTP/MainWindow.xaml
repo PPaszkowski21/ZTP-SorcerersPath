@@ -15,6 +15,7 @@
 
             </ColumnDefinition>
         </Grid.ColumnDefinitions>
+        
         <Image Name="interface" Source="/Images/interface.png" Stretch="Fill"/>
         <Image Name ="hpBar" Source="/Images/hpBar100.jpg" Margin="10,-169,25,168" />
 

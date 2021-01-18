@@ -58,7 +58,7 @@ namespace ZTP.GameSingleton
                 }
             }
 
-            enemiesLeft.Content = "Enemies Left: " + enemiesKilled + " / " + maxEnemies;
+            enemiesLeft.Content = "Enemies Left: " + enemiesToKill + " / " + maxEnemies;
 
             gameTimer.Interval = TimeSpan.FromMilliseconds(20);
             gameTimer.Tick += GameLoop;
@@ -82,8 +82,8 @@ namespace ZTP.GameSingleton
 
         bool goLeft, goRight, goUp, goDown;
 
-        int maxEnemies = 20;
-        int enemiesKilled = 20;
+        int maxEnemies = 22;
+        int enemiesToKill = 22;
         int enemiesSpawned = 0;
         int playerSpeed = 5;
         int playerStartHP = 1000;
@@ -92,10 +92,10 @@ namespace ZTP.GameSingleton
         int blinkGifTimer = 0;
         bool startGifTimer = false;
         int enemySpawnTimer = 0;
-        int enemySpawnTimerLimit = 90;
+        int enemySpawnTimerLimit = 20;
 
         Player player = new Player(1000, 0, 0,5);
-        List<Monster> monsters = new List<Monster>();
+        List<IMonster> monsters = new List<IMonster>();
         List<Rectangle> blinkInstances = new List<Rectangle>();
         List<Rectangle> monstersAllowedToMove = new List<Rectangle>();
         List<Rectangle> drop = new List<Rectangle>();
@@ -113,7 +113,7 @@ namespace ZTP.GameSingleton
         private void GameLoop(object sender, EventArgs e)
         {
             //updating labels
-            enemiesLeft.Content = "Enemies Left: " + enemiesKilled + " / " + maxEnemies;
+            enemiesLeft.Content = "Enemies Left: " + enemiesToKill + " / " + maxEnemies;
             playerHP.Content = "HP: " + player.HitPoints + " / " + playerStartHP;
             playerGold.Content = "Gold: " + player.Gold;
 
@@ -122,22 +122,21 @@ namespace ZTP.GameSingleton
             {
                 ShowGameOver("You died!");
             }
-            if (enemiesKilled == 0 && drop.Count == 0)
+            if (enemiesToKill == 0 && drop.Count == 0)
             {
                 ShowGameOver("You win, you saved the world!");
             }
 
             //player movement
-            Movement.MovePlayer(goLeft, goRight, goUp, goDown, player,myCanvas);
-            Rect playerHitBox = new Rect(Canvas.GetLeft(player.Instance), Canvas.GetTop(player.Instance), player.Instance.Width, player.Instance.Height);
+            player.MovePlayer(goLeft, goRight, goUp, goDown, myCanvas);
 
             //timers
             enemySpawnTimer -= 1;
             if (startGifTimer)
             {
                 //destroyInstanceOfBlink
-                blinkGifTimer += 7;
-                if (blinkGifTimer >= 100)
+                blinkGifTimer += 20;
+                if (blinkGifTimer >= 260)
                 {
                     myCanvas.Children.Remove(blinkInstances.FirstOrDefault());
                     blinkInstances.Remove(blinkInstances.FirstOrDefault());
@@ -157,6 +156,7 @@ namespace ZTP.GameSingleton
 
             var monstersBannedFromMoving = new List<Rectangle>();
             List<Rectangle> items = myCanvas.Children.OfType<Rectangle>().ToList();
+            Rect playerHitBox = new Rect(Canvas.GetLeft(player.Instance), Canvas.GetTop(player.Instance), player.Instance.Width, player.Instance.Height);
 
             //itemsOverview
             for (int i = 0; i < items.Count; i++)
@@ -168,7 +168,7 @@ namespace ZTP.GameSingleton
                 //fireball fly
                 else if (items[i].Name == "fireball")
                 {
-                    Overview.SpellOverview(player, myCanvas, monsters, ref enemiesKilled, items[i],drop);
+                    Overview.SpellOverview(player, myCanvas, monsters, ref enemiesToKill, items[i],drop);
                 }
 
                 //enemy movement
@@ -224,17 +224,17 @@ namespace ZTP.GameSingleton
 
             if (e.Key == Key.LeftCtrl && startGifTimer == false)
             {
-                Movement.PlayerDash(player, playerSpeed, 40, myCanvas, ref startGifTimer, blinkInstances);
+                player.PlayerDash(player, playerSpeed, 40, myCanvas, ref startGifTimer, blinkInstances);
             }
 
             if (e.Key == Key.Space)
             {
-                Movement.FireballThrow(myCanvas, player);
+                player.FireballThrow(myCanvas);
             }
 
             if (e.Key == Key.LeftShift)
             {
-                player.notifyObservers();
+                player.notifyObservers(new FearRunningStrategy());
             }
 
             if (e.Key == Key.Escape)
@@ -266,22 +266,23 @@ namespace ZTP.GameSingleton
                 }
                 for (int i = 0; i < enemiesToSpawn; i++)
                 {
-                    IMonsterBuilder builder;
-                    Monster monster;
+                    MonsterCreator monsterCreator;
+                    IMonster monster;
                     if (i == 1)
                     {
-                        builder = new BeholderBuilder();
+                        monsterCreator = new SkeletonCreator();
 
                     }
                     else if (i == 2)
                     {
-                        builder = new DreadIntruderBuilder();
+                        monsterCreator = new SkeletonCreator();
                     }
                     else
                     {
-                        builder = new DragonBuilder();
+                        monsterCreator = new SkeletonCreator();
                     }
-                    monster = builder.CreateMonster(monsters);
+                    monster = monsterCreator.CreateMonster();
+                    monsters.Add(monster);
                     player.addObserver(monster);
                     int top = 0, left = 0;
                     switch (i)

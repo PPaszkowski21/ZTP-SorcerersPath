@@ -73,23 +73,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Actions\FearRunningStrategy.cs" />
     <Compile Include="Actions\ICustomObservable.cs" />
     <Compile Include="Actions\ICustomObserver.cs" />
+    <Compile Include="Actions\IMovementStrategy.cs" />
     <Compile Include="Actions\MonsterDrop.cs" />
-    <Compile Include="Actions\Movement.cs" />
-    <Compile Include="EnemyAttacks\Arrow.cs" />
+    <Compile Include="Actions\SpellFly.cs" />
+    <Compile Include="Actions\RegularMovementStrategy.cs" />
+    <Compile Include="GameSingleton\Helper.cs" />
     <Compile Include="GameSingleton\Overview.cs" />
     <Compile Include="GameSingleton\Game.cs" />
     <Compile Include="Images\ImageManager.cs" />
-    <Compile Include="Monsters\DragonBuilder.cs" />
-    <Compile Include="Monsters\DreadIntruderBuilder.cs" />
-    <Compile Include="Monsters\IMonsterBuilder.cs" />
-    <Compile Include="Monsters\Monster.cs" />
-    <Compile Include="Monsters\BeholderBuilder.cs" />
+    <Compile Include="Monsters\IMonster.cs" />
+    <Compile Include="Monsters\MonsterCreator.cs" />
+    <Compile Include="Monsters\Skeleton.cs" />
+    <Compile Include="Monsters\SkeletonCreator.cs" />
     <Compile Include="PlayerClassess\Player.cs" />
     <Compile Include="Spells\Blink.cs" />
     <Compile Include="Spells\Fireball.cs" />
-    <Compile Include="Spells\Projectile.cs" />
+    <Compile Include="Spells\IProjectile.cs" />
+    <Compile Include="Spells\SpellFactory.cs" />
     <Compile Include="TaskTimer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -204,6 +207,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\interface.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\BodyPlayerUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DeadBodyPlayer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
