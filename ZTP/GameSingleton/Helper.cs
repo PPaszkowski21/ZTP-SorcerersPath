@@ -12,7 +12,7 @@ namespace ZTP.GameSingleton
     {
         public static bool IsOnTheBorder(Rectangle x, Canvas myCanvas)
         {
-            if (IsOnTheLeftBorder(x,myCanvas) || IsOnTheRightBorder(x, myCanvas) || IsOnTheTopBorder(x, myCanvas) || IsOnTheBottomBorder(x, myCanvas))
+            if (IsOnTheLeftBorder(x) || IsOnTheRightBorder(x, myCanvas) || IsOnTheTopBorder(x) || IsOnTheBottomBorder(x, myCanvas))
             {
                 return true;
             }
@@ -21,7 +21,7 @@ namespace ZTP.GameSingleton
                 return false;
             }
         }
-        public static bool IsOnTheLeftBorder(Rectangle x, Canvas myCanvas)
+        public static bool IsOnTheLeftBorder(Rectangle x)
         {
             if (Canvas.GetLeft(x) < 10)
             {
@@ -37,7 +37,7 @@ namespace ZTP.GameSingleton
             }
             else return false;
         }
-        public static bool IsOnTheTopBorder(Rectangle x, Canvas myCanvas)
+        public static bool IsOnTheTopBorder(Rectangle x)
         {
             if (Canvas.GetTop(x) < 10)
             {

@@ -11,6 +11,7 @@ namespace ZTP
         public MainWindow()
         {
             InitializeComponent();
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
             g = Game.GetInstance(myCanvas, mainGrid);
             Game g2;
             g2 = Game.GetInstance(myCanvas, mainGrid);

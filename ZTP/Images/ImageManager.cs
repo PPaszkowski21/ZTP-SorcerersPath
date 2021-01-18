@@ -40,6 +40,7 @@ namespace ZTP.Images
 
         public static string dungeonBackground = "pack://application:,,,/Images/dungeonfloor.png";
         public static string background1 = "pack://application:,,,/Images/background1.jpg";
+        public static string background2 = "pack://application:,,,/Images/background2.jpg";
         public static string coin = "pack://application:,,,/Images/coin_1.png";
         public static string coinAnimated = "pack://application:,,,/Images/coinAnimated.gif";
 

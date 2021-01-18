@@ -20,10 +20,12 @@ namespace ZTP.GameSingleton
         private static Game _instance;
         private static Canvas myCanvas;
         private static Grid myGrid;
+        private static Stage stage;
         public static Game GetInstance(Canvas mainCanvas, Grid mainGrid)
         {
             if (_instance == null)
             {
+                stage = new Stage(2);
                 _instance = new Game(mainCanvas, mainGrid);
                 myCanvas = mainCanvas;
                 myGrid = mainGrid;
@@ -58,43 +60,30 @@ namespace ZTP.GameSingleton
                 }
             }
 
-            enemiesLeft.Content = "Enemies Left: " + enemiesToKill + " / " + maxEnemies;
+            enemiesLeft.Content = "Enemies Left: " + stage.enemiesToKill + " / " + stage.maxEnemies;
 
             gameTimer.Interval = TimeSpan.FromMilliseconds(20);
             gameTimer.Tick += GameLoop;
             gameTimer.Start();
 
             //player init
-            Canvas.SetTop(player.Instance, 344);
-            Canvas.SetLeft(player.Instance, 373);
+            Canvas.SetTop(player.Instance, 450);
+            Canvas.SetLeft(player.Instance,600);
             canvas.Children.Add(player.Instance);
 
             barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar100));
 
-            ImageBrush background = new ImageBrush()
-            {
-                ImageSource = new BitmapImage(new Uri(ImageManager.background1))
-            };
-
-            canvas.Background = background;
+            canvas.Background = stage.Background;
             canvas.Focus();
         }
 
         bool goLeft, goRight, goUp, goDown;
 
-        int maxEnemies = 22;
-        int enemiesToKill = 22;
-        int enemiesSpawned = 0;
-        int playerSpeed = 5;
-        int playerStartHP = 1000;
-
         DispatcherTimer gameTimer = new DispatcherTimer(DispatcherPriority.Normal);
         int blinkGifTimer = 0;
         bool startGifTimer = false;
-        int enemySpawnTimer = 0;
-        int enemySpawnTimerLimit = 20;
 
-        Player player = new Player(1000, 0, 0,5);
+        Player player = new Player(1000,stage.playerSpeed);
         List<IMonster> monsters = new List<IMonster>();
         List<Rectangle> blinkInstances = new List<Rectangle>();
         List<Rectangle> monstersAllowedToMove = new List<Rectangle>();
@@ -113,16 +102,16 @@ namespace ZTP.GameSingleton
         private void GameLoop(object sender, EventArgs e)
         {
             //updating labels
-            enemiesLeft.Content = "Enemies Left: " + enemiesToKill + " / " + maxEnemies;
-            playerHP.Content = "HP: " + player.HitPoints + " / " + playerStartHP;
+            enemiesLeft.Content = "Enemies Left: " + stage.enemiesToKill + " / " + stage.maxEnemies;
+            playerHP.Content = "HP: " + player.HitPoints + " / " + stage.playerStartHP;
             playerGold.Content = "Gold: " + player.Gold;
 
             //win,lose
-            if (ImageManager.ChangeHpBarImage(player, playerStartHP,barHP))
+            if (ImageManager.ChangeHpBarImage(player, stage.playerStartHP,barHP))
             {
                 ShowGameOver("You died!");
             }
-            if (enemiesToKill == 0 && drop.Count == 0)
+            if (stage.enemiesToKill == 0 && drop.Count == 0)
             {
                 ShowGameOver("You win, you saved the world!");
             }
@@ -131,7 +120,7 @@ namespace ZTP.GameSingleton
             player.MovePlayer(goLeft, goRight, goUp, goDown, myCanvas);
 
             //timers
-            enemySpawnTimer -= 1;
+            stage.enemySpawnTimer -= 1;
             if (startGifTimer)
             {
                 //destroyInstanceOfBlink
@@ -146,12 +135,11 @@ namespace ZTP.GameSingleton
                     blinkGifTimer = 0;
                 }
             }
-            if (enemySpawnTimer < 0)
+            if (stage.enemySpawnTimer < 0)
             {
                 //create enemies
-                int enemiesToSpawn = 4;
-                MakeEnemies(enemiesToSpawn, monstersAllowedToMove);
-                enemySpawnTimer = enemySpawnTimerLimit;
+                stage.MakeEnemies(monstersAllowedToMove, monsters, player, myCanvas);
+                stage.enemySpawnTimer = stage.enemySpawnTimerLimit;
             }
 
             var monstersBannedFromMoving = new List<Rectangle>();
@@ -168,7 +156,7 @@ namespace ZTP.GameSingleton
                 //fireball fly
                 else if (items[i].Name == "fireball")
                 {
-                    Overview.SpellOverview(player, myCanvas, monsters, ref enemiesToKill, items[i],drop);
+                    Overview.SpellOverview(player, myCanvas, monsters, ref stage.enemiesToKill, items[i],drop);
                 }
 
                 //enemy movement
@@ -224,7 +212,7 @@ namespace ZTP.GameSingleton
 
             if (e.Key == Key.LeftCtrl && startGifTimer == false)
             {
-                player.PlayerDash(player, playerSpeed, 40, myCanvas, ref startGifTimer, blinkInstances);
+                player.PlayerDash(player, 40, myCanvas, ref startGifTimer, blinkInstances);
             }
 
             if (e.Key == Key.Space)
@@ -254,63 +242,6 @@ namespace ZTP.GameSingleton
             {
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
                 Application.Current.Shutdown();
-            }
-        }
-        private void MakeEnemies(int enemiesToSpawn, List<Rectangle> monstersAllowedToMove)
-        {
-            if (enemiesSpawned < maxEnemies)
-            {
-                if (enemiesToSpawn > (maxEnemies - enemiesSpawned))
-                {
-                    enemiesToSpawn = maxEnemies - enemiesSpawned;
-                }
-                for (int i = 0; i < enemiesToSpawn; i++)
-                {
-                    MonsterCreator monsterCreator;
-                    IMonster monster;
-                    if (i == 1)
-                    {
-                        monsterCreator = new SkeletonCreator();
-
-                    }
-                    else if (i == 2)
-                    {
-                        monsterCreator = new SkeletonCreator();
-                    }
-                    else
-                    {
-                        monsterCreator = new SkeletonCreator();
-                    }
-                    monster = monsterCreator.CreateMonster();
-                    monsters.Add(monster);
-                    player.addObserver(monster);
-                    int top = 0, left = 0;
-                    switch (i)
-                    {
-                        case 0:
-                            top = 890;
-                            left = 710;
-                            break;
-                        case 1:
-                            top = 10;
-                            left = 710;
-                            break;
-                        case 2:
-                            top = 440;
-                            left = 1430;
-                            break;
-                        case 3:
-                            top = 440;
-                            left = 10;
-                            break;
-                    }
-                    Canvas.SetTop(monster.Instance, top);
-                    Canvas.SetLeft(monster.Instance, left);
-                    myCanvas.Children.Add(monster.Instance);
-                    monsters.Add(monster);
-                    monstersAllowedToMove.Add(monster.Instance);
-                    enemiesSpawned++;
-                }
             }
         }
         private void ShowGameOver(string message)

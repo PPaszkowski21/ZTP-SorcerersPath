@@ -21,7 +21,7 @@ namespace ZTP.Actions
             for (int i = 0; i < monster.Speed; i++)
             {
                 distance = Canvas.GetTop(player.Instance) - Canvas.GetTop(monster.Instance);
-                if (distance < 0 && !Helper.IsOnTheTopBorder(monster.Instance,myCanvas))
+                if (distance < 0 && !Helper.IsOnTheTopBorder(monster.Instance))
                 {
                     Canvas.SetTop(monster.Instance, Canvas.GetTop(monster.Instance) - 1);
                     monster.Direction = 2;
@@ -32,7 +32,7 @@ namespace ZTP.Actions
                     monster.Direction = 0;
                 }
                 distance = Canvas.GetLeft(player.Instance) - Canvas.GetLeft(monster.Instance);
-                if (distance < 0 && !Helper.IsOnTheLeftBorder(monster.Instance, myCanvas))
+                if (distance < 0 && !Helper.IsOnTheLeftBorder(monster.Instance))
                 {
                     Canvas.SetLeft(monster.Instance, Canvas.GetLeft(monster.Instance) - 1);
                     monster.Direction = 1;

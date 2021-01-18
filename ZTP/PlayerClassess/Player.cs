@@ -17,17 +17,15 @@ namespace ZTP.PlayerClassess
 {
     public class Player : ICustomObservable
     {
-        public Player(int _HitPoints, int _ExperiencePoints, int _Gold, int _Speed)
+        public Player(int _HitPoints, int _Speed)
         {
             HitPoints = _HitPoints;
-            ExperiencePoints = _ExperiencePoints;
-            Gold = _Gold;
             Speed = _Speed;
             Instance = new Rectangle
             {
                 Tag = "player",
-                Height = 65,
-                Width = 55,
+                Height = 70,
+                Width = 70,
                 Fill = new VisualBrush(ImageManager.CreateGif(ImageManager.mageBack))
             };
             Direction = 0;
@@ -50,7 +48,7 @@ namespace ZTP.PlayerClassess
 
         public void MovePlayer(bool goLeft, bool goRight, bool goUp, bool goDown, Canvas canvas)
         {
-            if (goLeft == true && !Helper.IsOnTheLeftBorder(Instance, canvas))
+            if (goLeft == true && !Helper.IsOnTheLeftBorder(Instance))
             {
                 Direction = 1;
                 Canvas.SetLeft(Instance, Canvas.GetLeft(Instance) - Speed);
@@ -61,7 +59,7 @@ namespace ZTP.PlayerClassess
                 Direction = 3;
                 Canvas.SetLeft(Instance, Canvas.GetLeft(Instance) + Speed);
             }
-            if (goUp == true && !Helper.IsOnTheTopBorder(Instance, canvas))
+            if (goUp == true && !Helper.IsOnTheTopBorder(Instance))
             {
                 Direction = 2;
                 Canvas.SetTop(Instance, Canvas.GetTop(Instance) - Speed);
@@ -110,7 +108,7 @@ namespace ZTP.PlayerClassess
                 Canvas.SetTop(Instance, Canvas.GetTop(Instance) + speed);
             }
         }
-        public void PlayerDash(Player player, int speed, int dashRange, Canvas canvas, ref bool startGifTimer, List<Rectangle> blinkInstances)
+        public void PlayerDash(Player player, int dashRange, Canvas canvas, ref bool startGifTimer, List<Rectangle> blinkInstances)
         {
             Blink blink = new Blink(ImageManager.blink);
             Canvas.SetLeft(blink.Instance, Canvas.GetLeft(player.Instance) - player.Instance.Width / 2);
@@ -119,7 +117,7 @@ namespace ZTP.PlayerClassess
 
             for (int i = 0; i < dashRange; i++)
             {
-                MovePlayerForDash(speed, canvas);
+                MovePlayerForDash(player.Speed, canvas);
             }
             Blink blink2 = new Blink(ImageManager.blinkShow);
             Canvas.SetLeft(blink2.Instance, Canvas.GetLeft(player.Instance) - player.Instance.Width / 2);

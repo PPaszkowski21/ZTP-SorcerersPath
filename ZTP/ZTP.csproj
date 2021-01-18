@@ -81,8 +81,11 @@
     <Compile Include="Actions\SpellFly.cs" />
     <Compile Include="Actions\RegularMovementStrategy.cs" />
     <Compile Include="GameSingleton\Helper.cs" />
+    <Compile Include="GameSingleton\Monster.cs" />
     <Compile Include="GameSingleton\Overview.cs" />
     <Compile Include="GameSingleton\Game.cs" />
+    <Compile Include="GameSingleton\Spawner.cs" />
+    <Compile Include="GameSingleton\Stage.cs" />
     <Compile Include="Images\ImageManager.cs" />
     <Compile Include="Monsters\IMonster.cs" />
     <Compile Include="Monsters\MonsterCreator.cs" />
@@ -213,6 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\DeadBodyPlayer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\background2.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

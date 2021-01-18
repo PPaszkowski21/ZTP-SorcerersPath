@@ -26,8 +26,8 @@ namespace ZTP.Monsters
             {
                 Name = "enemy",
                 Tag = "skeleton",
-                Height = 30,
-                Width = 30,
+                Height = 70,
+                Width = 70,
             };
             MovementStrategy = new RegularMovementStrategy();
         }

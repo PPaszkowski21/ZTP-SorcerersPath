@@ -28,14 +28,14 @@ namespace ZTP.Actions
                     monster.Direction = 0;
                 }
                 //moving top
-                else if (distance > 0 && !Helper.IsOnTheTopBorder(monster.Instance,myCanvas))
+                else if (distance > 0 && !Helper.IsOnTheTopBorder(monster.Instance))
                 {
                     Canvas.SetTop(monster.Instance, Canvas.GetTop(monster.Instance) - 1);
                     monster.Direction = 2;
                 }
                 //moving left
                 distance = Canvas.GetLeft(player.Instance) - Canvas.GetLeft(monster.Instance);
-                if (distance > 0 && !Helper.IsOnTheLeftBorder(monster.Instance, myCanvas))
+                if (distance > 0 && !Helper.IsOnTheLeftBorder(monster.Instance))
                 {
                     Canvas.SetLeft(monster.Instance, Canvas.GetLeft(monster.Instance) - 1);
                     monster.Direction = 1;
@@ -79,7 +79,7 @@ namespace ZTP.Actions
                     break;
                 case 1:
                     //moving left
-                    if (!Helper.IsOnTheLeftBorder(monster.Instance, myCanvas))
+                    if (!Helper.IsOnTheLeftBorder(monster.Instance))
                     {
                         Canvas.SetLeft(monster.Instance, Canvas.GetLeft(monster.Instance) - 1);
                         monster.Direction = 1;
@@ -87,7 +87,7 @@ namespace ZTP.Actions
                     break;
                 case 2:
                     //moving top
-                    if (!Helper.IsOnTheTopBorder(monster.Instance, myCanvas))
+                    if (!Helper.IsOnTheTopBorder(monster.Instance))
                     {
                         Canvas.SetTop(monster.Instance, Canvas.GetTop(monster.Instance) - 1);
                         monster.Direction = 2;
