@@ -21,6 +21,7 @@ namespace ZTP.Monsters
         int Direction { get; set; }
         int PreviousDirection { get; set; }
         IMovementStrategy MovementStrategy { get; set; }
+        int GifTimer { get; set; }
         void Move(Player player, IMonster thisMonster, Canvas myCanvas);
         void CollisionAvoiding(IMonster monster, Rect monsterHitBox, Rect otherMonsterHitBox, Canvas myCanvas);
     }

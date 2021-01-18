@@ -13,38 +13,46 @@ namespace ZTP.Images
 {
     public static class ImageManager
     {
-        public static string mageRight = "pack://application:,,,/images/white_mage_pixel_right.png";
-        public static string mageLeft = "pack://application:,,,/images/white_mage_pixel_Left.png";
-        public static string mageFront = "pack://application:,,,/images/white_mage_pixel_front.png";
-        public static string mageBack = "pack://application:,,,/images/BodyPlayerUp.gif";
-        public static string mageDead = "pack://application:,,,/images/DeadBodyPlayer.png";
+        public static string mageRight = "pack://application:,,,/images/playerbody/BodyPlayerRight.gif";
+        public static string mageLeft = "pack://application:,,,/images/playerbody/BodyPlayerLeft.gif";
+        public static string mageFront = "pack://application:,,,/images/playerbody/BodyPlayerDown.gif";
+        public static string mageBack = "pack://application:,,,/images/playerbody/BodyPlayerUp.gif";
+        public static string mageDead = "pack://application:,,,/images/playerbody/DeadBodyPlayer.png";
 
         public static string fireballRight = "pack://application:,,,/Images/fireball_pixel_right.png";
         public static string fireballLeft = "pack://application:,,,/Images/fireball_pixel_left.png";
         public static string fireballUp = "pack://application:,,,/Images/fireball_pixel_up.png";
         public static string fireballDown = "pack://application:,,,/Images/fireball_pixel_down.png";
         public static string fireballGif = "pack://application:,,,/Images/fireball2.gif";
-        public static string blink = "pack://application:,,,/Images/blink.gif";
-        public static string blinkShow = "pack://application:,,,/Images/blinkShow.gif";
+        public static string blink = "pack://application:,,,/Images/Blink.gif";
+        public static string blinkShow = "pack://application:,,,/Images/BlinkReverse.gif";
 
-        public static string vampire = "pack://application:,,,/Images/vampire_pixel.PNG";
-        public static string beholder = "pack://application:,,,/Images/beholder.gif";
-        public static string dreadintruder = "pack://application:,,,/Images/dreadintruder.gif";
-        public static string demon = "pack://application:,,,/Images/demon.gif";
-        public static string dragon = "pack://application:,,,/Images/beholder.gif";
+        public static string skeletonRight = "pack://application:,,,/images/skeleton/SkeletonRight.gif";
+        public static string skeletonLeft = "pack://application:,,,/images/skeleton/SkeletonLeft.gif";
+        public static string skeletonFront = "pack://application:,,,/images/skeleton/SkeletonUp.gif";
+        public static string skeletonBack = "pack://application:,,,/images/skeleton/SkeletonDown.gif";
 
-        public static string testDown = "pack://application:,,,/Images/TestDown.png";
-        public static string testUp = "pack://application:,,,/Images/TestUp.png";
-        public static string testRight = "pack://application:,,,/Images/TestRight.png";
-        public static string testLeft = "pack://application:,,,/Images/TestLeft.png";
+        public static string PhantomRight = "pack://application:,,,/images/Phantom/PhantomRight.gif";
+        public static string PhantomLeft = "pack://application:,,,/images/Phantom/PhantomLeft.gif";
+        public static string PhantomFront = "pack://application:,,,/images/Phantom/PhantomUp.gif";
+        public static string PhantomBack = "pack://application:,,,/images/Phantom/PhantomDown.gif";
 
-        public static string dungeonBackground = "pack://application:,,,/Images/dungeonfloor.png";
-        public static string background1 = "pack://application:,,,/Images/background1.jpg";
-        public static string background2 = "pack://application:,,,/Images/background2.jpg";
-        public static string coin = "pack://application:,,,/Images/coin_1.png";
+        public static string DemonRight = "pack://application:,,,/images/Demon/DemonRight.gif";
+        public static string DemonLeft = "pack://application:,,,/images/Demon/DemonLeft.gif";
+        public static string DemonFront = "pack://application:,,,/images/Demon/DemonUp.gif";
+        public static string DemonBack = "pack://application:,,,/images/Demon/DemonDown.gif";
+
+        public static string LichRight = "pack://application:,,,/images/Lich/LichRight.gif";
+        public static string LichLeft = "pack://application:,,,/images/Lich/LichLeft.gif";
+        public static string LichFront = "pack://application:,,,/images/Lich/LichUp.gif";
+        public static string LichBack = "pack://application:,,,/images/Lich/LichDown.gif";
+
+        public static string background1 = "pack://application:,,,/Images/Backgrounds/background1.jpg";
+        public static string background2 = "pack://application:,,,/Images/Backgrounds/background2.jpg";
+        public static string background3 = "pack://application:,,,/Images/Backgrounds/background3.jpg";
+        public static string background4 = "pack://application:,,,/Images/Backgrounds/background4.gif";
         public static string coinAnimated = "pack://application:,,,/Images/coinAnimated.gif";
 
-        public static string avatar = "pack://application:,,,/Images/PlayerFrame.png";
         public static string hpBar0 = "pack://application:,,,/Images/hpBar0.jpg";
         public static string hpBar10 = "pack://application:,,,/Images/hpBar10Red.jpg";
         public static string hpBar20 = "pack://application:,,,/Images/hpBar20Red.jpg";

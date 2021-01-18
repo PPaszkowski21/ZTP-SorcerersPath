@@ -25,7 +25,7 @@ namespace ZTP.GameSingleton
         {
             if (_instance == null)
             {
-                stage = new Stage(2);
+                stage = new Stage(4);
                 _instance = new Game(mainCanvas, mainGrid);
                 myCanvas = mainCanvas;
                 myGrid = mainGrid;
@@ -83,7 +83,7 @@ namespace ZTP.GameSingleton
         int blinkGifTimer = 0;
         bool startGifTimer = false;
 
-        Player player = new Player(1000,stage.playerSpeed);
+        Player player = new Player(stage.playerStartHP,stage.playerSpeed);
         List<IMonster> monsters = new List<IMonster>();
         List<Rectangle> blinkInstances = new List<Rectangle>();
         List<Rectangle> monstersAllowedToMove = new List<Rectangle>();
@@ -124,7 +124,7 @@ namespace ZTP.GameSingleton
             if (startGifTimer)
             {
                 //destroyInstanceOfBlink
-                blinkGifTimer += 20;
+                blinkGifTimer += 25;
                 if (blinkGifTimer >= 260)
                 {
                     myCanvas.Children.Remove(blinkInstances.FirstOrDefault());

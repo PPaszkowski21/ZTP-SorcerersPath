@@ -11,19 +11,14 @@ namespace ZTP.Spells
     public class Blink
     {
         public Rectangle Instance { get; set; }
-
         public Blink(string blinkImage)
         {
-            BitmapImage Source = new BitmapImage(new Uri(blinkImage));
-            Image image = new Image();
-            ImageBehavior.SetAnimatedSource(image, Source);
-
             Instance = new Rectangle
             {
                 Name = "blink",
                 Height = 140,
                 Width = 140,
-                Fill = new VisualBrush(image)
+                Fill = new VisualBrush(ImageManager.CreateGif(blinkImage))
             };
         }
     }

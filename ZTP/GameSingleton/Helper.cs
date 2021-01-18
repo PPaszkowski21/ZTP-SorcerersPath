@@ -53,5 +53,7 @@ namespace ZTP.GameSingleton
             }
             else return false;
         }
+        public static int MonsterChangeGifTimer { get; set; }
+
     }
 }

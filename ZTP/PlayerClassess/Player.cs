@@ -40,7 +40,6 @@ namespace ZTP.PlayerClassess
         public int ExperiencePoints { get; private set; }
         public int Gold { get; set; }
         public Rectangle Instance { get; set; }
-
         public int Direction { get; set; }
         public int PreviousDirection { get; set; }
         public int Speed { get; set; }

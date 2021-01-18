@@ -1,33 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using ZTP.Actions;
-using ZTP.GameSingleton;
 using ZTP.Images;
 using ZTP.PlayerClassess;
 
 namespace ZTP.Monsters
 {
-    public class Skeleton : IMonster, ICustomObserver
+    public class Lich : IMonster, ICustomObserver
     {
-        public Skeleton()
+        public Lich()
         {
-            this.Speed = 2;
-            this.Damage = 1;
-            this.HitPoints = 1;
+            this.Speed = 1;
+            this.Damage = 7;
+            this.HitPoints = 4;
             this.Images = new List<string>();
-            Images.Add(ImageManager.skeletonBack);
-            Images.Add(ImageManager.skeletonLeft);
-            Images.Add(ImageManager.skeletonFront);
-            Images.Add(ImageManager.skeletonRight);
+            Images.Add(ImageManager.LichBack);
+            Images.Add(ImageManager.LichLeft);
+            Images.Add(ImageManager.LichFront);
+            Images.Add(ImageManager.LichRight);
             this.Instance = new Rectangle
             {
                 Name = "enemy",
-                Tag = "skeleton",
-                Height = 70,
-                Width = 70,
+                Tag = "lich",
+                Height = 150,
+                Width = 150,
             };
             Direction = 0;
             MovementStrategy = new RegularMovementStrategy();
@@ -37,11 +39,10 @@ namespace ZTP.Monsters
         public int Speed { get; set; }
         public int Damage { get; set; }
         public List<string> Images { get; set; }
+        public int GifTimer { get; set; }
         public int Direction { get; set; }
         public int PreviousDirection { get; set; }
         public IMovementStrategy MovementStrategy { get; set; }
-        public int GifTimer { get; set; }
-
         public void setMovementStrategy(IMovementStrategy movementStrategy)
         {
             this.MovementStrategy = movementStrategy;
@@ -52,7 +53,7 @@ namespace ZTP.Monsters
         }
         public void CollisionAvoiding(IMonster monster, Rect monsterHitBox, Rect otherMonsterHitBox, Canvas myCanvas)
         {
-            MovementStrategy.CollisionAvoiding(monster,monsterHitBox,otherMonsterHitBox,myCanvas);
+            MovementStrategy.CollisionAvoiding(monster, monsterHitBox, otherMonsterHitBox, myCanvas);
         }
         public void UpdateMovement(IMovementStrategy movementStrategy)
         {

@@ -23,7 +23,7 @@ namespace ZTP.GameSingleton
         public int playerStartHP;
         private int SpawnerCounter = 0;
 
-        List<Spawner> Spawners = new List<Spawner>();
+        private List<Spawner> Spawners = new List<Spawner>();
         public VisualBrush Background { get; set; }
 
         public Stage(int nr)
@@ -48,7 +48,30 @@ namespace ZTP.GameSingleton
                     playerStartHP = 2000;
                     Spawners.Add(new Spawner(200, 200, new SkeletonCreator()));
                     Spawners.Add(new Spawner(200,1300, new SkeletonCreator()));
-                    Spawners.Add(new Spawner(800,800, new SkeletonCreator()));
+                    Spawners.Add(new Spawner(800,800, new PhantomCreator()));
+                    break;
+                case 3:
+                    Background = new VisualBrush(ImageManager.CreateGif(ImageManager.background3));
+                    enemySpawnTimerLimit = 40;
+                    maxEnemies = 40;
+                    enemiesToKill = maxEnemies;
+                    playerSpeed = 10;
+                    playerStartHP = 20000;
+                    Spawners.Add(new Spawner(450, 1500, new PhantomCreator()));
+                    Spawners.Add(new Spawner(850, 750, new SkeletonCreator()));
+                    Spawners.Add(new Spawner(4, 750, new LichCreator()));
+                    Spawners.Add(new Spawner(450, 4, new PhantomCreator()));
+                    break;
+                case 4:
+                    Background = new VisualBrush(ImageManager.CreateGif(ImageManager.background4));
+                    enemySpawnTimerLimit = 40;
+                    maxEnemies = 40;
+                    enemiesToKill = maxEnemies;
+                    playerSpeed = 10;
+                    playerStartHP = 2000;
+                    Spawners.Add(new Spawner(650, 4, new LichCreator()));
+                    Spawners.Add(new Spawner(650, 1500, new LichCreator()));
+                    Spawners.Add(new Spawner(100, 700, new DemonCreator()));
                     break;
             }
         }

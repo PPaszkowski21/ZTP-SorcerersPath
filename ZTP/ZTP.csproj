@@ -81,14 +81,19 @@
     <Compile Include="Actions\SpellFly.cs" />
     <Compile Include="Actions\RegularMovementStrategy.cs" />
     <Compile Include="GameSingleton\Helper.cs" />
-    <Compile Include="GameSingleton\Monster.cs" />
     <Compile Include="GameSingleton\Overview.cs" />
     <Compile Include="GameSingleton\Game.cs" />
     <Compile Include="GameSingleton\Spawner.cs" />
     <Compile Include="GameSingleton\Stage.cs" />
     <Compile Include="Images\ImageManager.cs" />
+    <Compile Include="Monsters\Demon.cs" />
+    <Compile Include="Monsters\DemonCreator.cs" />
     <Compile Include="Monsters\IMonster.cs" />
+    <Compile Include="Monsters\Lich.cs" />
+    <Compile Include="Monsters\LichCreator.cs" />
     <Compile Include="Monsters\MonsterCreator.cs" />
+    <Compile Include="Monsters\Phantom.cs" />
+    <Compile Include="Monsters\PhantomCreator.cs" />
     <Compile Include="Monsters\Skeleton.cs" />
     <Compile Include="Monsters\SkeletonCreator.cs" />
     <Compile Include="PlayerClassess\Player.cs" />
@@ -139,30 +144,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\fireball_pixel_up.png" />
-    <Resource Include="Images\monster_arrow_pixel.png" />
-    <Resource Include="Images\skeletal_archer2_pixel.png" />
-    <Resource Include="Images\skeletal_archer3_pixel.png" />
-    <Resource Include="Images\skeletal_archer_pixel.png" />
-    <Resource Include="Images\vampire_pixel.png" />
-    <Resource Include="Images\white_mage_pixel_back.png" />
-    <Resource Include="Images\white_mage_pixel_front.png" />
-    <Resource Include="Images\white_mage_pixel_left.png" />
-    <Resource Include="Images\white_mage_pixel_right.png" />
-    <Resource Include="Images\wizard_pixel.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\fireball_pixel_down.png" />
     <Resource Include="Images\fireball_pixel_left.png" />
     <Resource Include="Images\fireball_pixel_right.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\dungeonfloor.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\coin_1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\fireball.gif" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\coinAnimated.gif" />
@@ -171,14 +157,12 @@
     <Resource Include="Images\fireball2.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\background1.jpg" />
     <Resource Include="Images\hpBar0.jpg" />
     <Resource Include="Images\hpBar100.jpg" />
     <Resource Include="Images\hpBar60.jpg" />
     <Resource Include="Images\hpBar70.jpg" />
     <Resource Include="Images\hpBar80.jpg" />
     <Resource Include="Images\hpBar90.jpg" />
-    <Resource Include="Images\PlayerFrame.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\hpBar10Red.jpg" />
@@ -188,37 +172,52 @@
     <Resource Include="Images\hpBar50Orange.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\blink.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\blinkShow.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\beholder.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\dreadintruder.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\demon.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\TestDown.png" />
-    <Resource Include="Images\TestLeft.png" />
-    <Resource Include="Images\TestRight.png" />
-    <Resource Include="Images\TestUp.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\interface.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BodyPlayerUp.gif" />
+    <Resource Include="Images\PlayerBody\DeadBodyPlayer.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\DeadBodyPlayer.png" />
+    <Resource Include="Images\PlayerBody\BodyPlayerDown.gif" />
+    <Resource Include="Images\PlayerBody\BodyPlayerLeft.gif" />
+    <Resource Include="Images\PlayerBody\BodyPlayerRight.gif" />
+    <Resource Include="Images\PlayerBody\BodyPlayerUp.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\background2.jpg" />
+    <Resource Include="Images\Skeleton\SkeletonDown.gif" />
+    <Resource Include="Images\Skeleton\SkeletonLeft.gif" />
+    <Resource Include="Images\Skeleton\SkeletonRight.gif" />
+    <Resource Include="Images\Skeleton\SkeletonUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Phantom\PhantomDown.gif" />
+    <Resource Include="Images\Phantom\PhantomLeft.gif" />
+    <Resource Include="Images\Phantom\PhantomRight.gif" />
+    <Resource Include="Images\Phantom\PhantomUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Demon\DemonDown.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Demon\DemonLeft.gif" />
+    <Resource Include="Images\Demon\DemonRight.gif" />
+    <Resource Include="Images\Demon\DemonUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Backgrounds\Background1.jpg" />
+    <Resource Include="Images\Backgrounds\Background2.jpg" />
+    <Resource Include="Images\Backgrounds\Background4.gif" />
+    <Resource Include="Images\Backgrounds\Background3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Lich\LichDown.gif" />
+    <Resource Include="Images\Lich\LichLeft.gif" />
+    <Resource Include="Images\Lich\LichRight.gif" />
+    <Resource Include="Images\Lich\LichUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Blink.gif" />
+    <Resource Include="Images\BlinkReverse.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
