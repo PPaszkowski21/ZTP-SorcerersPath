@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -37,29 +33,29 @@ namespace ZTP.GameSingleton
                     enemiesToKill = maxEnemies;
                     playerSpeed = 5;
                     playerStartHP = 1000;
-                    Spawners.Add(new Spawner(200, 200, new SkeletonCreator()));
+                    Spawners.Add(new Spawner(210, 210, new SkeletonCreator()));
                     break;
                 case 2:
                     Background = new VisualBrush(ImageManager.CreateGif(ImageManager.background2));
-                    enemySpawnTimerLimit = 20;
+                    enemySpawnTimerLimit = 1;
                     maxEnemies = 40;
                     enemiesToKill = maxEnemies;
                     playerSpeed = 10;
                     playerStartHP = 2000;
-                    Spawners.Add(new Spawner(200, 200, new SkeletonCreator()));
+                    Spawners.Add(new Spawner(210, 210, new SkeletonCreator()));
                     Spawners.Add(new Spawner(200,1300, new SkeletonCreator()));
-                    Spawners.Add(new Spawner(800,800, new PhantomCreator()));
+                    Spawners.Add(new Spawner(820,800, new PhantomCreator()));
                     break;
                 case 3:
                     Background = new VisualBrush(ImageManager.CreateGif(ImageManager.background3));
-                    enemySpawnTimerLimit = 40;
+                    enemySpawnTimerLimit = 20;
                     maxEnemies = 40;
                     enemiesToKill = maxEnemies;
                     playerSpeed = 10;
                     playerStartHP = 20000;
                     Spawners.Add(new Spawner(450, 1500, new PhantomCreator()));
-                    Spawners.Add(new Spawner(850, 750, new SkeletonCreator()));
-                    Spawners.Add(new Spawner(4, 750, new LichCreator()));
+                    Spawners.Add(new Spawner(875, 750, new SkeletonCreator()));
+                    Spawners.Add(new Spawner(4, 715, new LichCreator()));
                     Spawners.Add(new Spawner(450, 4, new PhantomCreator()));
                     break;
                 case 4:
@@ -69,8 +65,8 @@ namespace ZTP.GameSingleton
                     enemiesToKill = maxEnemies;
                     playerSpeed = 10;
                     playerStartHP = 2000;
-                    Spawners.Add(new Spawner(650, 4, new LichCreator()));
-                    Spawners.Add(new Spawner(650, 1500, new LichCreator()));
+                    Spawners.Add(new Spawner(640, 4, new LichCreator()));
+                    Spawners.Add(new Spawner(640, 1500, new LichCreator()));
                     Spawners.Add(new Spawner(100, 700, new DemonCreator()));
                     break;
             }

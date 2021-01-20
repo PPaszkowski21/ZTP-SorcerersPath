@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -12,6 +11,7 @@ using ZTP.Actions;
 using ZTP.Images;
 using ZTP.Monsters;
 using ZTP.PlayerClassess;
+using ZTP.Spells;
 
 namespace ZTP.GameSingleton
 {
@@ -19,7 +19,6 @@ namespace ZTP.GameSingleton
     {
         private static Game _instance;
         private static Canvas myCanvas;
-        private static Grid myGrid;
         private static Stage stage;
         public static Game GetInstance(Canvas mainCanvas, Grid mainGrid)
         {
@@ -28,7 +27,6 @@ namespace ZTP.GameSingleton
                 stage = new Stage(4);
                 _instance = new Game(mainCanvas, mainGrid);
                 myCanvas = mainCanvas;
-                myGrid = mainGrid;
             }
             return _instance;
         }
@@ -80,12 +78,10 @@ namespace ZTP.GameSingleton
         bool goLeft, goRight, goUp, goDown;
 
         DispatcherTimer gameTimer = new DispatcherTimer(DispatcherPriority.Normal);
-        int blinkGifTimer = 0;
-        bool startGifTimer = false;
 
         Player player = new Player(stage.playerStartHP,stage.playerSpeed);
         List<IMonster> monsters = new List<IMonster>();
-        List<Rectangle> blinkInstances = new List<Rectangle>();
+        List<IProjectile> projectiles = new List<IProjectile>();
         List<Rectangle> monstersAllowedToMove = new List<Rectangle>();
         List<Rectangle> drop = new List<Rectangle>();
 
@@ -118,23 +114,23 @@ namespace ZTP.GameSingleton
 
             //player movement
             player.MovePlayer(goLeft, goRight, goUp, goDown, myCanvas);
-
             //timers
-            stage.enemySpawnTimer -= 1;
-            if (startGifTimer)
+            player.FearCooldown += 5;
+            if(player.FearCooldown >= 500)
             {
-                //destroyInstanceOfBlink
-                blinkGifTimer += 25;
-                if (blinkGifTimer >= 260)
-                {
-                    myCanvas.Children.Remove(blinkInstances.FirstOrDefault());
-                    blinkInstances.Remove(blinkInstances.FirstOrDefault());
-                    myCanvas.Children.Remove(blinkInstances.FirstOrDefault());
-                    blinkInstances.Remove(blinkInstances.FirstOrDefault());
-                    startGifTimer = false;
-                    blinkGifTimer = 0;
-                }
+                player.notifyObservers(new RegularMovementStrategy());
             }
+            player.ProjectileCooldown += 5;
+            player.BlinkCooldown += 25;
+            if (player.BlinkCooldown >= 260 && player.Blinks.Any())
+            {
+                myCanvas.Children.Remove(player.Blinks.FirstOrDefault().Instance);
+                myCanvas.Children.Remove(player.Blinks.FirstOrDefault().Instance);
+                player.Blinks.Remove(player.Blinks.FirstOrDefault());
+                player.Blinks.Remove(player.Blinks.FirstOrDefault());
+            }
+            
+            stage.enemySpawnTimer -= 1;
             if (stage.enemySpawnTimer < 0)
             {
                 //create enemies
@@ -154,21 +150,21 @@ namespace ZTP.GameSingleton
                     continue;
                 }
                 //fireball fly
-                else if (items[i].Name == "fireball")
+                else if (items[i].Name == "projectile")
                 {
-                    Overview.SpellOverview(player, myCanvas, monsters, ref stage.enemiesToKill, items[i],drop);
+                    SpellOverview(player, myCanvas, monsters, projectiles, ref stage.enemiesToKill, items[i],drop);
                 }
 
                 //enemy movement
                 else if (items[i].Name == "enemy")
                 {
-                    Overview.EnemyOverview(player, monstersAllowedToMove, monstersBannedFromMoving, monsters, myCanvas, items[i], playerHitBox);
+                   EnemyOverview(player, monstersAllowedToMove, monstersBannedFromMoving, monsters, myCanvas, items[i], playerHitBox);
                 }
 
                 //coin gathering
                 else if (items[i].Name == "coin")
                 {
-                    Overview.CoinOverview(player, myCanvas, items[i], playerHitBox, drop);
+                    CoinOverview(player, myCanvas, items[i], playerHitBox, drop);
                 }
             }
         }
@@ -210,21 +206,36 @@ namespace ZTP.GameSingleton
                 goDown = false;
             }
 
-            if (e.Key == Key.LeftCtrl && startGifTimer == false)
+            if (e.Key == Key.LeftCtrl && player.BlinkCooldown >= 260)
             {
-                player.PlayerDash(player, 40, myCanvas, ref startGifTimer, blinkInstances);
+                player.BlinkCooldown = 0;
+                player.PlayerDash(40, myCanvas);
             }
 
-            if (e.Key == Key.Space)
+            if (e.Key == Key.Space && player.ProjectileCooldown >= 100)
             {
-                player.FireballThrow(myCanvas);
+                player.ProjectileCooldown = 0;
+                player.ProjectileThrow(myCanvas,projectiles,player.Projectile);
             }
 
-            if (e.Key == Key.LeftShift)
+            if (e.Key == Key.R && player.FearCooldown >= 1000)
             {
-                player.notifyObservers(new FearRunningStrategy());
+                player.FearCooldown = 0;
+                player.FearEnemies(myCanvas);
             }
 
+            if(e.Key == Key.Q)
+            {
+                player.Projectile = "fireball";
+            }
+            if(e.Key == Key.W)
+            {
+                player.Projectile = "toxicbolt";
+            }
+            if (e.Key == Key.E)
+            {
+                player.Projectile = "lightning";
+            }
             if (e.Key == Key.Escape)
             {
                 isGamePaused = !isGamePaused;
@@ -242,6 +253,96 @@ namespace ZTP.GameSingleton
             {
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
                 Application.Current.Shutdown();
+            }
+        }
+        public void EnemyOverview(Player player, List<Rectangle> monstersAllowedToMove, List<Rectangle> monstersBannedFromMoving, List<IMonster> monsters, Canvas myCanvas, Rectangle x, Rect playerHitBox)
+        {
+            Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+            IMonster monster = monsters.FirstOrDefault(c => c.Instance == x);
+
+            if (monstersAllowedToMove.Contains(x) && !monstersBannedFromMoving.Contains(x))
+            {
+                monster.Move(player, monster, myCanvas);
+            }
+            bool isFirst = true;
+            foreach (var y in myCanvas.Children.OfType<Rectangle>())
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                    continue;
+                }
+
+                if (y is Rectangle && (string)y.Name == "enemy")
+                {
+                    Rect enemy2HitBox = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
+                    if (enemy2HitBox.IntersectsWith(enemyHitBox))
+                    {
+                        IMonster monster2 = monsters.FirstOrDefault(c => c.Instance == y);
+                        monstersBannedFromMoving.Add(y);
+                        if (!enemy2HitBox.IntersectsWith(playerHitBox))
+                        {
+                            monster2.CollisionAvoiding(monster2, enemyHitBox, enemy2HitBox, myCanvas);
+                        }
+                    }
+                }
+            }
+
+            if (playerHitBox.IntersectsWith(enemyHitBox))
+            {
+                player.HitPoints -= monster.Damage;
+            }
+        }
+        public static void SpellOverview(Player player, Canvas myCanvas, List<IMonster> monsters, List<IProjectile> projectiles, ref int enemiesKilled, Rectangle x, List<Rectangle> drop)
+        {
+            IProjectile spell = projectiles.FirstOrDefault(c => c.Instance == x);
+            spell.SpellBehaviour(myCanvas, projectiles);
+            Rect spellHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+            List<Rectangle> enemies = myCanvas.Children.OfType<Rectangle>().ToList();
+            enemies = enemies.Where(e => (string)e.Name == "enemy").ToList();
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (enemies[i] == null)
+                {
+                    continue;
+                }
+                Rect enemyHitBox = new Rect(Canvas.GetLeft(enemies[i]), Canvas.GetTop(enemies[i]), enemies[i].Width, enemies[i].Height);
+                if (spellHitBox.IntersectsWith(enemyHitBox))
+                {
+                    var monster = monsters.FirstOrDefault(z => z.Instance == enemies[i]);
+                    if (monster != null)
+                    {
+                        monster.HitPoints -= spell.Damage;
+                    }
+                    if (monster.HitPoints <= 0)
+                    {
+                        myCanvas.Children.Remove(enemies[i]);
+                        player.deleteObserver(monster);
+                        monsters.Remove(monster);
+                        enemiesKilled--;
+                        monster.DropCoin(myCanvas, Canvas.GetLeft(enemies[i]), Canvas.GetTop(enemies[i]), drop);
+                    }
+                    if ((string)spell.Instance.Tag == "fireball")
+                    {
+                        myCanvas.Children.Remove(x);
+                        projectiles.Remove(spell);
+                        break;
+                    }
+                    else if ((string)spell.Instance.Tag == "toxicbolt" || (string)spell.Instance.Tag == "lightning")
+                    {
+                        continue;
+                    }
+                }
+            }
+        }
+        public static void CoinOverview(Player player, Canvas myCanvas, Rectangle x, Rect playerHitBox, List<Rectangle> drop)
+        {
+            Rect coinHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+            if (playerHitBox.IntersectsWith(coinHitBox))
+            {
+                myCanvas.Children.Remove(x);
+                drop.Remove(x);
+                player.Gold += (int)x.Tag;
             }
         }
         private void ShowGameOver(string message)

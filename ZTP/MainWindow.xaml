@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZTP"
         mc:Ignorable="d"
-        Title="Sorcerer's Path" Height="900" Width="1440">
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Title="Sorcerer's Path" Height="1080" Width="1920">
     <Grid Name="mainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300">
@@ -16,8 +18,8 @@
             </ColumnDefinition>
         </Grid.ColumnDefinitions>
         
-        <Image Name="interface" Source="/Images/interface.png" Stretch="Fill"/>
-        <Image Name ="hpBar" Source="/Images/hpBar100.jpg" Margin="10,-169,25,168" />
+        <Image Name="interface" Source="/Images/backgrounds/interface.png" Stretch="Fill"/>
+        <Image Name ="hpBar" Source="/Images/HpBars/hpBar100.jpg" Margin="10,-169,25,168" />
 
         <Canvas Grid.Column="1" Name="myCanvas" Focusable="True" Background="Black" KeyDown="KeyIsDown" KeyUp="KeyIsUp">
             <StackPanel Name="info"  Orientation="Vertical">

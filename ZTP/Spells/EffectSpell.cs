@@ -8,18 +8,19 @@ using ZTP.Images;
 
 namespace ZTP.Spells
 {
-    public class Blink
+    public class EffectSpell
     {
         public Rectangle Instance { get; set; }
-        public Blink(string blinkImage)
+        public EffectSpell(string image, int height, int width)
         {
             Instance = new Rectangle
             {
-                Name = "blink",
-                Height = 140,
-                Width = 140,
-                Fill = new VisualBrush(ImageManager.CreateGif(blinkImage))
+                Name = "effectspell",
+                Height = height,
+                Width = height,
+                Fill = new VisualBrush(ImageManager.CreateGif(image))
             };
         }
+
     }
 }

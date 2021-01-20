@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using ZTP.GameSingleton;
-using ZTP.Images;
 using ZTP.Monsters;
 using ZTP.PlayerClassess;
 
@@ -51,16 +45,16 @@ namespace ZTP.Actions
                 switch (monster.Direction)
                 {
                     case 0:
-                        monster.Instance.Fill = new VisualBrush(ImageManager.CreateGif(monster.Images[0]));
+                        monster.Instance.Fill = monster.Images[0];
                         break;
                     case 1:
-                        monster.Instance.Fill = new VisualBrush(ImageManager.CreateGif(monster.Images[1]));
+                        monster.Instance.Fill = monster.Images[1];
                         break;
                     case 2:
-                        monster.Instance.Fill = new VisualBrush(ImageManager.CreateGif(monster.Images[2]));
+                        monster.Instance.Fill = monster.Images[2];
                         break;
                     case 3:
-                        monster.Instance.Fill = new VisualBrush(ImageManager.CreateGif(monster.Images[3]));
+                        monster.Instance.Fill = monster.Images[3];
                         break;
                 }
             monster.PreviousDirection = monster.Direction;

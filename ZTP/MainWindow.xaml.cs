@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using ZTP.GameSingleton;
 
 namespace ZTP
@@ -11,7 +13,7 @@ namespace ZTP
         public MainWindow()
         {
             InitializeComponent();
-            Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            //Application.Current.MainWindow.WindowState = WindowState.Maximized;
             g = Game.GetInstance(myCanvas, mainGrid);
             Game g2;
             g2 = Game.GetInstance(myCanvas, mainGrid);

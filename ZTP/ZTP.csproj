@@ -77,11 +77,9 @@
     <Compile Include="Actions\ICustomObservable.cs" />
     <Compile Include="Actions\ICustomObserver.cs" />
     <Compile Include="Actions\IMovementStrategy.cs" />
-    <Compile Include="Actions\MonsterDrop.cs" />
-    <Compile Include="Actions\SpellFly.cs" />
     <Compile Include="Actions\RegularMovementStrategy.cs" />
+    <Compile Include="GameSingleton\GameSave.cs" />
     <Compile Include="GameSingleton\Helper.cs" />
-    <Compile Include="GameSingleton\Overview.cs" />
     <Compile Include="GameSingleton\Game.cs" />
     <Compile Include="GameSingleton\Spawner.cs" />
     <Compile Include="GameSingleton\Stage.cs" />
@@ -97,10 +95,11 @@
     <Compile Include="Monsters\Skeleton.cs" />
     <Compile Include="Monsters\SkeletonCreator.cs" />
     <Compile Include="PlayerClassess\Player.cs" />
-    <Compile Include="Spells\Blink.cs" />
+    <Compile Include="Spells\EffectSpell.cs" />
     <Compile Include="Spells\Fireball.cs" />
     <Compile Include="Spells\IProjectile.cs" />
-    <Compile Include="Spells\SpellFactory.cs" />
+    <Compile Include="Spells\Lightning.cs" />
+    <Compile Include="Spells\ToxicBolt.cs" />
     <Compile Include="TaskTimer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -143,36 +142,22 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\fireball_pixel_up.png" />
+    <Resource Include="Images\HpBars\hpBar0.jpg" />
+    <Resource Include="Images\HpBars\hpBar100.jpg" />
+    <Resource Include="Images\HpBars\hpBar60.jpg" />
+    <Resource Include="Images\HpBars\hpBar70.jpg" />
+    <Resource Include="Images\HpBars\hpBar80.jpg" />
+    <Resource Include="Images\HpBars\hpBar90.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\fireball_pixel_down.png" />
-    <Resource Include="Images\fireball_pixel_left.png" />
-    <Resource Include="Images\fireball_pixel_right.png" />
+    <Resource Include="Images\HpBars\hpBar10Red.jpg" />
+    <Resource Include="Images\HpBars\hpBar20Red.jpg" />
+    <Resource Include="Images\HpBars\hpBar30Orange.jpg" />
+    <Resource Include="Images\HpBars\hpBar40Orange.jpg" />
+    <Resource Include="Images\HpBars\hpBar50Orange.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\coinAnimated.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\fireball2.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\hpBar0.jpg" />
-    <Resource Include="Images\hpBar100.jpg" />
-    <Resource Include="Images\hpBar60.jpg" />
-    <Resource Include="Images\hpBar70.jpg" />
-    <Resource Include="Images\hpBar80.jpg" />
-    <Resource Include="Images\hpBar90.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\hpBar10Red.jpg" />
-    <Resource Include="Images\hpBar20Red.jpg" />
-    <Resource Include="Images\hpBar30Orange.jpg" />
-    <Resource Include="Images\hpBar40Orange.jpg" />
-    <Resource Include="Images\hpBar50Orange.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\interface.png" />
+    <Resource Include="Images\Backgrounds\interface.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\PlayerBody\DeadBodyPlayer.png" />
@@ -216,8 +201,34 @@
     <Resource Include="Images\Lich\LichUp.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Blink.gif" />
-    <Resource Include="Images\BlinkReverse.gif" />
+    <Resource Include="Images\Fireball\FireballDown.gif" />
+    <Resource Include="Images\Fireball\FireballLeft.gif" />
+    <Resource Include="Images\Fireball\FireballRight.gif" />
+    <Resource Include="Images\Fireball\FireballUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToxicBolt\ToxicBoltDown.gif" />
+    <Resource Include="Images\ToxicBolt\ToxicBoltLeft.gif" />
+    <Resource Include="Images\ToxicBolt\ToxicBoltRight.gif" />
+    <Resource Include="Images\ToxicBolt\ToxicBoltUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Coins\CoinOrange.gif" />
+    <Resource Include="Images\Coins\CoinRed.gif" />
+    <Resource Include="Images\Coins\CoinYellow.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Effects\Blink.gif" />
+    <Resource Include="Images\Effects\BlinkReverse.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Lightning\LightningDown.gif" />
+    <Resource Include="Images\Lightning\LightningLeft.gif" />
+    <Resource Include="Images\Lightning\LightningRight.gif" />
+    <Resource Include="Images\Lightning\LightningUp.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Effects\Fear.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

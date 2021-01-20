@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using ZTP.Actions;
 using ZTP.Images;
@@ -18,18 +15,19 @@ namespace ZTP.Monsters
         {
             this.Speed = 1;
             this.Damage = 7;
-            this.HitPoints = 4;
-            this.Images = new List<string>();
-            Images.Add(ImageManager.LichBack);
-            Images.Add(ImageManager.LichLeft);
-            Images.Add(ImageManager.LichFront);
-            Images.Add(ImageManager.LichRight);
+            this.HitPoints = 400;
+            this.Images = new List<VisualBrush>();
+            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.LichBack)));
+            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.LichLeft)));
+            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.LichFront)));
+            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.LichRight)));
             this.Instance = new Rectangle
             {
                 Name = "enemy",
                 Tag = "lich",
                 Height = 150,
                 Width = 150,
+                Fill = Images[0]
             };
             Direction = 0;
             MovementStrategy = new RegularMovementStrategy();
@@ -38,7 +36,7 @@ namespace ZTP.Monsters
         public Rectangle Instance { get; set; }
         public int Speed { get; set; }
         public int Damage { get; set; }
-        public List<string> Images { get; set; }
+        public List<VisualBrush> Images { get; set; }
         public int GifTimer { get; set; }
         public int Direction { get; set; }
         public int PreviousDirection { get; set; }
@@ -58,6 +56,22 @@ namespace ZTP.Monsters
         public void UpdateMovement(IMovementStrategy movementStrategy)
         {
             setMovementStrategy(movementStrategy);
+        }
+        public void DropCoin(Canvas myCanvas, double x, double y, List<Rectangle> drop)
+        {
+            Rectangle coin = new Rectangle
+            {
+                Name = "coin",
+                Tag = 2,
+                Height = 30,
+                Width = 30,
+                Fill = new VisualBrush(ImageManager.CreateGif(ImageManager.CoinYellow))
+            };
+            Canvas.SetLeft(coin, x);
+            Canvas.SetTop(coin, y);
+            myCanvas.Children.Add(coin);
+            drop.Add(coin);
+
         }
     }
 }

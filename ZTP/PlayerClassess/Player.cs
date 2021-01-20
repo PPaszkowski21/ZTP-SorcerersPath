@@ -21,20 +21,23 @@ namespace ZTP.PlayerClassess
         {
             HitPoints = _HitPoints;
             Speed = _Speed;
+            Monsters = new List<ICustomObserver>();
+            Images = new List<VisualBrush>();
+            Blinks = new List<EffectSpell>();
+            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.mageFront)));
+            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.mageLeft)));
+            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.mageBack)));
+            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.mageRight)));
             Instance = new Rectangle
             {
                 Tag = "player",
                 Height = 70,
                 Width = 70,
-                Fill = new VisualBrush(ImageManager.CreateGif(ImageManager.mageBack))
+                Fill = Images[0]
             };
             Direction = 0;
-            Monsters = new List<ICustomObserver>();
-            Images = new List<string>();
-            Images.Add(ImageManager.mageFront);
-            Images.Add(ImageManager.mageLeft);
-            Images.Add(ImageManager.mageBack);
-            Images.Add(ImageManager.mageRight);
+
+            Projectile = "fireball";
         }
         public int HitPoints { get; set; }
         public int ExperiencePoints { get; private set; }
@@ -43,8 +46,14 @@ namespace ZTP.PlayerClassess
         public int Direction { get; set; }
         public int PreviousDirection { get; set; }
         public int Speed { get; set; }
-        public List<string> Images { get; }
+        public string Projectile { get; set; }
+        public int ProjectileCooldown { get; set; }
 
+        public List<EffectSpell> Blinks { get; set; }
+        public int BlinkCooldown { get; set; }
+        public EffectSpell Fear { get; set; }
+        public int FearCooldown { get; set; }
+        public List<VisualBrush> Images { get; }
         public void MovePlayer(bool goLeft, bool goRight, bool goUp, bool goDown, Canvas canvas)
         {
             if (goLeft == true && !Helper.IsOnTheLeftBorder(Instance))
@@ -73,16 +82,16 @@ namespace ZTP.PlayerClassess
                 switch (Direction)
                 {
                     case 0:
-                        Instance.Fill = new VisualBrush(ImageManager.CreateGif(Images[0]));
+                        Instance.Fill = Images[0];
                         break;
                     case 1:
-                        Instance.Fill = new VisualBrush(ImageManager.CreateGif(Images[1]));
+                        Instance.Fill =Images[1];
                         break;
                     case 2:
-                        Instance.Fill = new VisualBrush(ImageManager.CreateGif(Images[2]));
+                        Instance.Fill = Images[2];
                         break;
                     case 3:
-                        Instance.Fill = new VisualBrush(ImageManager.CreateGif(Images[3]));
+                        Instance.Fill =Images[3];
                         break;
                 }
             }
@@ -107,52 +116,71 @@ namespace ZTP.PlayerClassess
                 Canvas.SetTop(Instance, Canvas.GetTop(Instance) + speed);
             }
         }
-        public void PlayerDash(Player player, int dashRange, Canvas canvas, ref bool startGifTimer, List<Rectangle> blinkInstances)
+        public void PlayerDash(int dashRange, Canvas canvas)
         {
-            Blink blink = new Blink(ImageManager.blink);
-            Canvas.SetLeft(blink.Instance, Canvas.GetLeft(player.Instance) - player.Instance.Width / 2);
-            Canvas.SetTop(blink.Instance, Canvas.GetTop(player.Instance) - player.Instance.Height / 2);
+            EffectSpell blink = new EffectSpell(ImageManager.blink, 140, 140);
+            Canvas.SetLeft(blink.Instance, Canvas.GetLeft(Instance) - Instance.Width / 2);
+            Canvas.SetTop(blink.Instance, Canvas.GetTop(Instance) - Instance.Height / 2);
             canvas.Children.Add(blink.Instance);
 
             for (int i = 0; i < dashRange; i++)
             {
-                MovePlayerForDash(player.Speed, canvas);
+                MovePlayerForDash(Speed, canvas);
             }
-            Blink blink2 = new Blink(ImageManager.blinkShow);
-            Canvas.SetLeft(blink2.Instance, Canvas.GetLeft(player.Instance) - player.Instance.Width / 2);
-            Canvas.SetTop(blink2.Instance, Canvas.GetTop(player.Instance) - player.Instance.Width / 2);
+            EffectSpell blink2 = new EffectSpell(ImageManager.blinkShow, 140, 140);
+            Canvas.SetLeft(blink2.Instance, Canvas.GetLeft(Instance) - Instance.Width / 2);
+            Canvas.SetTop(blink2.Instance, Canvas.GetTop(Instance) - Instance.Width / 2);
             canvas.Children.Add(blink2.Instance);
 
-
-            blinkInstances.Add(blink.Instance);
-            blinkInstances.Add(blink2.Instance);
-            startGifTimer = true;
+            Blinks.Add(blink);
+            Blinks.Add(blink2);
         }
-        public void FireballThrow(Canvas canvas)
+        public void FearEnemies(Canvas canvas)
         {
-            Fireball fireball = new Fireball(Direction);
+            EffectSpell fear = new EffectSpell(ImageManager.fear, 300, 300);
+            Canvas.SetLeft(fear.Instance, Canvas.GetLeft(Instance)-115);
+            Canvas.SetTop(fear.Instance, Canvas.GetTop(Instance)-115);
+            canvas.Children.Add(fear.Instance);
+            notifyObservers(new FearRunningStrategy());
+        }
+        public void ProjectileThrow(Canvas canvas, List<IProjectile> projectiles, string tag)
+        {
+            IProjectile projectile;
+            if(tag == "fireball")
+            {
+               projectile = new Fireball(Direction);
+            }
+            else if (tag == "toxicbolt")
+            {
+                projectile = new ToxicBolt(Direction);
+            }
+            else
+            {
+                projectile = new Lightning(Direction);
+            }
 
             if (Direction == 0)
             {
-                Canvas.SetTop(fireball.Instance, Canvas.GetTop(Instance) +Instance.ActualHeight);
-                Canvas.SetLeft(fireball.Instance, Canvas.GetLeft(Instance) + Instance.Width / 2);
+                Canvas.SetTop(projectile.Instance, Canvas.GetTop(Instance) + Instance.ActualHeight);
+                Canvas.SetLeft(projectile.Instance, Canvas.GetLeft(Instance) + Instance.ActualWidth/2 - projectile.Instance.Width/2);
             }
             else if (Direction == 1)
             {
-                Canvas.SetTop(fireball.Instance, Canvas.GetTop(Instance));
-                Canvas.SetLeft(fireball.Instance, Canvas.GetLeft(Instance) - 10);
+                Canvas.SetTop(projectile.Instance, Canvas.GetTop(Instance) + Instance.ActualHeight/2 - projectile.Instance.Height/2);
+                Canvas.SetLeft(projectile.Instance, Canvas.GetLeft(Instance) - projectile.Instance.Width);
             }
             else if (Direction == 2)
             {
-                Canvas.SetTop(fireball.Instance, Canvas.GetTop(Instance) - fireball.Instance.ActualHeight);
-                Canvas.SetLeft(fireball.Instance, Canvas.GetLeft(Instance) + Instance.Width / 2);
+                Canvas.SetTop(projectile.Instance, Canvas.GetTop(Instance) - projectile.Instance.Height);
+                Canvas.SetLeft(projectile.Instance, Canvas.GetLeft(Instance) + Instance.ActualWidth / 2 - projectile.Instance.Width/2);
             }
             else if (Direction == 3)
             {
-                Canvas.SetTop(fireball.Instance, Canvas.GetTop(Instance));
-                Canvas.SetLeft(fireball.Instance, Canvas.GetLeft(Instance) + Instance.Width - 5);
+                Canvas.SetTop(projectile.Instance, Canvas.GetTop(Instance) + Instance.ActualHeight/2 - projectile.Instance.Height/2);
+                Canvas.SetLeft(projectile.Instance, Canvas.GetLeft(Instance) + Instance.ActualWidth);
             }
-            canvas.Children.Add(fireball.Instance);
+            projectiles.Add(projectile);
+            canvas.Children.Add(projectile.Instance);
         }
 
         public List<ICustomObserver> Monsters;
