@@ -10,23 +10,10 @@
         Title="Sorcerer's Path" Height="1080" Width="1920">
     <Grid Name="mainGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300">
-
-            </ColumnDefinition>
-            <ColumnDefinition>
-
-            </ColumnDefinition>
+            <ColumnDefinition Width="300"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
-        <Image Name="interface" Source="/Images/backgrounds/interface.png" Stretch="Fill"/>
-        <Image Name ="hpBar" Source="/Images/HpBars/hpBar100.jpg" Margin="10,-169,25,168" />
-
-        <Canvas Grid.Column="1" Name="myCanvas" Focusable="True" Background="Black" KeyDown="KeyIsDown" KeyUp="KeyIsUp">
-            <StackPanel Name="info"  Orientation="Vertical">
-                <Label Name="enemiesLeft" Foreground="White" FontSize="16" FontWeight="ExtraBold">Enemies Left: 0</Label>
-                <Label Name="playerHP" Foreground="White" FontSize="16" FontWeight="ExtraBold">HP:</Label>
-                <Label Name="playerGold" Foreground="White" FontSize="16" FontWeight="ExtraBold">Gold:</Label>
-            </StackPanel>
-        </Canvas>
+        <Image Grid.Column ="0" Name="interface" Source="/Images/backgrounds/interface.png" Stretch="Fill"/>
+        <Canvas Grid.Column="1" Name="myCanvas" Focusable="True" Background="Black" KeyDown="KeyIsDown" KeyUp="KeyIsUp"></Canvas>
     </Grid>
 </Window>

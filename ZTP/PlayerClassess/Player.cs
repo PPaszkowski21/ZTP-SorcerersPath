@@ -21,6 +21,7 @@ namespace ZTP.PlayerClassess
         {
             HitPoints = _HitPoints;
             Speed = _Speed;
+            GameSave = new GameSave();
             Monsters = new List<ICustomObserver>();
             Images = new List<VisualBrush>();
             Blinks = new List<EffectSpell>();
@@ -36,12 +37,11 @@ namespace ZTP.PlayerClassess
                 Fill = Images[0]
             };
             Direction = 0;
-
             Projectile = "fireball";
         }
         public int HitPoints { get; set; }
         public int ExperiencePoints { get; private set; }
-        public int Gold { get; set; }
+        public GameSave GameSave { get; set; }
         public Rectangle Instance { get; set; }
         public int Direction { get; set; }
         public int PreviousDirection { get; set; }
