@@ -25,7 +25,7 @@ namespace ZTP.Spells
         public Explosion(int direction)
         {
             Direction = direction;
-            Damage = 20;
+            Damage = 10;
             Speed = 0;
             Timer = 100;
             Image = new VisualBrush(ImageManager.CreateGif(ImageManager.explosion));

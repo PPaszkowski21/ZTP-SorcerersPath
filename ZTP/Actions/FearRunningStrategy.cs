@@ -7,6 +7,7 @@ using ZTP.PlayerClassess;
 
 namespace ZTP.Actions
 {
+    //monsters running away from player
     public class FearRunningStrategy : IMovementStrategy
     {
         public void Move(Player player, IMonster monster, Canvas myCanvas)
@@ -41,6 +42,7 @@ namespace ZTP.Actions
                     monster.Direction = 3;
                 }
             }
+            //changing image
             if (monster.Direction != monster.PreviousDirection)
                 switch (monster.Direction)
                 {

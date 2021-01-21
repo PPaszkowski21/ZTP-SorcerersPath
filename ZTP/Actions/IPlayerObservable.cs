@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ZTP.Actions
 {
-    public interface ICustomObservable
+    public interface IPlayerObservable
     {
-        void addObserver(ICustomObserver observer);
-        void deleteObserver(ICustomObserver o);
+        void addObserver(IMonsterObserver observer);
+        void deleteObserver(IMonsterObserver o);
         int countObservers();
         void notifyObservers(IMovementStrategy strategy);
     }

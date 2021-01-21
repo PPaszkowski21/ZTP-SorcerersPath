@@ -6,6 +6,7 @@ using ZTP.PlayerClassess;
 
 namespace ZTP.Actions
 {
+    //monsters chasing the player
     public class RegularMovementStrategy : IMovementStrategy
     {
         public void Move(Player player, IMonster monster, Canvas myCanvas)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZTP.Spells
 {
+    // class which is helpful in checking where the spell ended
     public class EndOfSpell
     {
         public double Top { get; set; }

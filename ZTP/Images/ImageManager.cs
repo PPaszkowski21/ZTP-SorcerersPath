@@ -63,6 +63,7 @@ namespace ZTP.Images
         public static string interface1 = "pack://application:,,,/Images/Backgrounds/interface.png";
         public static string PressEnterTogo = "pack://application:,,,/Images/Backgrounds/PressEnterTogo.png";
         public static string Congratulations = "pack://application:,,,/Images/Backgrounds/Congratulations.png";
+        public static string Pause = "pack://application:,,,/Images/Backgrounds/BackgroundBlackout.png";
 
 
         public static string FireballIcon = "pack://application:,,,/Images/Icons/FireballIcon.jpg";
@@ -95,10 +96,9 @@ namespace ZTP.Images
             ImageBehavior.SetAnimatedSource(image, Source);
             return image;
         }
-
+        
         public static bool ChangeHpBarImage(Player player, int startHp, Image barHP)
         {
-            
             if (player.HitPoints*100/startHp == 100)
             {
                 barHP.Source = new BitmapImage(new Uri(hpBar100));
@@ -139,8 +139,9 @@ namespace ZTP.Images
             {
                 barHP.Source = new BitmapImage(new Uri(hpBar10));
             }
-            else if (player.HitPoints * 100 / startHp <= 0)
+            else if (player.HitPoints * 100 / startHp < 0)
             {
+                //means that player is dead
                 barHP.Source = new BitmapImage(new Uri(hpBar0));
                 player.Instance.Width = 100;
                 player.Instance.Height = 100;

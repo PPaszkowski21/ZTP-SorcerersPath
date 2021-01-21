@@ -24,7 +24,7 @@ namespace ZTP.Spells
         public ToxicBolt(int direction)
         {
             Direction = direction;
-            Damage = 10;
+            Damage = 15;
             Speed = 20;
             int height = 75;
             int width = 75;

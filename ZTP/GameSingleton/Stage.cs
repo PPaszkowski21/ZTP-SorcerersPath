@@ -18,6 +18,7 @@ namespace ZTP.GameSingleton
 {
     public class Stage
     {
+        //settings
         public int enemySpawnTimer = 0;
         public int enemySpawnTimerLimit;
         public int maxEnemies;
@@ -30,6 +31,7 @@ namespace ZTP.GameSingleton
         private Player player;
         private Canvas myCanvas;
         private Grid myGrid;
+
         bool goLeft, goRight, goUp, goDown;
 
         public DispatcherTimer gameTimer;
@@ -42,12 +44,11 @@ namespace ZTP.GameSingleton
         bool isGamePaused = false;
         bool gameOver = false;
 
+        //interfaces variables
         Label enemiesLeft;
         Label playerHP;
         Label playerGold;
-
         Image barHP;
-
 
         private List<Spawner> Spawners = new List<Spawner>();
         public VisualBrush Background { get; set; }
@@ -59,12 +60,13 @@ namespace ZTP.GameSingleton
             gameTimer = new DispatcherTimer(DispatcherPriority.Normal);
             myCanvas = canvas;
             myGrid = grid;
+
+            //interface creating
             StackPanel stackPanel = new StackPanel()
             {
                 Name = "info",
                 Orientation = Orientation.Vertical,
             };
-
             barHP = new Image();
             barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar100));
             barHP.Margin = new Thickness(10,-169,25,168);
@@ -86,19 +88,19 @@ namespace ZTP.GameSingleton
             stackPanel.Children.Add(playerGold);
             canvas.Children.Add(stackPanel); 
 
+            //lists of objects in game
             monsters = new List<IMonster>();
             projectiles = new List<IProjectile>();
             monstersAllowedToMove = new List<Rectangle>();
             drop = new List<Rectangle>();
 
-
-
+            //settings for every stage
             switch (nr)
             {
                 case 1:
                     Background = new VisualBrush(ImageManager.CreateGif(ImageManager.background1));
-                    enemySpawnTimerLimit = 20;
-                    maxEnemies = 3;
+                    enemySpawnTimerLimit = 10;
+                    maxEnemies = 10;
                     enemiesToKill = maxEnemies;
                     playerSpeed = playerGlobal.Speed;
                     playerStartHP = playerGlobal.HitPoints;
@@ -106,8 +108,8 @@ namespace ZTP.GameSingleton
                     break;
                 case 2:
                     Background = new VisualBrush(ImageManager.CreateGif(ImageManager.background2));
-                    enemySpawnTimerLimit = 1;
-                    maxEnemies = 40;
+                    enemySpawnTimerLimit = 10;
+                    maxEnemies = 30;
                     enemiesToKill = maxEnemies;
                     playerSpeed = playerGlobal.Speed;
                     playerStartHP = 1000;
@@ -117,7 +119,7 @@ namespace ZTP.GameSingleton
                     break;
                 case 3:
                     Background = new VisualBrush(ImageManager.CreateGif(ImageManager.background3));
-                    enemySpawnTimerLimit = 20;
+                    enemySpawnTimerLimit = 10;
                     maxEnemies = 40;
                     enemiesToKill = maxEnemies;
                     playerSpeed = playerGlobal.Speed;
@@ -129,8 +131,8 @@ namespace ZTP.GameSingleton
                     break;
                 case 4:
                     Background = new VisualBrush(ImageManager.CreateGif(ImageManager.background4));
-                    enemySpawnTimerLimit = 40;
-                    maxEnemies = 1;
+                    enemySpawnTimerLimit = 10;
+                    maxEnemies = 30;
                     enemiesToKill = maxEnemies;
                     playerSpeed = playerGlobal.Speed;
                     playerStartHP = 1000;
@@ -168,13 +170,15 @@ namespace ZTP.GameSingleton
             playerHP.Content = "HP: " + player.HitPoints + " / " +playerStartHP;
             playerGold.Content = "Gold: " + player.GameSave.Gold;
 
-            //win,lose
+            //lose ( this method return true if player.hp < 0 )
             if (ImageManager.ChangeHpBarImage(player, playerStartHP, barHP))
             {
                 ShowGameOver("You died!");          
             }
+            //stage win
             if (enemiesToKill == 0 && drop.Count == 0)
             {
+                //end of the game
                 if(Game.ActualStage == 4)
                 {
                     ShowGameOver("YOU WIN, CONGRATULATIONS!");
@@ -189,7 +193,7 @@ namespace ZTP.GameSingleton
                     myCanvas.Children.Add(Game.EndMessage);
                     return;
                 }
-
+                //next stage
                 Game.NextStagePause = true;
                 Game.EndMessage = new Image();
                 Game.EndMessage.Source = new BitmapImage(new Uri(ImageManager.PressEnterTogo));
@@ -199,6 +203,7 @@ namespace ZTP.GameSingleton
                 Canvas.SetTop(Game.EndMessage, myCanvas.ActualHeight/2 - 300);
                 Canvas.SetLeft(Game.EndMessage, myCanvas.ActualWidth/2 - 300);
                 myCanvas.Children.Add(Game.EndMessage);
+
 
                 myCanvas.Children.Remove(player.Instance);
                 gameTimer.Stop();
@@ -247,7 +252,7 @@ namespace ZTP.GameSingleton
                 {
                     continue;
                 }
-                //fireball fly
+                //projectiles fly
                 else if (items[i].Name == "projectile")
                 {
                     SpellOverview(player, myCanvas, monsters, projectiles, ref enemiesToKill, items[i], drop);
@@ -312,6 +317,7 @@ namespace ZTP.GameSingleton
         }
         public void KeyIsUp(object sender, KeyEventArgs e)
         {
+            //player move
             if (e.Key == Key.Left)
             {
                 goLeft = false;
@@ -328,25 +334,25 @@ namespace ZTP.GameSingleton
             {
                 goDown = false;
             }
-
+            //player dash
             if (e.Key == Key.LeftCtrl && player.BlinkCooldown >= 260 && player.GameSave.DashAvailable)
             {
                 player.BlinkCooldown = 0;
                 player.PlayerDash(40, myCanvas);
             }
-
+            //player projectile
             if (e.Key == Key.Space && player.ProjectileCooldown >= 100)
             {
                 player.ProjectileCooldown = 0;
                 player.ProjectileThrow(myCanvas, projectiles, player.Projectile);
             }
-
+            //player fear
             if (e.Key == Key.R && player.FearCooldown >= 1000 && player.GameSave.FearAvailable)
             {
                 player.FearCooldown = 0;
                 player.FearEnemies(myCanvas);
             }
-
+            //change projectile
             if (e.Key == Key.Q)
             {
                 if(player.GameSave.EnchantedFireballAvaible)
@@ -366,23 +372,13 @@ namespace ZTP.GameSingleton
             {
                 player.Projectile = "lightning";
             }
+            //pause
             if (e.Key == Key.Escape)
             {
-                isGamePaused = !isGamePaused;
-                foreach (var button in myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.OfType<Button>())
-                {
-                    button.IsEnabled = !button.IsEnabled;
-                }
-                if (isGamePaused)
-                {
-                    gameTimer.Stop();
-                }
-                else
-                {
-                    gameTimer.Start();
-                }
+                ShowPause();
             }
 
+            //shutdown when game is over
             if (e.Key == Key.RightShift && gameOver == true)
             {
                 Application.Current.Shutdown();
@@ -392,11 +388,11 @@ namespace ZTP.GameSingleton
         {
             Rect enemyHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
             IMonster monster = monsters.FirstOrDefault(c => c.Instance == x);
-
             if (monstersAllowedToMove.Contains(x) && !monstersBannedFromMoving.Contains(x))
             {
                 monster.Move(player, monster, myCanvas);
             }
+            //checking if avoiding other monster is necessary
             bool isFirst = true;
             foreach (var y in myCanvas.Children.OfType<Rectangle>())
             {
@@ -449,9 +445,30 @@ namespace ZTP.GameSingleton
         {
             gameOver = true;
             Game.GameCanBeContinued = false;
-            enemiesLeft.Content += " " + message + "Press Right Shift to play again";
+            enemiesLeft.Content += " " + message + "Press Right Shift to exit";
             
             gameTimer.Stop();
         }
+        public void ShowPause()
+        {
+            isGamePaused = !isGamePaused;
+
+            foreach (var button in myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.OfType<Button>())
+            {
+                button.IsEnabled = !button.IsEnabled;
+            }
+            if (isGamePaused)
+            {
+                myCanvas.Children.Add(Helper.ConstructPauseImage());
+
+                gameTimer.Stop();
+            }
+            else
+            {
+                myCanvas.Children.Remove(Helper.GamePauseMessage);
+                gameTimer.Start();
+            }
+        }
+
     }
 }

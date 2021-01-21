@@ -15,14 +15,14 @@ using ZTP.Spells;
 
 namespace ZTP.PlayerClassess
 {
-    public class Player : ICustomObservable
+    public class Player : IPlayerObservable
     {
         public Player(int _HitPoints, int _Speed)
         {
             HitPoints = _HitPoints;
             Speed = _Speed;
             GameSave = new GameSave();
-            Monsters = new List<ICustomObserver>();
+            Monsters = new List<IMonsterObserver>();
             Images = new List<VisualBrush>();
             Blinks = new List<EffectSpell>();
             Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.mageFront)));
@@ -189,13 +189,13 @@ namespace ZTP.PlayerClassess
             canvas.Children.Add(projectile.Instance);
         }
 
-        public List<ICustomObserver> Monsters;
-        public void addObserver(ICustomObserver observer)
+        public List<IMonsterObserver> Monsters;
+        public void addObserver(IMonsterObserver observer)
         {
             Monsters.Add(observer);
         }
 
-        public void deleteObserver(ICustomObserver observer)
+        public void deleteObserver(IMonsterObserver observer)
         {
             Monsters.Remove(observer);
         }

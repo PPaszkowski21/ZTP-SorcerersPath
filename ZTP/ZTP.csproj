@@ -77,8 +77,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Actions\FearRunningStrategy.cs" />
-    <Compile Include="Actions\ICustomObservable.cs" />
-    <Compile Include="Actions\ICustomObserver.cs" />
+    <Compile Include="Actions\IPlayerObservable.cs" />
+    <Compile Include="Actions\IMonsterObserver.cs" />
     <Compile Include="Actions\IMovementStrategy.cs" />
     <Compile Include="Actions\RegularMovementStrategy.cs" />
     <Compile Include="GameSingleton\GameSave.cs" />
@@ -237,22 +237,7 @@
     <Resource Include="Images\Effects\Fear.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Icons\FireballIcon.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Icons\ToxicBoltIcon.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Fireball\Explosion.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Icons\FearIcon.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Icons\BlinkIcon.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Icons\LightningIcon.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Backgrounds\PressEnterToGo.png" />
@@ -265,6 +250,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GameIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\BlinkIcon.jpg" />
+    <Resource Include="Images\Icons\FearIcon.jpg" />
+    <Resource Include="Images\Icons\FireballIcon.jpg" />
+    <Resource Include="Images\Icons\LightningIcon.jpg" />
+    <Resource Include="Images\Icons\ToxicBoltIcon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Backgrounds\BackgroundBlackout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

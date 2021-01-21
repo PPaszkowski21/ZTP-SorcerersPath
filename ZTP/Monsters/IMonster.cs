@@ -8,7 +8,7 @@ using ZTP.PlayerClassess;
 
 namespace ZTP.Monsters
 {
-    public interface IMonster : ICustomObserver
+    public interface IMonster : IMonsterObserver
     {
         int HitPoints { get; set; }
         Rectangle Instance { get; set; }

@@ -9,11 +9,11 @@ using ZTP.PlayerClassess;
 
 namespace ZTP.Monsters
 {
-    public class Lich : IMonster, ICustomObserver
+    public class Lich : IMonster, IMonsterObserver
     {
         public Lich()
         {
-            this.Speed = 1;
+            this.Speed = 2;
             this.Damage = 7;
             this.HitPoints = 400;
             this.Images = new List<VisualBrush>();

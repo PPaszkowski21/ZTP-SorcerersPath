@@ -25,7 +25,7 @@ namespace ZTP.Spells
         public Lightning(int direction)
         {
             Direction = direction;
-            Damage = 500;
+            Damage = 30;
             Speed = 20;
             int height = 0;
             int width = 0;

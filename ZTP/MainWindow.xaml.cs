@@ -17,6 +17,8 @@ namespace ZTP
             Application.Current.MainWindow.WindowState = WindowState.Maximized;
             g = Game.GetInstance(myCanvas, mainGrid,1);
             g.Start();
+            Game.Stage.ShowPause();
+            
 
             //Game g2;
             //g2 = Game.GetInstance(myCanvas, mainGrid, 2);
@@ -27,7 +29,7 @@ namespace ZTP
         }
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && Game.GameCanBeContinued)
+            if (e.Key == Key.Enter && Game.GameCanBeContinued && Game.NextStagePause)
             {
                 myCanvas.Children.Remove(Game.EndMessage);
                 g.ChangeStage(Game.ActualStage + 1);

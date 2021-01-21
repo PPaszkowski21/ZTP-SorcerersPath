@@ -118,16 +118,6 @@ namespace ZTP.Spells
                     myCanvas.Children.Remove(x);
                     projectiles.Remove(spell);
                     return new EndOfSpell(top, left, true);
-                    //if ((string)spell.Instance.Tag == "fireball")
-                    //{
-                    //    myCanvas.Children.Remove(x);
-                    //    projectiles.Remove(spell);
-                    //    break;
-                    //}
-                    //else if ((string)spell.Instance.Tag == "toxicbolt" || (string)spell.Instance.Tag == "lightning")
-                    //{
-                    //    continue;
-                    //}
                 }
             }
             return new EndOfSpell(0, 0, false);

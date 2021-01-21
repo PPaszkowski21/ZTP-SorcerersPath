@@ -20,8 +20,6 @@
         </Grid>
 
         <StackPanel Grid.Column="0" Margin="10,400,30,40" Orientation="Vertical"  />
-
-
         <Canvas Grid.Column="1" Name="myCanvas" Focusable="True" Background="Black" KeyDown="KeyIsDown" KeyUp="KeyIsUp"></Canvas>
     </Grid>
 </Window>

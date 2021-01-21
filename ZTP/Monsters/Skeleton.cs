@@ -13,7 +13,7 @@ using ZTP.PlayerClassess;
 
 namespace ZTP.Monsters
 {
-    public class Skeleton : IMonster, ICustomObserver
+    public class Skeleton : IMonster, IMonsterObserver
     {
         public Skeleton()
         {

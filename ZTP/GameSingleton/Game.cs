@@ -23,9 +23,9 @@ namespace ZTP.GameSingleton
         public static Stage Stage { get; set; }
         public static Grid myGrid { get; set; }
         public static Image EndMessage { get; set; }
+        //public static Image PauseMessage { get; set; }
         public static int ActualStage { get; set; }
         public static bool GameCanBeContinued { get; set; }
-
         public static bool NextStagePause { get; set; }
 
         public static Player Player { get; set; }
@@ -35,7 +35,7 @@ namespace ZTP.GameSingleton
             {
                 GameCanBeContinued = true;
                 ActualStage = stageNumber;
-                Player = new Player(1, 5);
+                Player = new Player(1000, 7);
                 _instance = new Game(mainCanvas, mainGrid, stageNumber);
             }
             return _instance;
@@ -44,86 +44,100 @@ namespace ZTP.GameSingleton
         {
             myCanvas = canvas;
             myGrid = grid;
+            CreateInterface(grid);
+            Stage = new Stage(stageNumber, canvas, grid, Player);
+        }
 
+        private void CreateInterface(Grid grid)
+        {
             int buttonsWidth = 115;
             int buttonsHeight = 115;
-            Button button = new Button();
-            button.Content = new Image()
+            Button fireballButton = new Button();
+            fireballButton.Content = new Image()
             {
                 Source = new BitmapImage(new Uri(ImageManager.FireballIcon))
             };
-            button.Width = buttonsWidth;
-            button.Height = buttonsHeight;
-            button.Name = "FireballButton";
-            button.IsEnabled = false;
-            button.Click += BuyEnchantedFireball;
+            fireballButton.Width = buttonsWidth;
+            fireballButton.Height = buttonsHeight;
+            fireballButton.Name = "FireballButton";
+            fireballButton.IsEnabled = false;
+            fireballButton.Click += BuyEnchantedFireball;
 
-            Button button2 = new Button();
-            button2.Content = new Image()
+            Button toxicBoltButton = new Button();
+            toxicBoltButton.Content = new Image()
             {
                 Source = new BitmapImage(new Uri(ImageManager.ToxicBoltIcon))
             };
-            button2.Width = buttonsWidth;
-            button2.Height = buttonsHeight;
-            button2.Name = "ToxicBoltButton";
-            button2.IsEnabled = false;
-            button2.Click += BuyToxicBolt;
+            toxicBoltButton.Width = buttonsWidth;
+            toxicBoltButton.Height = buttonsHeight;
+            toxicBoltButton.Name = "ToxicBoltButton";
+            toxicBoltButton.IsEnabled = false;
+            toxicBoltButton.Click += BuyToxicBolt;
 
-            Button button3 = new Button();
-            button3.Content = new Image()
+            Button lightningButton = new Button();
+            lightningButton.Content = new Image()
             {
                 Source = new BitmapImage(new Uri(ImageManager.LightningIcon))
             };
-            button3.Width = buttonsWidth;
-            button3.Height = buttonsHeight;
-            button3.Name = "LightningButton";
-            button3.IsEnabled = false;
-            button3.Click += BuyLightning;
+            lightningButton.Width = buttonsWidth;
+            lightningButton.Height = buttonsHeight;
+            lightningButton.Name = "LightningButton";
+            lightningButton.IsEnabled = false;
+            lightningButton.Click += BuyLightning;
 
-            Button button4 = new Button();
-            button4.Content = new Image()
+            Button fearButton = new Button();
+            fearButton.Content = new Image()
             {
                 Source = new BitmapImage(new Uri(ImageManager.FearIcon))
             };
-            button4.Width = buttonsWidth;
-            button4.Height = buttonsHeight;
-            button4.Name = "FearButton";
-            button4.IsEnabled = false;
-            button4.Click += BuyFear;
+            fearButton.Width = buttonsWidth;
+            fearButton.Height = buttonsHeight;
+            fearButton.Name = "FearButton";
+            fearButton.IsEnabled = false;
+            fearButton.Click += BuyFear;
 
-            Button button5 = new Button();
-            button5.Content = new Image()
+            Button blinkButton = new Button();
+            blinkButton.Content = new Image()
             {
                 Source = new BitmapImage(new Uri(ImageManager.BlinkIcon))
             };
-            button5.Width = buttonsWidth;
-            button5.Height = buttonsHeight;
-            button5.Name = "BlinkButton";
-            button5.IsEnabled = false;
-            button5.Click += BuyDash;
+            blinkButton.Width = buttonsWidth;
+            blinkButton.Height = buttonsHeight;
+            blinkButton.Name = "BlinkButton";
+            blinkButton.IsEnabled = false;
+            blinkButton.Click += BuyDash;
 
 
 
-            Image image = new Image();
-            image.Source = new BitmapImage(new Uri(ImageManager.interface1));
-            image.Stretch = Stretch.Fill;
+            Image mainInterface = new Image();
+            mainInterface.Source = new BitmapImage(new Uri(ImageManager.interface1));
+            mainInterface.Stretch = Stretch.Fill;
 
 
-            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(button);
-            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(button2);
-            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(button3);
-            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(button4);
-            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(button5);
-            grid.Children.OfType<Grid>().FirstOrDefault().Children.Add(image);
+            //PauseMessage = new Image();
+            //PauseMessage.Source = new BitmapImage(new Uri(ImageManager.Pause));
+            //PauseMessage.Width = 1620;
+            //PauseMessage.Height = 1080;
+            //PauseMessage.Stretch = Stretch.Fill;
+            //PauseMessage.Visibility = Visibility.Hidden;
+            //Canvas.SetTop(PauseMessage, 0 );
+            //Canvas.SetLeft(PauseMessage, 0 );
+            //myCanvas.Children.Add(PauseMessage);
+
             
-            
-            Stage = new Stage(stageNumber, canvas, grid, Player);
+
+            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(fireballButton);
+            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(toxicBoltButton);
+            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(lightningButton);
+            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(fearButton);
+            grid.Children.OfType<StackPanel>().FirstOrDefault().Children.Add(blinkButton);
+            grid.Children.OfType<Grid>().FirstOrDefault().Children.Add(mainInterface);
         }
         private void BuyLightning(object sender, RoutedEventArgs e)
         {
-            if (Player.GameSave.Gold >= 0)
+            if (Player.GameSave.Gold >=30)
             {
-                Player.GameSave.Gold -= 0;
+                Player.GameSave.Gold -= 30;
                 myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.Remove(myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.OfType<Button>().FirstOrDefault(x => x.Name == "LightningButton"));
                 Player.GameSave.LightningAvailable = true;
             }
@@ -141,9 +155,9 @@ namespace ZTP.GameSingleton
         }
         private void BuyEnchantedFireball(object sender, RoutedEventArgs e)
         {
-            if (Player.GameSave.Gold >= 0)
+            if (Player.GameSave.Gold >= 15)
             {
-                Player.GameSave.Gold -= 0;
+                Player.GameSave.Gold -= 15;
                 myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.Remove(myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.OfType<Button>().FirstOrDefault(x => x.Name == "FireballButton"));
                 Player.GameSave.EnchantedFireballAvaible = true;
             }
@@ -151,9 +165,9 @@ namespace ZTP.GameSingleton
         }
         private void BuyFear(object sender, RoutedEventArgs e)
         {
-            if (Player.GameSave.Gold >= 0)
+            if (Player.GameSave.Gold >= 20)
             {
-                Player.GameSave.Gold -= 0;
+                Player.GameSave.Gold -= 20;
                 myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.Remove(myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.OfType<Button>().FirstOrDefault(x => x.Name == "FearButton"));
                 Player.GameSave.FearAvailable = true;
             }
@@ -162,9 +176,9 @@ namespace ZTP.GameSingleton
 
         private void BuyDash(object sender, RoutedEventArgs e)
         {
-            if (Player.GameSave.Gold >= 0)
+            if (Player.GameSave.Gold >= 15)
             {
-                Player.GameSave.Gold -= 0;
+                Player.GameSave.Gold -= 15;
                 myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.Remove(myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.OfType<Button>().FirstOrDefault(x => x.Name == "BlinkButton"));
                 Player.GameSave.DashAvailable = true;
             }

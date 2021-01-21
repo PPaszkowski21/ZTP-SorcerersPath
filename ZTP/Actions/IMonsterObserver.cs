@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZTP.Actions
 {
-    public interface ICustomObserver
+    public interface IMonsterObserver
     {
         void UpdateMovement(IMovementStrategy strategy);
     }

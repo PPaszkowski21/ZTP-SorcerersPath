@@ -15,7 +15,7 @@ using ZTP.PlayerClassess;
 
 namespace ZTP.Monsters
 {
-    public class Phantom : IMonster, ICustomObserver
+    public class Phantom : IMonster, IMonsterObserver
     {
         public Phantom()
         {

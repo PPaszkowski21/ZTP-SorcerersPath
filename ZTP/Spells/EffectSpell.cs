@@ -10,6 +10,7 @@ namespace ZTP.Spells
 {
     public class EffectSpell
     {
+        //instance of blink gif and fear gif
         public Rectangle Instance { get; set; }
         public EffectSpell(string image, int height, int width)
         {
