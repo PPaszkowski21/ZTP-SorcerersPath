@@ -14,6 +14,7 @@ namespace ZTP
         public MainWindow()
         {
             InitializeComponent();
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
             g = Game.GetInstance(myCanvas, mainGrid,1);
             g.Start();
 
@@ -26,16 +27,19 @@ namespace ZTP
         }
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && Game.GameCanBeContinued)
             {
+                myCanvas.Children.Remove(Game.EndMessage);
                 g.ChangeStage(Game.ActualStage + 1);
                 g.Start();
-            };
+            }
+            if(!Game.NextStagePause)
             g.KeyIsDown(sender, e);
         }
 
         private void KeyIsUp(object sender, KeyEventArgs e)
         {
+            if(!Game.NextStagePause)
             g.KeyIsUp(sender, e);
         }
     }

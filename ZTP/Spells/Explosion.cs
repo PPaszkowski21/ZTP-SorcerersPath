@@ -14,70 +14,40 @@ using ZTP.PlayerClassess;
 
 namespace ZTP.Spells
 {
-    public class Lightning : IProjectile
+    public class Explosion : IProjectile
     {
         public Rectangle Instance { get; set; }
         public int Direction { get; set; }
         public int Damage { get; set; }
         public int Speed { get; set; }
         public int Timer { get; set; }
-        public List<VisualBrush> Images { get; set; }
-        public Lightning(int direction)
+        public VisualBrush Image { get; set; }
+        public Explosion(int direction)
         {
             Direction = direction;
-            Damage = 500;
-            Speed = 20;
-            int height = 0;
-            int width = 0;
+            Damage = 20;
+            Speed = 0;
             Timer = 100;
-            Images = new List<VisualBrush>();
-            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.LightningDown)));
-            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.LightningLeft)));
-            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.LightningUp)));
-            Images.Add(new VisualBrush(ImageManager.CreateGif(ImageManager.LightningRight)));
-            VisualBrush projectileSkin = new VisualBrush();
-            switch (Direction)
-            {
-                case 0:
-                    height = 300;
-                    width = 120;
-                    projectileSkin = Images[0];
-                    break;
-                case 1:
-                    height = 120;
-                    width = 300;
-                    projectileSkin = Images[1];
-                    break;
-                case 2:
-                    height = 300;
-                    width = 120;
-                    projectileSkin = Images[2];
-                    break;
-                case 3:
-                    height = 120;
-                    width = 300;
-                    projectileSkin = Images[3];
-                    break;
-            }
+            Image = new VisualBrush(ImageManager.CreateGif(ImageManager.explosion));
             Instance = new Rectangle
             {
                 Name = "projectile",
-                Tag = "lightning",
-                Height = height,
-                Width = width,
-                Fill = projectileSkin
+                Tag = "explosion",
+                Height = 200,
+                Width = 200,
+                Fill = Image
             };
         }
         public void SpellBehaviour(Canvas myCanvas, List<IProjectile> projectiles)
         {
-            Timer -= 7;
-            if(Timer <0)
+            Timer -= 5;
+            if (Timer < 0)
             {
                 projectiles.Remove(this);
                 myCanvas.Children.Remove(Instance);
             }
         }
-        public EndOfSpell SpellFinishBehaviour(Canvas myCanvas, IProjectile spell, Rectangle x, List<IProjectile> projectiles, Player player, List<Rectangle> enemies, Rect spellHitBox, List<IMonster> monsters, ref int enemiesKilled, List<Rectangle> drop)
+        public virtual EndOfSpell SpellFinishBehaviour(Canvas myCanvas, IProjectile spell, Rectangle x, List<IProjectile> projectiles, Player player, List<Rectangle> enemies, Rect spellHitBox, List<IMonster> monsters, ref int enemiesKilled, List<Rectangle> drop)
         {
             for (int i = 0; i < enemies.Count; i++)
             {
@@ -108,4 +78,3 @@ namespace ZTP.Spells
         }
     }
 }
-

@@ -54,6 +54,8 @@ namespace ZTP.GameSingleton
 
         public Stage(int nr, Canvas canvas, Grid grid, Player playerGlobal)
         {
+            Game.GameCanBeContinued = true;
+            Game.NextStagePause = false;
             gameTimer = new DispatcherTimer(DispatcherPriority.Normal);
             myCanvas = canvas;
             myGrid = grid;
@@ -64,8 +66,9 @@ namespace ZTP.GameSingleton
             };
 
             barHP = new Image();
-            barHP.Source = new BitmapImage(new Uri((ImageManager.hpBar100)));
+            barHP.Source = new BitmapImage(new Uri(ImageManager.hpBar100));
             barHP.Margin = new Thickness(10,-169,25,168);
+            grid.Children.Add(barHP);
             enemiesLeft = new Label();
             enemiesLeft.Foreground = new SolidColorBrush(Colors.White);
             enemiesLeft.FontSize = 16;
@@ -81,8 +84,8 @@ namespace ZTP.GameSingleton
             stackPanel.Children.Add(enemiesLeft);
             stackPanel.Children.Add(playerHP);
             stackPanel.Children.Add(playerGold);
-            canvas.Children.Add(stackPanel);
-            grid.Children.Add(barHP);
+            canvas.Children.Add(stackPanel); 
+
             monsters = new List<IMonster>();
             projectiles = new List<IProjectile>();
             monstersAllowedToMove = new List<Rectangle>();
@@ -95,7 +98,7 @@ namespace ZTP.GameSingleton
                 case 1:
                     Background = new VisualBrush(ImageManager.CreateGif(ImageManager.background1));
                     enemySpawnTimerLimit = 20;
-                    maxEnemies = 1;
+                    maxEnemies = 3;
                     enemiesToKill = maxEnemies;
                     playerSpeed = playerGlobal.Speed;
                     playerStartHP = playerGlobal.HitPoints;
@@ -168,14 +171,35 @@ namespace ZTP.GameSingleton
             //win,lose
             if (ImageManager.ChangeHpBarImage(player, playerStartHP, barHP))
             {
-                ShowGameOver("You died!");
+                ShowGameOver("You died!");          
             }
             if (enemiesToKill == 0 && drop.Count == 0)
             {
                 if(Game.ActualStage == 4)
                 {
                     ShowGameOver("YOU WIN, CONGRATULATIONS!");
+                    gameTimer.Stop();
+                    Game.EndMessage = new Image();
+                    Game.EndMessage.Source = new BitmapImage(new Uri(ImageManager.Congratulations));
+                    Game.EndMessage.Width = 500;
+                    Game.EndMessage.Height = 200;
+                    Game.EndMessage.Stretch = Stretch.Fill;
+                    Canvas.SetTop(Game.EndMessage, myCanvas.ActualHeight / 2 - 300);
+                    Canvas.SetLeft(Game.EndMessage, myCanvas.ActualWidth / 2 - 300);
+                    myCanvas.Children.Add(Game.EndMessage);
+                    return;
                 }
+
+                Game.NextStagePause = true;
+                Game.EndMessage = new Image();
+                Game.EndMessage.Source = new BitmapImage(new Uri(ImageManager.PressEnterTogo));
+                Game.EndMessage.Width = 500;
+                Game.EndMessage.Height = 200;
+                Game.EndMessage.Stretch = Stretch.Fill;
+                Canvas.SetTop(Game.EndMessage, myCanvas.ActualHeight/2 - 300);
+                Canvas.SetLeft(Game.EndMessage, myCanvas.ActualWidth/2 - 300);
+                myCanvas.Children.Add(Game.EndMessage);
+
                 myCanvas.Children.Remove(player.Instance);
                 gameTimer.Stop();
                 enemiesLeft.Content = "";
@@ -305,7 +329,7 @@ namespace ZTP.GameSingleton
                 goDown = false;
             }
 
-            if (e.Key == Key.LeftCtrl && player.BlinkCooldown >= 260)
+            if (e.Key == Key.LeftCtrl && player.BlinkCooldown >= 260 && player.GameSave.DashAvailable)
             {
                 player.BlinkCooldown = 0;
                 player.PlayerDash(40, myCanvas);
@@ -317,7 +341,7 @@ namespace ZTP.GameSingleton
                 player.ProjectileThrow(myCanvas, projectiles, player.Projectile);
             }
 
-            if (e.Key == Key.R && player.FearCooldown >= 1000)
+            if (e.Key == Key.R && player.FearCooldown >= 1000 && player.GameSave.FearAvailable)
             {
                 player.FearCooldown = 0;
                 player.FearEnemies(myCanvas);
@@ -325,19 +349,30 @@ namespace ZTP.GameSingleton
 
             if (e.Key == Key.Q)
             {
-                player.Projectile = "fireball";
+                if(player.GameSave.EnchantedFireballAvaible)
+                {
+                    player.Projectile = "enchantedfireball";
+                }
+                else
+                {
+                    player.Projectile = "fireball";
+                }
             }
-            if (e.Key == Key.W)
+            if (e.Key == Key.W && player.GameSave.ToxicBoltAvailable)
             {
                 player.Projectile = "toxicbolt";
             }
-            if (e.Key == Key.E)
+            if (e.Key == Key.E && player.GameSave.LightningAvailable)
             {
                 player.Projectile = "lightning";
             }
             if (e.Key == Key.Escape)
             {
                 isGamePaused = !isGamePaused;
+                foreach (var button in myGrid.Children.OfType<StackPanel>().FirstOrDefault().Children.OfType<Button>())
+                {
+                    button.IsEnabled = !button.IsEnabled;
+                }
                 if (isGamePaused)
                 {
                     gameTimer.Stop();
@@ -350,7 +385,6 @@ namespace ZTP.GameSingleton
 
             if (e.Key == Key.RightShift && gameOver == true)
             {
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
                 Application.Current.Shutdown();
             }
         }
@@ -399,40 +433,7 @@ namespace ZTP.GameSingleton
             Rect spellHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
             List<Rectangle> enemies = myCanvas.Children.OfType<Rectangle>().ToList();
             enemies = enemies.Where(e => (string)e.Name == "enemy").ToList();
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                if (enemies[i] == null)
-                {
-                    continue;
-                }
-                Rect enemyHitBox = new Rect(Canvas.GetLeft(enemies[i]), Canvas.GetTop(enemies[i]), enemies[i].Width, enemies[i].Height);
-                if (spellHitBox.IntersectsWith(enemyHitBox))
-                {
-                    var monster = monsters.FirstOrDefault(z => z.Instance == enemies[i]);
-                    if (monster != null)
-                    {
-                        monster.HitPoints -= spell.Damage;
-                    }
-                    if (monster.HitPoints <= 0)
-                    {
-                        myCanvas.Children.Remove(enemies[i]);
-                        player.deleteObserver(monster);
-                        monsters.Remove(monster);
-                        enemiesKilled--;
-                        monster.DropCoin(myCanvas, Canvas.GetLeft(enemies[i]), Canvas.GetTop(enemies[i]), drop);
-                    }
-                    if ((string)spell.Instance.Tag == "fireball")
-                    {
-                        myCanvas.Children.Remove(x);
-                        projectiles.Remove(spell);
-                        break;
-                    }
-                    else if ((string)spell.Instance.Tag == "toxicbolt" || (string)spell.Instance.Tag == "lightning")
-                    {
-                        continue;
-                    }
-                }
-            }
+            spell.SpellFinishBehaviour(myCanvas, spell, x, projectiles, player, enemies, spellHitBox, monsters, ref enemiesKilled, drop);
         }
         public static void CoinOverview(Player player, Canvas myCanvas, Rectangle x, Rect playerHitBox, List<Rectangle> drop)
         {
@@ -447,7 +448,10 @@ namespace ZTP.GameSingleton
         private void ShowGameOver(string message)
         {
             gameOver = true;
-            enemiesLeft.Content += " " + message + "Press Enter to play again";
+            Game.GameCanBeContinued = false;
+            enemiesLeft.Content += " " + message + "Press Right Shift to play again";
+            
+            gameTimer.Stop();
         }
     }
 }

@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>GameIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.16.0.18277, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.16.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
@@ -96,7 +99,10 @@
     <Compile Include="Monsters\SkeletonCreator.cs" />
     <Compile Include="PlayerClassess\Player.cs" />
     <Compile Include="Spells\EffectSpell.cs" />
+    <Compile Include="Spells\EndOfSpell.cs" />
+    <Compile Include="Spells\Explosion.cs" />
     <Compile Include="Spells\Fireball.cs" />
+    <Compile Include="Spells\FireballEnchanted.cs" />
     <Compile Include="Spells\IProjectile.cs" />
     <Compile Include="Spells\Lightning.cs" />
     <Compile Include="Spells\ToxicBolt.cs" />
@@ -229,6 +235,36 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Effects\Fear.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\FireballIcon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\ToxicBoltIcon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Fireball\Explosion.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\FearIcon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\BlinkIcon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\LightningIcon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Backgrounds\PressEnterToGo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Backgrounds\Congratulations.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\GameIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GameIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

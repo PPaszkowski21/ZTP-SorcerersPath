@@ -19,6 +19,8 @@ namespace ZTP.Images
         public static string fireballLeft = "pack://application:,,,/Images/Fireball/FireballLeft.gif";
         public static string fireballUp = "pack://application:,,,/Images/Fireball/FireballUp.gif";
         public static string fireballDown = "pack://application:,,,/Images/Fireball/FireballDown.gif";
+        public static string explosion = "pack://application:,,,/Images/Fireball/Explosion.gif";
+
 
         public static string ToxicBoltRight = "pack://application:,,,/Images/ToxicBolt/ToxicBoltRight.gif";
         public static string ToxicBoltLeft = "pack://application:,,,/Images/ToxicBolt/ToxicBoltLeft.gif";
@@ -58,6 +60,17 @@ namespace ZTP.Images
         public static string background2 = "pack://application:,,,/Images/Backgrounds/background2.jpg";
         public static string background3 = "pack://application:,,,/Images/Backgrounds/background3.jpg";
         public static string background4 = "pack://application:,,,/Images/Backgrounds/background4.gif";
+        public static string interface1 = "pack://application:,,,/Images/Backgrounds/interface.png";
+        public static string PressEnterTogo = "pack://application:,,,/Images/Backgrounds/PressEnterTogo.png";
+        public static string Congratulations = "pack://application:,,,/Images/Backgrounds/Congratulations.png";
+
+
+        public static string FireballIcon = "pack://application:,,,/Images/Icons/FireballIcon.jpg";
+        public static string ToxicBoltIcon = "pack://application:,,,/Images/Icons/ToxicBoltIcon.jpg";
+        public static string LightningIcon = "pack://application:,,,/Images/Icons/LightningIcon.jpg";
+        public static string FearIcon = "pack://application:,,,/Images/Icons/FearIcon.jpg";
+        public static string BlinkIcon = "pack://application:,,,/Images/Icons/BlinkIcon.jpg";
+
 
         public static string CoinOrange = "pack://application:,,,/Images/Coins/CoinOrange.gif";
         public static string CoinRed = "pack://application:,,,/Images/Coins/CoinRed.gif";

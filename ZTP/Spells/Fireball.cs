@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -7,6 +9,7 @@ using System.Windows.Shapes;
 using WpfAnimatedGif;
 using ZTP.GameSingleton;
 using ZTP.Images;
+using ZTP.Monsters;
 using ZTP.PlayerClassess;
 
 namespace ZTP.Spells
@@ -85,6 +88,49 @@ namespace ZTP.Spells
                 projectiles.Remove(this);
                 myCanvas.Children.Remove(Instance);
             }
+        }
+        public virtual EndOfSpell SpellFinishBehaviour(Canvas myCanvas, IProjectile spell, Rectangle x, List<IProjectile> projectiles, Player player, List<Rectangle> enemies, Rect spellHitBox, List<IMonster> monsters, ref int enemiesKilled, List<Rectangle> drop)
+        {
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (enemies[i] == null)
+                {
+                    continue;
+                }
+                Rect enemyHitBox = new Rect(Canvas.GetLeft(enemies[i]), Canvas.GetTop(enemies[i]), enemies[i].Width, enemies[i].Height);
+                if (spellHitBox.IntersectsWith(enemyHitBox))
+                {
+                    var monster = monsters.FirstOrDefault(z => z.Instance == enemies[i]);
+                    if (monster != null)
+                    {
+                        monster.HitPoints -= spell.Damage;
+                    }
+                    if (monster.HitPoints <= 0)
+                    {
+                        myCanvas.Children.Remove(enemies[i]);
+                        player.deleteObserver(monster);
+                        monsters.Remove(monster);
+                        enemiesKilled--;
+                        monster.DropCoin(myCanvas, Canvas.GetLeft(enemies[i]), Canvas.GetTop(enemies[i]), drop);
+                    }
+                    double top = Canvas.GetTop(x);
+                    double left = Canvas.GetLeft(x);
+                    myCanvas.Children.Remove(x);
+                    projectiles.Remove(spell);
+                    return new EndOfSpell(top, left, true);
+                    //if ((string)spell.Instance.Tag == "fireball")
+                    //{
+                    //    myCanvas.Children.Remove(x);
+                    //    projectiles.Remove(spell);
+                    //    break;
+                    //}
+                    //else if ((string)spell.Instance.Tag == "toxicbolt" || (string)spell.Instance.Tag == "lightning")
+                    //{
+                    //    continue;
+                    //}
+                }
+            }
+            return new EndOfSpell(0, 0, false);
         }
     }
 }

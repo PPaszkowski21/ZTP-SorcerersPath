@@ -91,7 +91,7 @@ namespace ZTP.PlayerClassess
                         Instance.Fill = Images[2];
                         break;
                     case 3:
-                        Instance.Fill =Images[3];
+                        Instance.Fill = Images[3];
                         break;
                 }
             }
@@ -146,17 +146,23 @@ namespace ZTP.PlayerClassess
         public void ProjectileThrow(Canvas canvas, List<IProjectile> projectiles, string tag)
         {
             IProjectile projectile;
-            if(tag == "fireball")
+            switch (tag)
             {
-               projectile = new Fireball(Direction);
-            }
-            else if (tag == "toxicbolt")
-            {
-                projectile = new ToxicBolt(Direction);
-            }
-            else
-            {
-                projectile = new Lightning(Direction);
+                case "fireball":
+                    projectile = new Fireball(Direction);
+                    break;
+                case "toxicbolt":
+                    projectile = new ToxicBolt(Direction);
+                    break;
+                case "lightning":
+                    projectile = new Lightning(Direction);
+                    break;
+                case "enchantedfireball":
+                    projectile = new FireballEnchanted(Direction);
+                    break;
+                default:
+                    projectile = new Fireball(Direction);
+                    break;
             }
 
             if (Direction == 0)

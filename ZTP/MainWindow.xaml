@@ -5,15 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZTP"
         mc:Ignorable="d"
+        Icon="GameIcon.ico"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Title="Sorcerer's Path" Height="1080" Width="1920">
-    <Grid Name="mainGrid">
+    <Grid KeyboardNavigation.DirectionalNavigation="None" Name="mainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Image Grid.Column ="0" Name="interface" Source="/Images/backgrounds/interface.png" Stretch="Fill"/>
+
+        <Grid Grid.Column="0">
+
+        </Grid>
+
+        <StackPanel Grid.Column="0" Margin="10,400,30,40" Orientation="Vertical"  />
+
+
         <Canvas Grid.Column="1" Name="myCanvas" Focusable="True" Background="Black" KeyDown="KeyIsDown" KeyUp="KeyIsUp"></Canvas>
     </Grid>
 </Window>
